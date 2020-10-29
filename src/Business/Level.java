@@ -1,4 +1,4 @@
-package com.ae2dms;
+package Business;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -13,7 +13,7 @@ public final class Level implements Iterable<GameObject> {
     private Point keeperPosition = new Point(0, 0);
 
     public Level(String levelName, int levelIndex, List<String> raw_level) {
-        if (GameEngine.isDebugActive()) {
+        if (GameDocument.isDebugActive()) {
             System.out.printf("[ADDING LEVEL] LEVEL [%d]: %s\n", levelIndex, levelName);
         }
 

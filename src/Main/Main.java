@@ -1,5 +1,11 @@
-package com.ae2dms;
+package Main;
 
+import Business.Controller;
+import Business.GameDocument;
+import Business.GameObject;
+import Business.GraphicObject;
+import Business.Level;
+import UI.GameView;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -27,7 +33,9 @@ import java.io.InputStream;
 
 public class Main extends Application {
     private Stage primaryStage;
-    private GameEngine gameEngine;
+    private GameDocument gameEngine;
+    private Controller controller;
+    private GameView view;
     private GridPane gameGrid;
     private File saveFile;
     private MenuBar menu;
@@ -60,8 +68,8 @@ public class Main extends Application {
         RadioMenuItem radioMenuItemDebug = new RadioMenuItem("Toggle Debug");
         radioMenuItemDebug.setOnAction(actionEvent -> toggleDebug());
         MenuItem menuItemResetLevel = new MenuItem("Reset Level");
+        menuItemResetLevel.setOnAction(actionEvent -> resetLevel());
         Menu menuLevel = new Menu("Level");
-        menuLevel.setOnAction(actionEvent -> resetLevel());
         menuLevel.getItems().addAll(menuItemUndo, radioMenuItemMusic, radioMenuItemDebug,
                 new SeparatorMenuItem(), menuItemResetLevel);
 
@@ -74,7 +82,7 @@ public class Main extends Application {
         GridPane root = new GridPane();
         root.add(menu, 0, 0);
         root.add(gameGrid, 0, 1);
-        primaryStage.setTitle(GameEngine.GAME_NAME);
+        primaryStage.setTitle(GameDocument.GAME_NAME);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
         loadDefaultSaveFile(primaryStage);
@@ -87,13 +95,15 @@ public class Main extends Application {
     }
 
     private void initializeGame(InputStream input) {
-        gameEngine = new GameEngine(input, true);
+        gameEngine = new GameDocument(input, true);
+        view = new GameView();
+        controller = new Controller(view, gameEngine);
         reloadGrid();
     }
 
     private void setEventFilter() {
         primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            gameEngine.handleKey(event.getCode());
+            controller.handleKey(event.getCode());
             reloadGrid();
         });}
     private void loadGameFile() throws FileNotFoundException {
@@ -103,8 +113,8 @@ public class Main extends Application {
         saveFile = fileChooser.showOpenDialog(primaryStage);
 
         if (saveFile != null) {
-            if (GameEngine.isDebugActive()) {
-                GameEngine.logger.info("Loading save file: " + saveFile.getName());
+            if (GameDocument.isDebugActive()) {
+                GameDocument.logger.info("Loading save file: " + saveFile.getName());
             }
             initializeGame(new FileInputStream(saveFile));
         }}private void reloadGrid() {

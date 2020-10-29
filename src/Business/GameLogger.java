@@ -1,4 +1,4 @@
-package com.ae2dms;
+package Business;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class GameLogger extends Logger {
         File directory = new File(System.getProperty("user.dir") + "/" + "logs");
         directory.mkdirs();
 
-        FileHandler fh = new FileHandler(directory + "/" + GameEngine.GAME_NAME + ".log");
+        FileHandler fh = new FileHandler(directory + "/" + GameDocument.GAME_NAME + ".log");
         logger.addHandler(fh);
         SimpleFormatter formatter = new SimpleFormatter();
         fh.setFormatter(formatter);
@@ -31,14 +31,17 @@ public class GameLogger extends Logger {
         return dateFormat.format(calendar.getTime()) + " -- " + message;
     }
 
+    @Override
     public void info(String message) {
         logger.info(createFormattedMessage(message));
     }
 
+    @Override
     public void warning(String message) {
         logger.warning(createFormattedMessage(message));
     }
 
+    @Override
     public void severe(String message) {
         logger.severe(createFormattedMessage(message));
     }

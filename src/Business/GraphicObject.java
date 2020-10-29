@@ -1,4 +1,4 @@
-package com.ae2dms;
+package Business;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.Timeline;
@@ -7,8 +7,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-class GraphicObject extends Rectangle {
-    GraphicObject(GameObject obj) {
+public class GraphicObject extends Rectangle {
+    public GraphicObject(GameObject obj) {
         Paint color;
         switch (obj) {
             case WALL:
@@ -22,7 +22,7 @@ class GraphicObject extends Rectangle {
             case DIAMOND:
                 color = Color.DEEPSKYBLUE;
 
-                if (GameEngine.isDebugActive()) {
+                if (GameDocument.isDebugActive()) {
                     FadeTransition ft = new FadeTransition(Duration.millis(1000), this);
                     ft.setFromValue(1.0);
                     ft.setToValue(0.2);
@@ -47,7 +47,7 @@ class GraphicObject extends Rectangle {
 
             default:
                 String message = "Error in Level constructor. Object not recognized.";
-                GameEngine.logger.severe(message);
+                GameDocument.logger.severe(message);
                 throw new AssertionError(message);
         }
 
@@ -60,7 +60,7 @@ class GraphicObject extends Rectangle {
             this.setArcWidth(50);
         }
 
-        if (GameEngine.isDebugActive()) {
+        if (GameDocument.isDebugActive()) {
             this.setStroke(Color.RED);
             this.setStrokeWidth(0.25);
         }}}

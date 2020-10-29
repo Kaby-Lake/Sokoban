@@ -1,4 +1,4 @@
-package com.ae2dms;
+package Business;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -33,7 +33,7 @@ public class GameGrid implements Iterable {
 
     public GameObject getGameObjectAt(int col, int row) throws ArrayIndexOutOfBoundsException {
         if (isPointOutOfBounds(col, row)) {
-            if (GameEngine.isDebugActive()) {
+            if (GameDocument.isDebugActive()) {
                 System.out.printf("Trying to get null GameObject from COL: %d  ROW: %d", col, row);
             }
             throw new ArrayIndexOutOfBoundsException("The point [" + col + ":" + row + "] is outside the map.");

@@ -1,6 +1,4 @@
-package com.ae2dms;
-
-import javafx.scene.input.KeyCode;
+package Business;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -11,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class GameEngine {
+public class GameDocument {
     public static final String GAME_NAME = "SokobanFX";
     public static GameLogger logger;
     public int movesCount = 0;
@@ -21,7 +19,7 @@ public class GameEngine {
     private List<Level> levels;
     private boolean gameComplete = false;
 
-    public GameEngine(InputStream input, boolean production) {
+    public GameDocument(InputStream input, boolean production) {
         try {
             logger = new GameLogger();
             levels = loadGameFile(input);
@@ -36,34 +34,9 @@ public class GameEngine {
         return debug;
     }
 
-    public void handleKey(KeyCode code) {
-        switch (code) {
-            case UP:
-                move(new Point(-1, 0));
-                break;
 
-            case RIGHT:
-                move(new Point(0, 1));
-                break;
 
-            case DOWN:
-                move(new Point(1, 0));
-                break;
-
-            case LEFT:
-                move(new Point(0, -1));
-                break;
-
-            default:
-                // TODO: implement something funny.
-        }
-
-        if (isDebugActive()) {
-            System.out.println(code);
-        }
-    }
-
-    private void move(Point delta) {
+    public void move(Point delta) {
         if (isGameComplete()) {
             return;
         }
@@ -73,7 +46,7 @@ public class GameEngine {
         Point targetObjectPoint = GameGrid.translatePoint(keeperPosition, delta);
         GameObject keeperTarget = currentLevel.objectsGrid.getGameObjectAt(targetObjectPoint);
 
-        if (GameEngine.isDebugActive()) {
+        if (GameDocument.isDebugActive()) {
             System.out.println("Current level state:");
             System.out.println(currentLevel.toString());
             System.out.println("Keeper pos: " + keeperPosition);
