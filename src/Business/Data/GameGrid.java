@@ -1,4 +1,7 @@
-package Business;
+package Business.Data;
+
+import Business.GameDocument;
+import Business.GameObject;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -17,7 +20,7 @@ public class GameGrid implements Iterable {
         gameObjects = new GameObject[COLUMNS][ROWS];
     }
 
-    static Point translatePoint(Point sourceLocation, Point delta) {
+    public static Point translatePoint(Point sourceLocation, Point delta) {
         Point translatedPoint = new Point(sourceLocation);
         translatedPoint.translate((int) delta.getX(), (int) delta.getY());
         return translatedPoint;

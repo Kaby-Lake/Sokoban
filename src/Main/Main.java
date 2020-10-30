@@ -4,7 +4,7 @@ import Business.Controller;
 import Business.GameDocument;
 import Business.GameObject;
 import Business.GraphicObject;
-import Business.Level;
+import Business.Data.Level;
 import UI.GameView;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -105,7 +105,9 @@ public class Main extends Application {
         primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             controller.handleKey(event.getCode());
             reloadGrid();
-        });}
+        });
+    }
+
     private void loadGameFile() throws FileNotFoundException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Save File");
@@ -117,7 +119,9 @@ public class Main extends Application {
                 GameDocument.logger.info("Loading save file: " + saveFile.getName());
             }
             initializeGame(new FileInputStream(saveFile));
-        }}private void reloadGrid() {
+        }
+    }
+    private void reloadGrid() {
         if (gameEngine.isGameComplete()) {
             showVictoryMessage();
             return;
@@ -173,8 +177,10 @@ public class Main extends Application {
     public void closeGame() {
         System.exit(0);
     }
+
     public void saveGame() {
     }
+
     public void loadGame() {
         try {
             loadGameFile();
@@ -183,8 +189,13 @@ public class Main extends Application {
         }
     }
 
-    public void undo() { closeGame(); }
-    public void resetLevel() {}
+    public void undo() {
+        closeGame();
+    }
+
+    public void resetLevel() {
+        //TODO: implement Reset Level functionality
+    }
 
     public void showAbout() {
         String title = "About this game";
@@ -192,9 +203,11 @@ public class Main extends Application {
 
         newDialog(title, message, null);
     }
+
     public void toggleMusic() {
-        // TODO
+        // TODO: implement Toggle music functionality
     }
+
     public void toggleDebug() {
         gameEngine.toggleDebug();
         reloadGrid();

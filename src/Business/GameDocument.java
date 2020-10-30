@@ -1,11 +1,12 @@
 package Business;
 
+import Business.Data.GameGrid;
+import Business.Data.Level;
+import IO.*;
+
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -22,7 +23,7 @@ public class GameDocument {
     public GameDocument(InputStream input, boolean production) {
         try {
             logger = new GameLogger();
-            levels = loadGameFile(input);
+            this.loadGameFile(input);
             currentLevel = getNextLevel();
         } catch (IOException x) {
             System.out.println("Cannot create logger.");
@@ -30,11 +31,10 @@ public class GameDocument {
             logger.warning("Cannot load the default save file: " + e.getStackTrace());
         }
     }
+
     public static boolean isDebugActive() {
         return debug;
     }
-
-
 
     public void move(Point delta) {
         if (isGameComplete()) {
@@ -99,63 +99,25 @@ public class GameDocument {
         }
     }
 
-    private List<Level> loadGameFile(InputStream input) {
-        List<Level> levels = new ArrayList<>(5);
-        int levelIndex = 0;
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
-            boolean parsedFirstLevel = false;
-            List<String> rawLevel = new ArrayList<>();
-            String levelName = "";
-
-            while (true) {
-                String line = reader.readLine();
-
-                if (line == null) {
-                    if (rawLevel.size() != 0) {
-                        Level parsedLevel = new Level(levelName, ++levelIndex, rawLevel);
-                        levels.add(parsedLevel);
-                    }
-                    break;
-                }
-
-                if (line.contains("MapSetName")) {
-                    mapSetName = line.replace("MapSetName: ", "");
-                    continue;
-                }
-
-                if (line.contains("LevelName")) {
-                    if (parsedFirstLevel) {
-                        Level parsedLevel = new Level(levelName, ++levelIndex, rawLevel);
-                        levels.add(parsedLevel);
-                        rawLevel.clear();
-                    } else {
-                        parsedFirstLevel = true;
-                    }
-
-                    levelName = line.replace("LevelName: ", "");
-                    continue;
-                }
-
-                line = line.trim();
-                line = line.toUpperCase();
-                if (line.matches(".*W.*W.*")) {
-                    rawLevel.add(line);
-                }
-            }
+    // @change mapSetName
+    private void loadGameFile(InputStream input) {
+        GameFileLoader loader = new GameFileLoader();
+        try {
+            loader.loadGameFile(input);
+            this.levels = loader.getLevels();
+            this.mapSetName = loader.getMapSetName();
 
         } catch (IOException e) {
             logger.severe("Error trying to load the game file: " + e);
         } catch (NullPointerException e) {
             logger.severe("Cannot open the requested file: " + e);
         }
-
-        return levels;
     }
 
     public boolean isGameComplete() {
         return gameComplete;
     }
+
     public Level getNextLevel() {
         if (currentLevel == null) {
             return levels.get(0);
@@ -171,6 +133,7 @@ public class GameDocument {
     public Level getCurrentLevel() {
         return currentLevel;
     }
+
     public void toggleDebug() {
         debug = !debug;
     }

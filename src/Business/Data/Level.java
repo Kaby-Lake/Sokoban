@@ -1,4 +1,7 @@
-package Business;
+package Business.Data;
+
+import Business.GameDocument;
+import Business.GameObject;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -45,7 +48,7 @@ public final class Level implements Iterable<GameObject> {
         }
     }
 
-    boolean isComplete() {
+    public boolean isComplete() {
         int cratedDiamondsCount = 0;
         for (int row = 0; row < objectsGrid.ROWS; row++) {
             for (int col = 0; col < objectsGrid.COLUMNS; col++) {
@@ -60,14 +63,16 @@ public final class Level implements Iterable<GameObject> {
     public String getName() {
         return name;
     }
-    int getIndex() {
+
+    public int getIndex() {
         return index;
     }
-    Point getKeeperPosition() {
+
+    public Point getKeeperPosition() {
         return keeperPosition;
     }
 
-    GameObject getTargetObject(Point source, Point delta) {
+    public GameObject getTargetObject(Point source, Point delta) {
         return objectsGrid.getTargetFromSource(source, delta);
     }
 
@@ -85,19 +90,26 @@ public final class Level implements Iterable<GameObject> {
 
         int column = 0;
         int row = 0;
+
         @Override
         public boolean hasNext() {
             return !(row == objectsGrid.ROWS - 1 && column == objectsGrid.COLUMNS);
         }
+
         @Override
-        public GameObject next() { if (column >= objectsGrid.COLUMNS) {
-            column = 0;
-            row++;
-        }
-        GameObject object = objectsGrid.getGameObjectAt(column, row);
-        GameObject diamond = diamondsGrid.getGameObjectAt(column, row);
-        GameObject retObj = object;
-        column++;
+        public GameObject next() {
+            if (column >= objectsGrid.COLUMNS) {
+                column = 0;
+                row++;
+            }
+
+            GameObject object = objectsGrid.getGameObjectAt(column, row);
+
+            GameObject diamond = diamondsGrid.getGameObjectAt(column, row);
+
+            GameObject retObj = object;
+
+            column++;
             if (diamond == GameObject.DIAMOND) {
                 if (object == GameObject.CRATE) {
                     retObj = GameObject.CRATE_ON_DIAMOND;
@@ -109,6 +121,7 @@ public final class Level implements Iterable<GameObject> {
             }
             return retObj;
         }
+
         public Point getcurrentposition() {
             return new Point(column, row);
         }
