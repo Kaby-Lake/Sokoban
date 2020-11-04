@@ -1,11 +1,12 @@
 package Main;
 
-import Business.Controller;
+import UI.Controller;
 import Business.GameDocument;
 import Business.GameObject;
 import Business.GraphicObject;
 import Business.Data.Level;
 import UI.GameView;
+import UI.Menu.MenuView;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,6 +18,7 @@ import javafx.scene.effect.Effect;
 import javafx.scene.effect.MotionBlur;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -33,12 +35,11 @@ import java.io.InputStream;
 
 public class Main extends Application {
     private Stage primaryStage;
-    private GameDocument gameEngine;
+    private GameDocument gameDocument;
     private Controller controller;
     private GameView view;
     private GridPane gameGrid;
     private File saveFile;
-    private MenuBar menu;
 
     public static void main(String[] args) {
         launch(args);
@@ -48,7 +49,23 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
 
-        menu = new MenuBar();
+        gameGrid = new GridPane();
+        GridPane root = new GridPane();
+        root.add(menuBarInit(), 0, 0);
+        // root.add(gameGrid, 0, 1);
+        MenuView menuView = new MenuView();
+        root.add(menuView.init(), 0, 1);
+
+
+        primaryStage.setTitle(GameDocument.GAME_NAME);
+        primaryStage.setScene(new Scene(root, 1920, 1080));
+        primaryStage.show();
+        loadDefaultSaveFile(primaryStage);
+
+    }
+
+    private MenuBar menuBarInit() {
+        MenuBar menu = new MenuBar();
 
         MenuItem menuItemSaveGame = new MenuItem("Save Game");
         menuItemSaveGame.setDisable(true);
@@ -78,26 +95,22 @@ public class Main extends Application {
         menuAbout.setOnAction(actionEvent -> showAbout());
         menuAbout.getItems().addAll(menuItemGame);
         menu.getMenus().addAll(menuFile, menuLevel, menuAbout);
-        gameGrid = new GridPane();
-        GridPane root = new GridPane();
-        root.add(menu, 0, 0);
-        root.add(gameGrid, 0, 1);
-        primaryStage.setTitle(GameDocument.GAME_NAME);
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
-        loadDefaultSaveFile(primaryStage);
+
+        return menu;
     }
 
-    void loadDefaultSaveFile(Stage primaryStage) { this.primaryStage = primaryStage;
+    void loadDefaultSaveFile(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         InputStream in = getClass().getClassLoader().getResourceAsStream("level/SampleGame.skb");
         initializeGame(in);
         setEventFilter();
     }
 
     private void initializeGame(InputStream input) {
-        gameEngine = new GameDocument(input, true);
+        gameDocument = new GameDocument(input, true);
         view = new GameView();
-        controller = new Controller(view, gameEngine);
+        controller = new Controller(view);
+        controller.initialize(gameDocument);
         reloadGrid();
     }
 
@@ -122,12 +135,12 @@ public class Main extends Application {
         }
     }
     private void reloadGrid() {
-        if (gameEngine.isGameComplete()) {
+        if (gameDocument.isGameComplete()) {
             showVictoryMessage();
             return;
         }
 
-        Level currentLevel = gameEngine.getCurrentLevel();
+        Level currentLevel = gameDocument.getCurrentLevel();
         Level.LevelIterator levelGridIterator = (Level.LevelIterator) currentLevel.iterator();
         gameGrid.getChildren().clear();
         while (levelGridIterator.hasNext()) {
@@ -138,7 +151,7 @@ public class Main extends Application {
 
     private void showVictoryMessage() {
         String dialogTitle = "Game Over!";
-        String dialogMessage = "You completed " + gameEngine.mapSetName + " in " + gameEngine.movesCount + " moves!";
+        String dialogMessage = "You completed " + gameDocument.mapSetName + " in " + gameDocument.movesCount + " moves!";
         MotionBlur mb = new MotionBlur(2, 3);
 
         newDialog(dialogTitle, dialogMessage, mb);
@@ -209,7 +222,7 @@ public class Main extends Application {
     }
 
     public void toggleDebug() {
-        gameEngine.toggleDebug();
+        gameDocument.toggleDebug();
         reloadGrid();
     }
 }
