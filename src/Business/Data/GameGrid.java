@@ -1,16 +1,15 @@
 package Business.Data;
 
 import Business.GameDocument;
-import Business.GameObject;
 
 import java.awt.*;
 import java.util.Iterator;
 
 public class GameGrid implements Iterable {
+
     final int COLUMNS;
     final int ROWS;
-
-    private GameObject[][] gameObjects;
+    private final GameObject[][] gameObjects;
 
     public GameGrid(int columns, int rows) {
         COLUMNS = columns;
@@ -20,20 +19,46 @@ public class GameGrid implements Iterable {
         gameObjects = new GameObject[COLUMNS][ROWS];
     }
 
+
+    /**
+     * @param sourceLocation Java.awt.Point, target source location
+     * @param delta Java.awt.Point, distance respective
+     * @return Translated point from source and delta
+     */
     public static Point translatePoint(Point sourceLocation, Point delta) {
         Point translatedPoint = new Point(sourceLocation);
         translatedPoint.translate((int) delta.getX(), (int) delta.getY());
         return translatedPoint;
     }
 
-    public Dimension getDimension() {
-        return new Dimension(COLUMNS, ROWS);
-    }
 
-    GameObject getTargetFromSource(Point source, Point delta) {
+    /**
+     * @param source
+     * @param delta
+     * @return corresponding GameObject in which position
+     * @throws ArrayIndexOutOfBoundsException
+     */
+    public GameObject getTargetFromSource(Point source, Point delta) throws ArrayIndexOutOfBoundsException {
+        if (delta == null) {
+            delta = new Point(0, 0);
+        }
         return getGameObjectAt(translatePoint(source, delta));
     }
 
+    /**
+     * @param col x axis
+     * @param row y axis
+     *            Coordinates: system
+     *             ------------> +col
+     *             |
+     *             |
+     *             |
+     *             |
+     *             ∨
+     *             +row
+     * @return corresponding GameObject in which position
+     * @throws ArrayIndexOutOfBoundsException
+     */
     public GameObject getGameObjectAt(int col, int row) throws ArrayIndexOutOfBoundsException {
         if (isPointOutOfBounds(col, row)) {
             if (GameDocument.isDebugActive()) {
@@ -45,7 +70,12 @@ public class GameGrid implements Iterable {
         return gameObjects[col][row];
     }
 
-    public GameObject getGameObjectAt(Point p) {
+    /**
+     * @param p Point object
+     * @return corresponding GameObject in which position
+     * @throws ArrayIndexOutOfBoundsException
+     */
+    public GameObject getGameObjectAt(Point p) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
         if (p == null) {
             throw new IllegalArgumentException("Point cannot be null.");
         }
@@ -53,10 +83,17 @@ public class GameGrid implements Iterable {
         return getGameObjectAt((int) p.getX(), (int) p.getY());
     }
 
-    public boolean removeGameObjectAt(Point position) {
-        return putGameObjectAt(null, position);
+    public Dimension getDimension() {
+        return new Dimension(COLUMNS, ROWS);
     }
 
+
+    /**
+     * @param gameObject the object to be put in
+     * @param x
+     * @param y
+     * @return false if PointOutOfBounds
+     */
     public boolean putGameObjectAt(GameObject gameObject, int x, int y) {
         if (isPointOutOfBounds(x, y)) {
             return false;
@@ -66,9 +103,24 @@ public class GameGrid implements Iterable {
         return gameObjects[x][y] == gameObject;
     }
 
+    /**
+     * @param gameObject the object to be put in
+     * @param p Point
+     * @return false if PointOutOfBounds, true otherwise
+     */
     public boolean putGameObjectAt(GameObject gameObject, Point p) {
         return p != null && putGameObjectAt(gameObject, (int) p.getX(), (int) p.getY());
     }
+
+    /**
+     * @param position the position of object to be deleted
+     * @return false if PointOutOfBounds, true otherwise
+     */
+    public boolean removeGameObjectAt(Point position) {
+        return putGameObjectAt(null, position);
+    }
+
+
 
     private boolean isPointOutOfBounds(int x, int y) {
         return (x < 0 || y < 0 || x >= COLUMNS || y >= ROWS);
@@ -77,6 +129,7 @@ public class GameGrid implements Iterable {
     private boolean isPointOutOfBounds(Point p) {
         return isPointOutOfBounds(p.x, p.y);
     }
+
 
     @Override
     public String toString() {
