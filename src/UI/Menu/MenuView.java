@@ -1,35 +1,23 @@
 package UI.Menu;
 
-import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
-import javafx.util.Callback;
 
-import java.awt.*;
-import java.io.IOException;
+public class MenuView extends Pane {
 
-public class MenuView extends BorderPane {
-
-    private BorderPane view;
+    private Pane view;
     private ActionSceneController controller;
 
+    public Pane getInstance() throws Exception {
+        if (view != null) {
+            return view;
+        } else {
+            view = new Pane();
+            FXMLLoader actionLoader = new FXMLLoader(getClass().getResource("/UI/MenuViewScene.fxml"));
+            ActionSceneController actionSceneController = actionLoader.getController();
+            return view;
+        }
 
-    public MenuView() {
-        view = new BorderPane();
-    }
-    public BorderPane init() throws Exception {
-        FXMLLoader actionLoader = new FXMLLoader(getClass().getResource("/UI/MenuView/ActionScene.fxml"));
-        view.setLeft(actionLoader.load());
-        Background background = new Background(new BackgroundImage(new Image("/UI/IMG_2422.JPG"), null, null, null, null));
-        view.setBackground(background);
-
-        ActionSceneController actionSceneController = actionLoader.getController();
-        return view;
     }
 
     private class ActionSceneController {

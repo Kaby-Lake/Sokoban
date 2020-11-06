@@ -54,12 +54,13 @@ public class Main extends Application {
         root.add(menuBarInit(), 0, 0);
         // root.add(gameGrid, 0, 1);
         MenuView menuView = new MenuView();
-        root.add(menuView.init(), 0, 1);
+        root.add(menuView.getInstance(), 0, 1);
 
 
         primaryStage.setTitle(GameDocument.GAME_NAME);
-        primaryStage.setScene(new Scene(root, 1920, 1080));
+        primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.show();
+        primaryStage.setResizable(false);
         loadDefaultSaveFile(primaryStage);
 
     }
