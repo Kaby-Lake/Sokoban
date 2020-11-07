@@ -3,20 +3,26 @@ package UI.Menu;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.*;
 
-public class MenuView extends Pane {
+import java.io.IOException;
 
-    private Pane view;
+public class MenuView {
+
+    private static Pane view;
     private ActionSceneController controller;
 
-    public Pane getInstance() throws Exception {
-        if (view != null) {
-            return view;
-        } else {
-            view = new Pane();
-            FXMLLoader actionLoader = new FXMLLoader(getClass().getResource("/UI/MenuViewScene.fxml"));
-            ActionSceneController actionSceneController = actionLoader.getController();
+    private MenuView() throws Exception {
+        FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/UI/FXML/MenuViewScene.fxml"));
+        view = menuLoader.load();
+        ActionSceneController actionSceneController = menuLoader.getController();
+    }
+
+
+    public static Pane getInstance() throws Exception {
+        if(view == null) {
+            new MenuView();
             return view;
         }
+        return view;
 
     }
 

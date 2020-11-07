@@ -50,15 +50,14 @@ public class Main extends Application {
         this.primaryStage = primaryStage;
 
         gameGrid = new GridPane();
-        GridPane root = new GridPane();
-        root.add(menuBarInit(), 0, 0);
-        // root.add(gameGrid, 0, 1);
-        MenuView menuView = new MenuView();
-        root.add(menuView.getInstance(), 0, 1);
+//        GridPane root = new GridPane();
+//        root.add(menuBarInit(), 0, 0);
+//        root.add(gameGrid, 0, 1);
+//        root.add(MenuView.getInstance(), 0, 1);
 
 
         primaryStage.setTitle(GameDocument.GAME_NAME);
-        primaryStage.setScene(new Scene(root, 1280, 720));
+        primaryStage.setScene(new Scene(MenuView.getInstance(), 1280, 720));
         primaryStage.show();
         primaryStage.setResizable(false);
         loadDefaultSaveFile(primaryStage);
@@ -135,6 +134,7 @@ public class Main extends Application {
             initializeGame(new FileInputStream(saveFile));
         }
     }
+
     private void reloadGrid() {
         if (gameDocument.isGameComplete()) {
             showVictoryMessage();
