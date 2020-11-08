@@ -8,11 +8,11 @@ import java.awt.*;
 
 public class Crate extends AbstractGameObject implements Movable {
 
-    Crate(GameGrid linksTo, int atX, int atY) {
+    public Crate(GameGrid linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
     }
 
-    Crate(GameGrid linksTo, Point at) {
+    public Crate(GameGrid linksTo, Point at) {
         super(linksTo, at);
     }
 
@@ -24,10 +24,6 @@ public class Crate extends AbstractGameObject implements Movable {
     @Override
     public String getStringSymbol() {
         return "CRATE";
-    }
-
-    public void isOnDiamond() {
-
     }
 
     // Movable Methods

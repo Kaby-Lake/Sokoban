@@ -8,11 +8,11 @@ import java.awt.*;
 public class Floor extends AbstractGameObject {
 
 
-    Floor(GameGrid linksTo, int atX, int atY) {
+    public Floor(GameGrid linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
     }
 
-    Floor(GameGrid linksTo, Point at) {
+    public Floor(GameGrid linksTo, Point at) {
         super(linksTo, at);
     }
 

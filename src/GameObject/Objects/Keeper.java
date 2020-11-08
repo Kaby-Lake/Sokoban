@@ -9,11 +9,11 @@ import java.awt.*;
 public class Keeper extends AbstractGameObject implements Movable {
 
 
-    Keeper(GameGrid linksTo, int atX, int atY) {
+    public Keeper(GameGrid linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
     }
 
-    Keeper(GameGrid linksTo, Point at) {
+    public Keeper(GameGrid linksTo, Point at) {
         super(linksTo, at);
     }
 

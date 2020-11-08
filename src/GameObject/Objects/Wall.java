@@ -8,11 +8,11 @@ import java.awt.*;
 public class Wall extends AbstractGameObject {
 
 
-    Wall(GameGrid linksTo, int atX, int atY) {
+    public Wall(GameGrid linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
     }
 
-    Wall(GameGrid linksTo, Point at) {
+    public Wall(GameGrid linksTo, Point at) {
         super(linksTo, at);
     }
 
