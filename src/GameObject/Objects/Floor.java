@@ -15,6 +15,7 @@ public class Floor extends AbstractGameObject {
     Floor(GameGrid linksTo, Point at) {
         super(linksTo, at);
     }
+
     @Override
     public char getCharSymbol() {
         return ' ';

@@ -23,6 +23,3 @@ public interface Movable {
         return delta.distance(0, 0) >= 1;
     }
 }
-
-class IllegalMovementException extends Throwable {
-}

@@ -44,12 +44,20 @@ public class Crate extends AbstractGameObject implements Movable {
         Point targetPosition = GameGrid.translatePoint(this.at(), delta);
         AbstractGameObject objectOnDestination = grid.getGameObjectAt(targetPosition);
         if (objectOnDestination instanceof Floor) {
-            grid.putGameObjectAt(new Floor(grid, at()), at());
-            grid.putGameObjectAt(this, targetPosition);
-            this.updatePosition(targetPosition);
+            moveToFloor(targetPosition);
         } else {
             throw new IllegalMovementException();
         }
+    }
+
+    private void moveToFloor(Point targetPosition) {
+        grid.putGameObjectAt(new Floor(grid, at()), at());
+        grid.putGameObjectAt(this, targetPosition);
+        this.updatePosition(targetPosition);
+    }
+
+    public Boolean isOnDiamond(GameGrid diamondsGrid) {
+        return diamondsGrid.getGameObjectAt(at()) instanceof Diamond;
     }
 
     private Boolean canMoveTo(Point destination) {
@@ -61,4 +69,6 @@ public class Crate extends AbstractGameObject implements Movable {
         this.xPosition = position.x;
         this.yPosition = position.y;
     }
+
+
 }
