@@ -103,11 +103,11 @@ public class Main extends Application {
     }
 
     private void initializeGame(InputStream input) {
-        gameDocument = new GameDocument(input, true);
-        view = new GameView();
-        controller = new MenuViewController(view);
-        controller.initialize(gameDocument);
-        reloadGrid();
+//        gameDocument = new GameDocument(input, true);
+//        view = new GameView();
+//        controller = view.getController();
+//        controller.initialize(gameDocument);
+//        reloadGrid();
     }
 
     private void setEventFilter() {
@@ -219,7 +219,7 @@ public class Main extends Application {
     }
 
     public void toggleDebug() {
-        gameDocument.toggleDebug();
+        // gameDocument.toggleDebug();
         reloadGrid();
     }
 }

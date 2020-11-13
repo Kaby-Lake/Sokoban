@@ -135,7 +135,10 @@ public class GameDocument {
         return currentLevel;
     }
 
-    public void toggleDebug() {
-        debug = !debug;
+    public void toggleDebug(Boolean bool) {
+        debug = bool;
+    }
+
+    public void toggleMusic(Boolean bool) {
     }
 }
