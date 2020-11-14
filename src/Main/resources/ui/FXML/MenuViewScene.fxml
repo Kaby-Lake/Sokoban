@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
@@ -18,39 +17,48 @@
          <Image url="@../Assets/BottomBar/Bottombar.png" />
       </ImageView>
 
+      <!--     Undo button    -->
+      <ImageView fx:id="undoSwitch" accessibleRole="BUTTON" layoutX="410.0" layoutY="667.0" onMouseClicked="#clickUndo" styleClass="Button">
+         <Image url="@../Assets/BottomBar/Undo.png" />
+      </ImageView>
+
+      <!--     Music button    -->
+      <ImageView fx:id="musicSwitch" accessibleRole="BUTTON" layoutX="533.0" layoutY="667.0" onMouseClicked="#clickToggleMusic" styleClass="Button">
+         <Image url="@../Assets/BottomBar/Music_on.png" />
+      </ImageView>
+
+      <!--     Debug button    -->
+      <ImageView fx:id="debugSwitch" accessibleRole="BUTTON" layoutX="662.0" layoutY="667.0" onMouseClicked="#clickToggleDebug" styleClass="Button">
+         <Image url="@../Assets/BottomBar/Debug_off.png" />
+      </ImageView>
+
+      <!--     Save Game button    -->
+      <ImageView fx:id="saveGameSwitch" accessibleRole="BUTTON" layoutX="863.0" layoutY="667.0" onMouseClicked="#clickSaveGame" styleClass="Button">
+         <Image url="@../Assets/BottomBar/Save_Game.png" />
+      </ImageView>
+
+      <!--     High Score List button    -->
+      <ImageView fx:id="highScoreSwitch" accessibleRole="BUTTON" fitHeight="57.0" fitWidth="232.0" layoutX="1046.0" layoutY="667.0" styleClass="Button">
+         <Image url="@../Assets/BottomBar/High_Score_List.png" />
+      </ImageView>
+
       <!--     Highest Score    -->
       <ImageView fitHeight="34.0" fitWidth="239.0" layoutX="25.0" layoutY="676.0">
          <Image url="@../Assets/BottomBar/Highest_Score.png" />
       </ImageView>
 
-      <!--     Undo button    -->
-      <ImageView accessibleRole="BUTTON" layoutX="590.0" layoutY="667.0" styleClass="Button" onMouseClicked="#clickUndo">
-         <Image url="@../Assets/BottomBar/Undo.png" />
-      </ImageView>
 
-      <!--     Music button    -->
-      <ImageView fx:id="musicSwitch" accessibleRole="BUTTON" layoutX="714.0" layoutY="667.0"  styleClass="Button" onMouseClicked="#clickToggleMusic">
-         <Image url="@../Assets/BottomBar/Music_on.png" />
-      </ImageView>
 
-      <!--     Debug button    -->
-      <ImageView fx:id="debugSwitch" accessibleRole="BUTTON" layoutX="845.0" layoutY="667.0" styleClass="Button" onMouseClicked="#clickToggleDebug">
-         <Image url="@../Assets/BottomBar/Debug_off.png"/>
-      </ImageView>
 
-      <!--     High Score List button    -->
-      <ImageView accessibleRole="BUTTON" fitHeight="57.0" fitWidth="232.0" layoutX="1046.0" layoutY="667.0" styleClass="Button">
-         <Image url="@../Assets/BottomBar/High_Score_List.png" />
-      </ImageView>
 
       <!--     Start Game    -->
 
-      <ImageView accessibleRole="BUTTON" fitHeight="90.0" fitWidth="246.0" layoutX="119.0" layoutY="161.0" styleClass="Button" onMouseClicked="#clickStartGame">
+      <ImageView accessibleRole="BUTTON" fitHeight="90.0" fitWidth="246.0" layoutX="119.0" layoutY="161.0" onMouseClicked="#clickStartGame" styleClass="Button">
          <Image url="@../Assets/Menu/Start_Game.png" />
       </ImageView>
 
       <!--     Information    -->
-      <ImageView accessibleRole="BUTTON" fitHeight="86.0" fitWidth="241.0" layoutX="124.0" layoutY="268.0" pickOnBounds="true" styleClass="Button" onMouseClicked="#clickInformation">
+      <ImageView accessibleRole="BUTTON" fitHeight="86.0" fitWidth="241.0" layoutX="124.0" layoutY="268.0" onMouseClicked="#clickInformation" pickOnBounds="true" styleClass="Button">
          <Image url="@../Assets/Menu/Information.png" />
       </ImageView>
 

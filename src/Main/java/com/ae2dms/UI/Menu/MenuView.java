@@ -16,6 +16,5 @@ public class MenuView {
             return view;
         }
         return view;
-
     }
 }

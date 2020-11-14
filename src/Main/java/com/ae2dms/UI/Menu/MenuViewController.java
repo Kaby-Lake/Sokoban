@@ -1,31 +1,17 @@
 package com.ae2dms.UI.Menu;
 
 import com.ae2dms.Business.GameDocument;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.fxml.FXML;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import com.ae2dms.UI.AbstractBarController;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 
-import java.awt.*;
 import java.io.InputStream;
 
-public class MenuViewController {
+public class MenuViewController extends AbstractBarController {
     private GameDocument gameDocument;
 
-    private final BooleanProperty debugSwitchToggle;
-    @FXML
-    private ImageView debugSwitch;
-
-    private final BooleanProperty musicSwitchToggle;
-    @FXML
-    private ImageView musicSwitch;
-
     public MenuViewController() {
-        this.musicSwitchToggle = new SimpleBooleanProperty(true);
-        this.debugSwitchToggle = new SimpleBooleanProperty(false);
+
     }
 
     public void initialize() throws IllegalStateException {
@@ -36,21 +22,9 @@ public class MenuViewController {
         InputStream in = getClass().getClassLoader().getResourceAsStream("level/SampleGame.skb");
         this.gameDocument = new GameDocument(in, false);
 
-        debugSwitchToggle.addListener((observable, oldValue, newValue) -> {
-            if (observable != null && observable.getValue()==true) {
-                debugSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Debug_on.png"))));
-            } else if (observable != null && observable.getValue()==false){
-                debugSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Debug_off.png"))));
-            }
-        });
+        super.disableButton("Debug");
+        super.disableButton("Save Game");
 
-        musicSwitchToggle.addListener((observable, oldValue, newValue) -> {
-            if (observable != null && observable.getValue()==true) {
-                musicSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Music_on.png"))));
-            } else if (observable != null && observable.getValue()==false){
-                musicSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Music_off.png"))));
-            }
-        });
     }
 
     public void handleKey(KeyCode code) {
@@ -82,8 +56,7 @@ public class MenuViewController {
     }
 
     public void clickToggleDebug() {
-        debugSwitchToggle.setValue(!debugSwitchToggle.getValue());
-        gameDocument.toggleDebug(debugSwitchToggle.getValue());
+        gameDocument.toggleDebug(menuBarClickToggleDebug());
     }
 
     //TODO:
@@ -91,15 +64,18 @@ public class MenuViewController {
     }
 
     public void clickToggleMusic(MouseEvent mouseEvent) {
-        musicSwitchToggle.setValue(!musicSwitchToggle.getValue());
-        gameDocument.toggleMusic(musicSwitchToggle.getValue());
+        gameDocument.toggleMusic(menuBarClickToggleMusic());
     }
 
-    //TODO:
     public void clickUndo(MouseEvent mouseEvent) {
+        gameDocument.undo();
     }
 
     //TODO:
     public void clickInformation(MouseEvent mouseEvent) {
+    }
+
+    //TODO:
+    public void clickSaveGame(MouseEvent mouseEvent) {
     }
 }
