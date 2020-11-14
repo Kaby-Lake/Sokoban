@@ -10,3 +10,7 @@
 .Button:pressed {
     -fx-effect: innershadow( three-pass-box , rgba(64, 64, 64, 0.8), 10, 0.0 , 0 , 0);
 }
+
+.Hide {
+    visibility: hidden;
+}

@@ -11,11 +11,11 @@ public class AbstractBarController {
     @FXML
     private ImageView undoSwitch;
 
-    private final BooleanProperty musicSwitchToggle;
+    public final BooleanProperty musicSwitchToggle;
     @FXML
     private ImageView musicSwitch;
 
-    private final BooleanProperty debugSwitchToggle;
+    public final BooleanProperty debugSwitchToggle;
     @FXML
     private ImageView debugSwitch;
 

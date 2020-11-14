@@ -4,6 +4,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
+<?import javafx.scene.Group?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@MenuViewCSS.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ae2dms.UI.Menu.MenuViewController">
    <children>
 
@@ -53,22 +54,22 @@
 
       <!--     Start Game    -->
 
-      <ImageView accessibleRole="BUTTON" fitHeight="90.0" fitWidth="246.0" layoutX="119.0" layoutY="161.0" onMouseClicked="#clickStartGame" styleClass="Button">
+      <ImageView accessibleRole="BUTTON" fitHeight="90.0" fitWidth="246.0" layoutX="119.0" layoutY="161.0"  styleClass="Button" onMouseClicked="#clickStartGame">
          <Image url="@../Assets/Menu/Start_Game.png" />
       </ImageView>
 
       <!--     Information    -->
-      <ImageView accessibleRole="BUTTON" fitHeight="86.0" fitWidth="241.0" layoutX="124.0" layoutY="268.0" onMouseClicked="#clickInformation" pickOnBounds="true" styleClass="Button">
+      <ImageView accessibleRole="BUTTON" fitHeight="86.0" fitWidth="241.0" layoutX="124.0" layoutY="268.0" styleClass="Button" onMouseClicked="#clickInformation">
          <Image url="@../Assets/Menu/Information.png" />
       </ImageView>
 
       <!--     Load Game from file    -->
-      <ImageView accessibleRole="BUTTON" fitHeight="86.0" fitWidth="241.0" layoutX="124.0" layoutY="372.0" styleClass="Button">
+      <ImageView fx:id="loadGameFileButton" accessibleRole="BUTTON" fitHeight="86.0" fitWidth="241.0" layoutX="124.0" layoutY="372.0" styleClass="Button" onMouseClicked="#clickLoadGame">
          <Image url="@../Assets/Menu/Load_Game.png" />
       </ImageView>
 
       <!--     Exit game    -->
-      <ImageView accessibleRole="BUTTON" fitHeight="86.0" fitWidth="241.0" layoutX="124.0" layoutY="476.0" styleClass="Button">
+      <ImageView accessibleRole="BUTTON" fitHeight="86.0" fitWidth="241.0" layoutX="124.0" layoutY="476.0" styleClass="Button" onMouseClicked="#clickExit">
          <Image url="@../Assets/Menu/Exit.png" />
       </ImageView>
 
@@ -76,5 +77,20 @@
       <ImageView fitHeight="112.0" fitWidth="414.0" layoutX="770.0" layoutY="69.0">
          <Image url="@../Assets/Menu/Sokoban.png" />
       </ImageView>
+
+      <!--     Info    -->
+      <Group fx:id="InfoGroup" styleClass="Hide">
+         <ImageView fitHeight="366.0" fitWidth="588.0" layoutX="579.0" layoutY="205.0">
+            <image>
+               <Image url="@../Assets/Menu/InfoGrid.png" />
+            </image>
+         </ImageView>
+
+         <ImageView accessibleRole="BUTTON" layoutX="805.0" layoutY="518.0" styleClass="Button" onMouseClicked="#clickCloseInformation">
+            <image>
+               <Image url="@../Assets/Menu/Dismiss.png" />
+            </image>
+         </ImageView>
+      </Group>
    </children>
 </Pane>

@@ -29,6 +29,7 @@ import com.ae2dms.Business.*;
 import com.ae2dms.Business.Data.*;
 import com.ae2dms.UI.*;
 import com.ae2dms.UI.Menu.*;
+import javafx.scene.image.Image;
 
 public class Main extends Application {
     private Stage primaryStage;
@@ -45,13 +46,13 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
+        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/icon/icon.jpg")));
 
         gameGrid = new GridPane();
 //        GridPane root = new GridPane();
 //        root.add(menuBarInit(), 0, 0);
 //        root.add(gameGrid, 0, 1);
 //        root.add(MenuView.getInstance(), 0, 1);
-
 
         primaryStage.setTitle(GameDocument.GAME_NAME);
         primaryStage.setScene(new Scene(MenuView.getInstance(), 1280, 720));
