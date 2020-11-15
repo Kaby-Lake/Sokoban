@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@MenuViewCSS.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ae2dms.UI.Game.GameViewController">
+   <children>
+
+      <!--     background    -->
+      <ImageView fitHeight="720.0" fitWidth="1715.0" layoutX="-77.0">
+            <Image url="@../Assets/Game/GameBackground.jpg" />
+      </ImageView>
+
+      <!--     BottomBar    -->
+      <ImageView fitWidth="1280.0" layoutY="665.0">
+         <Image url="@../Assets/BottomBar/Bottombar.png" />
+      </ImageView>
+
+      <!--     Undo button    -->
+      <ImageView fx:id="undoSwitch" accessibleRole="BUTTON" layoutX="410.0" layoutY="667.0" onMouseClicked="#clickUndo" styleClass="Button">
+         <Image url="@../Assets/BottomBar/Undo.png" />
+      </ImageView>
+
+      <!--     Music button    -->
+      <ImageView fx:id="musicSwitch" accessibleRole="BUTTON" layoutX="533.0" layoutY="667.0" onMouseClicked="#clickToggleMusic" styleClass="Button">
+         <Image url="@../Assets/BottomBar/Music_on.png" />
+      </ImageView>
+
+      <!--     Debug button    -->
+      <ImageView fx:id="debugSwitch" accessibleRole="BUTTON" layoutX="662.0" layoutY="667.0" onMouseClicked="#clickToggleDebug" styleClass="Button">
+         <Image url="@../Assets/BottomBar/Debug_off.png" />
+      </ImageView>
+
+      <!--     Save Game button    -->
+      <ImageView fx:id="saveGameSwitch" accessibleRole="BUTTON" layoutX="863.0" layoutY="667.0" onMouseClicked="#clickSaveGame" styleClass="Button">
+         <Image url="@../Assets/BottomBar/Save_Game.png" />
+      </ImageView>
+
+      <!--     High Score List button    -->
+      <ImageView fx:id="highScoreSwitch" accessibleRole="BUTTON" fitHeight="57.0" fitWidth="232.0" layoutX="1046.0" layoutY="667.0" styleClass="Button">
+         <Image url="@../Assets/BottomBar/High_Score_List.png" />
+      </ImageView>
+
+      <!--     Highest Score    -->
+      <ImageView fitHeight="34.0" fitWidth="239.0" layoutX="25.0" layoutY="676.0">
+         <Image url="@../Assets/BottomBar/Highest_Score.png" />
+      </ImageView>
+
+      <!--     Highest Score Number Binding -->
+      <BorderPane layoutX="178.0" layoutY="673.0" prefHeight="40.0" prefWidth="88.0">
+         <center>
+            <Label fx:id="highestScore" alignment="CENTER" contentDisplay="CENTER" text="High_Score" textFill="WHITE" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Smartisan Maquette Bold" size="21.0" />
+               </font>
+            </Label>
+         </center>
+      </BorderPane>
+      <GridPane layoutX="160.0" layoutY="30.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="48.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+               <children>
+                  <ImageView fitHeight="48.0" fitWidth="48.0">
+                      <Image url="@../Assets/Game/Stage.png" />
+                  </ImageView>
+                  <ImageView fitHeight="38.0" fitWidth="35.0" translateY="-20.0">
+                      <Image url="@../Assets/Game/Crate.png" />
+                  </ImageView>
+               </children>
+            </StackPane>
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="48.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+               <children>
+                  <ImageView fitHeight="48.0" fitWidth="48.0">
+                      <Image url="@../Assets/Game/Stage.png" />
+                  </ImageView>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" translateY="-10.0">
+                      <Image url="@../Assets/Game/Diamond.png" />
+                  </ImageView>
+               </children>
+            </StackPane>
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="48.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <ImageView fitHeight="48.0" fitWidth="48.0">
+                      <Image url="@../Assets/Game/Stage.png" />
+                  </ImageView>
+                  <ImageView fitHeight="36.0" fitWidth="30.0" translateY="-20.0">
+                      <Image url="@../Assets/Game/Front.png" />
+                  </ImageView>
+               </children>
+            </StackPane>
+         </children>
+      </GridPane>
+      <ImageView layoutX="10.0" layoutY="14.0"  onMouseClicked="#clickToMenu">
+          <Image url="@../Assets/Game/To_Menu.png" />
+      </ImageView>
+
+   </children>
+</Pane>

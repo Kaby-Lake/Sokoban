@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class GameDocument {
+    public int highestScore;
     public static final String GAME_NAME = "SokobanFX";
     public static GameLogger logger;
     public int movesCount = 0;
@@ -22,6 +23,10 @@ public class GameDocument {
     private boolean gameComplete = false;
 
     public GameDocument(InputStream input, boolean production) {
+
+        // TODO:
+        this.highestScore = 200;
+
         try {
             logger = new GameLogger();
             this.loadGameFile(input);
@@ -140,5 +145,13 @@ public class GameDocument {
     }
 
     public void toggleMusic(Boolean bool) {
+    }
+
+    public void reloadMapFromFile(InputStream input) {
+        // TODO: flush the whole Object with new Data
+    }
+
+    public void reloadDataFromFile(InputStream input) {
+        // TODO: flush the whole Object with new Data
     }
 }
