@@ -1,5 +1,6 @@
 package com.ae2dms.Main;
 
+import com.ae2dms.UI.Game.GameView;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import javafx.scene.effect.MotionBlur;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -27,16 +29,12 @@ import java.io.InputStream;
 import com.ae2dms.GameObject.*;
 import com.ae2dms.Business.*;
 import com.ae2dms.Business.Data.*;
-import com.ae2dms.UI.*;
 import com.ae2dms.UI.Menu.*;
 import javafx.scene.image.Image;
 
 public class Main extends Application {
-    private Stage primaryStage;
-    private GameDocument gameDocument;
-    private MenuViewController controller;
-    private GameView view;
-    private GridPane gameGrid;
+    public static Stage primaryStage;
+    public static GameDocument gameDocument;
     private File saveFile;
 
     public static void main(String[] args) {
@@ -45,17 +43,19 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.primaryStage = primaryStage;
+        Main.primaryStage = primaryStage;
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/icon/icon.jpg")));
 
-        gameGrid = new GridPane();
 //        GridPane root = new GridPane();
 //        root.add(menuBarInit(), 0, 0);
 //        root.add(gameGrid, 0, 1);
 //        root.add(MenuView.getInstance(), 0, 1);
+        loadDefaultGameMapAndInitDocument(Main.primaryStage);
+        Pane menuView = MenuView.getInstance();
+
 
         primaryStage.setTitle(GameDocument.GAME_NAME);
-        primaryStage.setScene(new Scene(MenuView.getInstance(), 1280, 720));
+        primaryStage.setScene(new Scene(menuView, 1280, 720));
         primaryStage.show();
         primaryStage.setResizable(false);
 
@@ -96,55 +96,29 @@ public class Main extends Application {
         return menu;
     }
 
-    void loadDefaultSaveFile(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+    void loadDefaultGameMapAndInitDocument(Stage primaryStage) {
+        Main.primaryStage = primaryStage;
         InputStream in = getClass().getClassLoader().getResourceAsStream("level/SampleGame.skb");
-        initializeGame(in);
-        setEventFilter();
-    }
-
-    private void initializeGame(InputStream input) {
-//        gameDocument = new GameDocument(input, true);
-//        view = new GameView();
-//        controller = view.getController();
-//        controller.initialize(gameDocument);
-//        reloadGrid();
-    }
-
-    private void setEventFilter() {
-        primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            controller.handleKey(event.getCode());
-            reloadGrid();
-        });
+        Main.gameDocument = new GameDocument(in, true);
     }
 
     private void loadGameFile() throws FileNotFoundException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Save File");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban save file", "*.skb"));
-        saveFile = fileChooser.showOpenDialog(primaryStage);
 
-        if (saveFile != null) {
-            if (GameDocument.isDebugActive()) {
-                GameDocument.logger.info("Loading save file: " + saveFile.getName());
-            }
-            initializeGame(new FileInputStream(saveFile));
-        }
     }
 
     private void reloadGrid() {
-        if (gameDocument.isGameComplete()) {
-            showVictoryMessage();
-            return;
-        }
-
-        Level currentLevel = gameDocument.getCurrentLevel();
-        Level.LevelIterator levelGridIterator = (Level.LevelIterator) currentLevel.iterator();
-        gameGrid.getChildren().clear();
-        while (levelGridIterator.hasNext()) {
-            addObjectToGrid(levelGridIterator.next(), levelGridIterator.getcurrentposition());
-        }gameGrid.autosize();
-        primaryStage.sizeToScene();
+//        if (gameDocument.isGameComplete()) {
+//            showVictoryMessage();
+//            return;
+//        }
+//
+//        Level currentLevel = gameDocument.getCurrentLevel();
+//        Level.LevelIterator levelGridIterator = (Level.LevelIterator) currentLevel.iterator();
+//        gameGrid.getChildren().clear();
+//        while (levelGridIterator.hasNext()) {
+//            addObjectToGrid(levelGridIterator.next(), levelGridIterator.getcurrentposition());
+//        }gameGrid.autosize();
+//        primaryStage.sizeToScene();
     }
 
     private void showVictoryMessage() {
