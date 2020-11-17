@@ -89,7 +89,7 @@ public class MenuViewController extends AbstractBarController {
     }
 
     public void clickStartGame(MouseEvent mouseEvent) throws Exception {
-        MenuView.backgroundMusicPlayer.pause();
+        MenuView.backgroundMusicPlayer.stop();
 
         Pane gameView = (new GameView()).getView();
         Main.primaryStage.setScene(new Scene(gameView));

@@ -20,6 +20,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.text.Font;
 
 import java.awt.*;
 import java.io.File;
@@ -35,6 +36,7 @@ import javafx.scene.image.Image;
 public class Main extends Application {
     public static Stage primaryStage;
     public static GameDocument gameDocument;
+    public static Scene menuScene;
     private File saveFile;
 
     public static void main(String[] args) {
@@ -43,6 +45,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        Font.loadFont(Main.class.getResource("/font/SmartisanMaquetteBold.woff.ttf").toExternalForm(), 10);
+
         Main.primaryStage = primaryStage;
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/icon/icon.jpg")));
 
@@ -55,7 +60,8 @@ public class Main extends Application {
 
 
         primaryStage.setTitle(GameDocument.GAME_NAME);
-        primaryStage.setScene(new Scene(menuView, 1280, 720));
+        menuScene = new Scene(menuView, 1280, 720);
+        primaryStage.setScene(menuScene);
         primaryStage.show();
         primaryStage.setResizable(false);
 

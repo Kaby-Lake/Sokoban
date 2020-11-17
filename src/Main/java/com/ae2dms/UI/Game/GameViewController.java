@@ -1,6 +1,9 @@
 package com.ae2dms.UI.Game;
 
 import com.ae2dms.Business.GameDocument;
+import com.ae2dms.GameObject.AbstractGameObject;
+import com.ae2dms.GameObject.Objects.Wall;
+import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.Menu.MenuView;
@@ -9,9 +12,11 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 
@@ -25,6 +30,15 @@ public class GameViewController extends AbstractBarController {
     @FXML
     private Group InfoGroup;
 
+    @FXML
+    private GridPane stageGrid;
+
+    @FXML
+    private GridPane itemGrid;
+
+    @FXML
+    private GridPane diamondsGrid;
+
     private final IntegerProperty highestScoreValue;
 
     @FXML
@@ -34,7 +48,7 @@ public class GameViewController extends AbstractBarController {
         this.highestScoreValue = new SimpleIntegerProperty();
     }
 
-    public void initialize() throws IllegalStateException {
+    public void initialize() throws IllegalStateException, ClassNotFoundException {
 
         super.disableButton("High score");
 
@@ -46,6 +60,9 @@ public class GameViewController extends AbstractBarController {
 
         this.highestScoreValue.setValue(gameDocument.highestScore);
         this.bindHighestScore(highestScoreValue);
+
+        this.renderMap();
+
     }
 
     public void handleKey(KeyCode code) {
@@ -114,7 +131,21 @@ public class GameViewController extends AbstractBarController {
         System.exit(0);
     }
 
-    public void clickToMenu(MouseEvent mouseEvent) {
-        // TODO:
+    public void clickToMenu(MouseEvent mouseEvent) throws Exception {
+        GameView.backgroundMusicPlayer.stop();
+        Main.primaryStage.setScene(Main.menuScene);
+        MenuView.backgroundMusicPlayer.play();
+    }
+
+    private void renderMap() throws ClassNotFoundException {
+        Image stageImage = ResourceFactory.STAGE_IMAGE;
+        for (AbstractGameObject object : gameDocument.getCurrentLevel().objectsGrid) {
+            if (!(object instanceof Wall)) {
+                ImageView stageImageView = new ImageView(stageImage);
+                stageImageView.setFitHeight(48);
+                stageImageView.setFitWidth(48);
+                stageGrid.add(stageImageView, object.at().y, object.at().x);
+            }
+        }
     }
 }

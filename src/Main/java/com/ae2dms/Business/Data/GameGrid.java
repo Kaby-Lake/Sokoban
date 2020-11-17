@@ -6,7 +6,7 @@ import com.ae2dms.GameObject.*;
 import java.awt.*;
 import java.util.Iterator;
 
-public class GameGrid implements Iterable {
+public class GameGrid implements Iterable<AbstractGameObject> {
 
     final int COLUMNS;
     final int ROWS;
@@ -157,21 +157,24 @@ public class GameGrid implements Iterable {
     }
 
     public class GridIterator implements Iterator<AbstractGameObject> {
-        int row = 0;
-        int column = 0;
+        int x = 0;
+        int y = 0;
 
         @Override
         public boolean hasNext() {
-            return !(row == ROWS && column == COLUMNS);
+            return (x < ROWS && y < COLUMNS);
         }
 
         @Override
         public AbstractGameObject next() {
-            if (column >= COLUMNS) {
-                column = 0;
-                row++;
+
+            AbstractGameObject toReturn = getGameObjectAt(x, y);
+            x++;
+            if (x >= COLUMNS) {
+                x = 0;
+                y++;
             }
-            return getGameObjectAt(column++, row);
+            return toReturn;
         }
     }
 }
