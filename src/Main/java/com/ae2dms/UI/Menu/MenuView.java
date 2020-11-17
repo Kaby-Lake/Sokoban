@@ -1,6 +1,7 @@
 package com.ae2dms.UI.Menu;
 
 import com.ae2dms.Business.GameDocument;
+import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.UI.ViewUtilities;
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +20,7 @@ public class MenuView {
 
     public static Pane getInstance() throws Exception {
         if(view == null) {
-            Media backgroundMusic = new Media(MenuView.class.getResource("/music/PaperClip-Jumping.mp3").toURI().toString());
+            Media backgroundMusic = ResourceFactory.MENU_BACKGROUND_MUSIC;
             backgroundMusicPlayer = new MediaPlayer(backgroundMusic);
             backgroundMusicPlayer.setOnEndOfMedia(() -> backgroundMusicPlayer.seek(Duration.ZERO));
             backgroundMusicPlayer.play();

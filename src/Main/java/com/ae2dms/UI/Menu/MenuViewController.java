@@ -91,8 +91,11 @@ public class MenuViewController extends AbstractBarController {
     public void clickStartGame(MouseEvent mouseEvent) throws Exception {
         MenuView.backgroundMusicPlayer.stop();
 
-        Pane gameView = (new GameView()).getView();
-        Main.primaryStage.setScene(new Scene(gameView));
+        GameView gameView = new GameView();
+        Scene gameViewScene = new Scene(gameView.getView());
+        gameView.bind(gameViewScene);
+
+        Main.primaryStage.setScene(gameViewScene);
 
     }
 

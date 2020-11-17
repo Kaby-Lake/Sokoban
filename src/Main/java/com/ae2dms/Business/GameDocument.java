@@ -2,6 +2,7 @@ package com.ae2dms.Business;
 
 import com.ae2dms.Business.Data.GameGrid;
 import com.ae2dms.Business.Data.Level;
+import com.ae2dms.GameObject.Objects.Keeper;
 import com.ae2dms.IO.*;
 import com.ae2dms.GameObject.*;
 
@@ -20,6 +21,7 @@ public class GameDocument {
     private static boolean debug = false;
     private Level currentLevel;
     private List<Level> levels;
+    private Keeper keeperObject;
     private boolean gameComplete = false;
 
     public GameDocument(InputStream input, boolean production) {
@@ -36,6 +38,11 @@ public class GameDocument {
         } catch (NoSuchElementException e) {
             logger.warning("Cannot load the default save file: " + e.getStackTrace());
         }
+    }
+
+    public Keeper getKeeper() {
+        return this.keeperObject;
+
     }
 
     public static boolean isDebugActive() {
@@ -125,15 +132,15 @@ public class GameDocument {
     }
 
     public Level getNextLevel() {
-        if (currentLevel == null) {
-            return levels.get(0);
+        int nextLevelIndex = currentLevel == null ? 0 : currentLevel.getIndex() + 1;
+        if (nextLevelIndex == levels.size()) {
+            gameComplete = true;
+            return null;
         }
-        int currentLevelIndex = currentLevel.getIndex();
-        if (currentLevelIndex < levels.size()) {
-            return levels.get(currentLevelIndex + 1);
-        }
-        gameComplete = true;
-        return null;
+
+        Level nextLevel = levels.get(nextLevelIndex);
+        this.keeperObject = (Keeper) nextLevel.getTargetObject(nextLevel.getKeeperPosition(), null);
+        return nextLevel;
     }
 
     public Level getCurrentLevel() {
