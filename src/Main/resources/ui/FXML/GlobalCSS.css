@@ -1,0 +1,16 @@
+.Button {
+    -fx-background-size: 100% 100%;
+    -fx-background-color: transparent;
+}
+
+.Button:hover {
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.8) , 30, 0.0 , 0 , 0);
+}
+
+.Button:pressed {
+    -fx-effect: innershadow( three-pass-box , rgba(64, 64, 64, 0.8), 10, 0.0 , 0 , 0);
+}
+
+.Hide {
+    visibility: hidden;
+}

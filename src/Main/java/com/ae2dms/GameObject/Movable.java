@@ -21,6 +21,6 @@ public interface Movable {
     void moveBy(Point delta) throws IllegalMovementException;
 
     default Boolean moveMoreThanOneStep(Point delta) {
-        return delta.distance(0, 0) >= 1;
+        return delta.distance(0, 0) > 1;
     }
 }

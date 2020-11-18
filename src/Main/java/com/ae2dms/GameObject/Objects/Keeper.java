@@ -30,7 +30,9 @@ public class Keeper extends AbstractGameObject implements Movable {
 
     @Override
     public Boolean canMoveBy(Point delta) {
-        if (moveMoreThanOneStep(delta)) return false;
+        if (moveMoreThanOneStep(delta)) {
+            return false;
+        }
         Point targetPosition = GameGrid.translatePoint(this.at(), delta);
         AbstractGameObject objectOnDestination = grid.getGameObjectAt(targetPosition);
         if (objectOnDestination instanceof Floor) {
@@ -40,6 +42,15 @@ public class Keeper extends AbstractGameObject implements Movable {
         } else {
             return false;
         }
+    }
+
+    public Crate willPushCrate(Point delta) {
+        Point targetPosition = GameGrid.translatePoint(this.at(), delta);
+        AbstractGameObject theOne = grid.getGameObjectAt(targetPosition);
+        if (theOne instanceof Crate) {
+            return (Crate)theOne;
+        }
+        return null;
     }
 
     @Override

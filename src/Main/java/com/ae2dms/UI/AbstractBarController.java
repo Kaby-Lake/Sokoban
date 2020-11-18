@@ -1,8 +1,10 @@
 package com.ae2dms.UI;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -14,6 +16,9 @@ public class AbstractBarController {
     public final BooleanProperty musicSwitchToggle;
     @FXML
     private ImageView musicSwitch;
+
+    @FXML
+    public Label highestScore;
 
     public final BooleanProperty debugSwitchToggle;
     @FXML
@@ -75,14 +80,16 @@ public class AbstractBarController {
 
     }
 
-    public boolean menuBarClickToggleDebug() {
+    public void menuBarClickToggleDebug() {
         debugSwitchToggle.setValue(!debugSwitchToggle.getValue());
-        return debugSwitchToggle.getValue();
     }
 
-    public boolean menuBarClickToggleMusic() {
+    public void menuBarClickToggleMusic() {
         musicSwitchToggle.setValue(!musicSwitchToggle.getValue());
-        return musicSwitchToggle.getValue();
+    }
+
+    public void bindHighestScore(IntegerProperty _highestScore) {
+        this.highestScore.textProperty().bind(_highestScore.asString());
     }
 
 }
