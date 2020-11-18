@@ -50,66 +50,18 @@ public class GameDocument {
     }
 
     public void move(Point delta) {
-        if (isGameComplete()) {
-            return;
-        }
 
-        Point keeperPosition = currentLevel.getKeeperPosition();
-        AbstractGameObject keeper = currentLevel.objectsGrid.getGameObjectAt(keeperPosition);
-        Point targetObjectPoint = GameGrid.translatePoint(keeperPosition, delta);
-        AbstractGameObject keeperTarget = currentLevel.objectsGrid.getGameObjectAt(targetObjectPoint);
-
-        if (GameDocument.isDebugActive()) {
-            System.out.println("Current level state:");
-            System.out.println(currentLevel.toString());
-            System.out.println("Keeper pos: " + keeperPosition);
-            System.out.println("Movement source obj: " + keeper);
-            System.out.printf("Target object: %s at [%s]", keeperTarget, targetObjectPoint);
-        }
-
-        boolean keeperMoved = false;
-
-//        switch (keeperTarget) {
-//
-//            case WALL:
-//                break;
-//
-//            case CRATE:
-//
-//                GameObject crateTarget = currentLevel.getTargetObject(targetObjectPoint, delta);
-//                if (crateTarget != GameObject.FLOOR) {
-//                    break;
+//        if (keeperMoved) {
+//            keeperPosition.translate((int) delta.getX(), (int) delta.getY());
+//            movesCount++;
+//            if (currentLevel.isComplete()) {
+//                if (isDebugActive()) {
+//                    System.out.println("Level complete!");
 //                }
 //
-//                currentLevel.objectsGrid.putGameObjectAt(currentLevel.objectsGrid.getGameObjectAt(GameGrid.translatePoint(targetObjectPoint, delta)), targetObjectPoint);
-//                currentLevel.objectsGrid.putGameObjectAt(keeperTarget, GameGrid.translatePoint(targetObjectPoint, delta));
-//                currentLevel.objectsGrid.putGameObjectAt(currentLevel.objectsGrid.getGameObjectAt(GameGrid.translatePoint(keeperPosition, delta)), keeperPosition);
-//                currentLevel.objectsGrid.putGameObjectAt(keeper, GameGrid.translatePoint(keeperPosition, delta));
-//                keeperMoved = true;
-//                break;
-//
-//            case FLOOR:
-//                currentLevel.objectsGrid.putGameObjectAt(currentLevel.objectsGrid.getGameObjectAt(GameGrid.translatePoint(keeperPosition, delta)), keeperPosition);
-//                currentLevel.objectsGrid.putGameObjectAt(keeper, GameGrid.translatePoint(keeperPosition, delta));
-//                keeperMoved = true;
-//                break;
-//
-//            default:
-//                logger.severe("The object to be moved was not a recognised GameObject.");
-//                throw new AssertionError("This should not have happened. Report this problem to the developer.");
+//                currentLevel = getNextLevel();
+//            }
 //        }
-
-        if (keeperMoved) {
-            keeperPosition.translate((int) delta.getX(), (int) delta.getY());
-            movesCount++;
-            if (currentLevel.isComplete()) {
-                if (isDebugActive()) {
-                    System.out.println("Level complete!");
-                }
-
-                currentLevel = getNextLevel();
-            }
-        }
     }
 
     // @change mapSetName

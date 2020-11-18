@@ -13,20 +13,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 public class MenuViewController extends AbstractBarController {
 
     private GameDocument gameDocument = Main.gameDocument;
 
     @FXML
-    private Group InfoGroup;
+    private Group infoGroup;
 
     private IntegerProperty highestScoreValue;
 
@@ -108,12 +106,12 @@ public class MenuViewController extends AbstractBarController {
     }
 
     public void clickInformation(MouseEvent mouseEvent) {
-        InfoGroup.getStyleClass().clear();
+        infoGroup.getStyleClass().clear();
     }
 
     public void clickCloseInformation(MouseEvent mouseEvent) {
-        InfoGroup.getStyleClass().clear();
-        InfoGroup.getStyleClass().add("Hide");
+        infoGroup.getStyleClass().clear();
+        infoGroup.getStyleClass().add("Hide");
     }
 
     public void clickSaveGame(MouseEvent mouseEvent) {

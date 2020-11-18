@@ -1,16 +1,13 @@
 package com.ae2dms.UI.Game;
 
+import com.ae2dms.Business.Data.GameGrid;
 import com.ae2dms.Business.GameDocument;
 import com.ae2dms.GameObject.AbstractGameObject;
-import com.ae2dms.GameObject.Objects.Crate;
-import com.ae2dms.GameObject.Objects.Diamond;
-import com.ae2dms.GameObject.Objects.Keeper;
-import com.ae2dms.GameObject.Objects.Wall;
+import com.ae2dms.GameObject.Objects.*;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.Menu.MenuView;
-import javafx.animation.FillTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -19,25 +16,20 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.media.AudioClip;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.awt.*;
+import java.util.HashMap;
 
 public class GameViewController extends AbstractBarController {
 
-    private GameDocument gameDocument = Main.gameDocument;
-
-    @FXML
-    private Group InfoGroup;
+    private final GameDocument gameDocument = Main.gameDocument;
 
     @FXML
     private GridPane stageGrid;
@@ -46,9 +38,14 @@ public class GameViewController extends AbstractBarController {
     private GridPane itemGrid;
 
     @FXML
+    private GridPane playerGrid;
+
+    @FXML
     private GridPane diamondsGrid;
 
     private ImageView keeperImageView;
+
+    private final HashMap<Crate, ImageView> crateImageViewMap = new HashMap<>();
 
     private final IntegerProperty highestScoreValue;
 
@@ -56,7 +53,7 @@ public class GameViewController extends AbstractBarController {
         this.highestScoreValue = new SimpleIntegerProperty();
     }
 
-    public void initialize() throws IllegalStateException, ClassNotFoundException {
+    public void initialize() throws IllegalStateException {
 
         super.disableButton("High score");
 
@@ -79,60 +76,75 @@ public class GameViewController extends AbstractBarController {
         if (isAnimating) {
             return;
         }
+        Keeper keeper = gameDocument.getKeeper();
+        Point direction = new Point(0, 0);
         switch (code) {
             case UP -> {
-                if (gameDocument.getKeeper().canMoveBy(new Point(0, -1))) {
-                    ScaleTransition scaleTransition = new ScaleTransition();
-                    //Setting the duration for the transition
-                    scaleTransition.setDuration(Duration.millis(500));
-                    //Setting the node for the transition
-                    scaleTransition.setNode(keeperImageView);
-                    //Setting the dimensions for scaling
-                    scaleTransition.setByY(100);
-                    //Setting auto reverse value to true
-                    scaleTransition.setAutoReverse(false);
-                    //Playing the animation
-                    scaleTransition.play();
-
-                } else {
-                    shakeAnimation(keeperImageView, new Point(0, -1));
-
-
-                }
+                direction = new Point(0, -1);
+                keeperImageView.setImage(ResourceFactory.PLAYER_BACK_IMAGE);
             }
 
-//            case RIGHT:
-//                gameDocument.move(new Point(0, 1));
-//                break;
-//
-//            case DOWN:
-//                gameDocument.move(new Point(1, 0));
-//                break;
-//
-//            case LEFT:
-//                gameDocument.move(new Point(0, -1));
-//                break;
-//
-//            default:
-//                // TODO: implement something funny.
-//        }
-//        updateView();
+            case RIGHT -> {
+                direction = new Point(1, 0);
+                keeperImageView.setImage(ResourceFactory.PLAYER_RIGHT_IMAGE);
+            }
+
+            case DOWN -> {
+                direction = new Point(0, 1);
+                keeperImageView.setImage(ResourceFactory.PLAYER_FRONT_IMAGE);
+            }
+
+            case LEFT -> {
+                direction = new Point(-1, 0);
+                keeperImageView.setImage(ResourceFactory.PLAYER_LEFT_IMAGE);
+            }
+
+            default -> {
+                // TODO: implement something funny.
+                return;
+            }
+
+        }
+
+        isAnimating = true;
+
+        if (isDestinationOnTopOfCrate(GameGrid.translatePoint(keeper.at(), direction))) {
+            renderPlayerCrateHierarchy(false);
+        } else if (isDestinationOnBottomOfCrate(GameGrid.translatePoint(keeper.at(), direction))){
+            renderPlayerCrateHierarchy(true);
+        }
+
+        if (keeper.canMoveBy(direction)) {
+            try {
+                Crate crate = keeper.willPushCrate(direction);
+                if (crate != null) {
+                    animateCrate(crateImageViewMap.get(crate), direction);
+                    crate.moveBy(direction);
+                    if(crate.isOnDiamond(this.gameDocument.getCurrentLevel().diamondsGrid)) {
+                        crateImageViewMap.get(crate).setImage(ResourceFactory.CRATE_ON_DIAMOND_IMAGE);
+                    } else {
+                        crateImageViewMap.get(crate).setImage(ResourceFactory.CRATE_IMAGE);
+                    }
+                }
+                animateKeeper(keeperImageView, direction);
+                this.gameDocument.getKeeper().moveBy(direction);
+            } catch (IllegalMovementException e) {
+                e.printStackTrace();
+            }
+        } else {
+            shakeAnimation(keeperImageView, direction);
+        }
 //
 //        if (GameDocument.isDebugActive()) {
 //            System.out.println(code);
-        }
     }
 
     private void shakeAnimation(Node item, Point direction) {
-        isAnimating = true;
-
         AudioClip clip = ResourceFactory.UNMOVABLE_AUDIO_CLIP;
         clip.play();
 
         ParallelTransition parallelTransition = new ParallelTransition();
-        parallelTransition.setOnFinished((event) -> {
-            isAnimating = false;
-        });
+        parallelTransition.setOnFinished((event) -> isAnimating = false);
 
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(150), item);
         translateTransition.setByX(10*direction.x);
@@ -150,6 +162,40 @@ public class GameViewController extends AbstractBarController {
 
     }
 
+    private void animateKeeper(Node item, Point direction) {
+        isAnimating = true;
+
+        AudioClip clip = ResourceFactory.MOVE_AUDIO_CLIP;
+        clip.play();
+
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), item);
+
+        translateTransition.setOnFinished((event) -> isAnimating = false);
+
+        translateTransition.setByX(48*direction.x);
+        translateTransition.setByY(30*direction.y);
+        translateTransition.play();
+
+    }
+
+    private void animateCrate(Node item, Point direction) {
+        isAnimating = true;
+
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), item);
+        translateTransition.setByX(48*direction.x);
+        translateTransition.setByY(30*direction.y);
+        translateTransition.play();
+
+    }
+
+    private boolean isDestinationOnTopOfCrate(Point destination) {
+        return (this.gameDocument.getCurrentLevel().objectsGrid.getGameObjectAt(GameGrid.translatePoint(destination, new Point(0, 1)))) instanceof Crate;
+    }
+
+    private boolean isDestinationOnBottomOfCrate(Point destination) {
+        return (this.gameDocument.getCurrentLevel().objectsGrid.getGameObjectAt(GameGrid.translatePoint(destination, new Point(0, -1)))) instanceof Crate;
+    }
+
     public void clickToggleDebug() {
 //        gameDocument.toggleDebug(menuBarClickToggleDebug());
     }
@@ -159,26 +205,31 @@ public class GameViewController extends AbstractBarController {
     }
 
     public void clickUndo(MouseEvent mouseEvent) {
-//        gameDocument.undo();
+        // gameDocument.undo();
+        renderMap();
     }
 
     public void clickSaveGame(MouseEvent mouseEvent) {
     }
 
-    public void clickToMenu(MouseEvent mouseEvent) throws Exception {
+    public void clickToMenu(MouseEvent mouseEvent) {
         GameView.backgroundMusicPlayer.stop();
         Main.primaryStage.setScene(Main.menuScene);
         MenuView.backgroundMusicPlayer.play();
     }
 
-    private void renderMap() throws ClassNotFoundException {
+    private void renderMap() {
+
+        itemGrid.getChildren().removeAll();
+        playerGrid.getChildren().removeAll();
+
         Image stageImage = ResourceFactory.STAGE_IMAGE;
         for (AbstractGameObject object : gameDocument.getCurrentLevel().objectsGrid) {
             if (!(object instanceof Wall)) {
                 ImageView stageImageView = new ImageView(stageImage);
                 stageImageView.setFitHeight(48);
                 stageImageView.setFitWidth(48);
-                stageGrid.add(stageImageView, object.at().y, object.at().x);
+                stageGrid.add(stageImageView, object.at().x, object.at().y);
             }
         }
 
@@ -190,7 +241,7 @@ public class GameViewController extends AbstractBarController {
                 diamondImageView.setFitWidth(16);
                 diamondImageView.setTranslateX(16);
                 diamondImageView.setTranslateY(-10);
-                diamondsGrid.add(diamondImageView, object.at().y, object.at().x);
+                diamondsGrid.add(diamondImageView, object.at().x, object.at().y);
             }
         }
 
@@ -202,7 +253,9 @@ public class GameViewController extends AbstractBarController {
                 crateImageView.setFitWidth(35);
                 crateImageView.setTranslateX(7);
                 crateImageView.setTranslateY(-20);
-                itemGrid.add(crateImageView, object.at().y, object.at().x);
+                itemGrid.add(crateImageView, object.at().x, object.at().y);
+
+                crateImageViewMap.put((Crate)object, crateImageView);
             }
         }
 
@@ -215,8 +268,16 @@ public class GameViewController extends AbstractBarController {
                 playerImageView.setTranslateX(7);
                 playerImageView.setTranslateY(-20);
                 this.keeperImageView = playerImageView;
-                itemGrid.add(playerImageView, object.at().y, object.at().x);
+                playerGrid.add(playerImageView, object.at().x, object.at().y);
             }
+        }
+    }
+
+    private void renderPlayerCrateHierarchy(boolean isPlayerOnFirstStage) {
+        if (isPlayerOnFirstStage) {
+            playerGrid.toFront();
+        } else {
+            itemGrid.toFront();
         }
     }
 }

@@ -44,6 +44,15 @@ public class Keeper extends AbstractGameObject implements Movable {
         }
     }
 
+    public Crate willPushCrate(Point delta) {
+        Point targetPosition = GameGrid.translatePoint(this.at(), delta);
+        AbstractGameObject theOne = grid.getGameObjectAt(targetPosition);
+        if (theOne instanceof Crate) {
+            return (Crate)theOne;
+        }
+        return null;
+    }
+
     @Override
     public void moveBy(Point delta) throws IllegalMovementException {
         Point targetPosition = GameGrid.translatePoint(this.at(), delta);
