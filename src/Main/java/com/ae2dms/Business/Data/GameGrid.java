@@ -8,17 +8,17 @@ import java.util.Iterator;
 
 public class GameGrid implements Iterable<AbstractGameObject> {
 
-    final int COLUMNS;
-    final int ROWS;
+    final int X;
+    final int Y;
 
-    private AbstractGameObject[][] gameObjects;
+    private final AbstractGameObject[][] gameObjects;
 
-    public GameGrid(int columns, int rows) {
-        COLUMNS = columns;
-        ROWS = rows;
+    public GameGrid(int X, int Y) {
+        this.X = X;
+        this.Y = Y;
 
         // Initialize the array
-        gameObjects = new AbstractGameObject[COLUMNS][ROWS];
+        gameObjects = new AbstractGameObject[Y][X];
     }
 
 
@@ -48,8 +48,8 @@ public class GameGrid implements Iterable<AbstractGameObject> {
     }
 
     /**
-     * @param col x axis
-     * @param row y axis
+     * @param x x axis
+     * @param y y axis
      *            Coordinates: system
      *             ------------> +col
      *             |
@@ -61,15 +61,15 @@ public class GameGrid implements Iterable<AbstractGameObject> {
      * @return corresponding GameObject in which position
      * @throws ArrayIndexOutOfBoundsException
      */
-    public AbstractGameObject getGameObjectAt(int col, int row) throws ArrayIndexOutOfBoundsException {
-        if (isPointOutOfBounds(col, row)) {
+    public AbstractGameObject getGameObjectAt(int x, int y) throws ArrayIndexOutOfBoundsException {
+        if (isPointOutOfBounds(x, y)) {
             if (GameDocument.isDebugActive()) {
-                System.out.printf("Trying to get null GameObject from COL: %d  ROW: %d", col, row);
+                System.out.printf("Trying to get null GameObject from COL: %d  ROW: %d", x, y);
             }
-            throw new ArrayIndexOutOfBoundsException("The point [" + col + ":" + row + "] is outside the map.");
+            throw new ArrayIndexOutOfBoundsException("The point [" + x + ":" + y + "] is outside the map.");
         }
 
-        return gameObjects[col][row];
+        return gameObjects[y][x];
     }
 
     /**
@@ -86,7 +86,7 @@ public class GameGrid implements Iterable<AbstractGameObject> {
     }
 
     public Dimension getDimension() {
-        return new Dimension(COLUMNS, ROWS);
+        return new Dimension(X, Y);
     }
 
 
@@ -101,8 +101,8 @@ public class GameGrid implements Iterable<AbstractGameObject> {
             return false;
         }
 
-        gameObjects[x][y] = gameObject;
-        return gameObjects[x][y] == gameObject;
+        gameObjects[y][x] = gameObject;
+        return gameObjects[y][x] == gameObject;
     }
 
     /**
@@ -125,7 +125,7 @@ public class GameGrid implements Iterable<AbstractGameObject> {
 
 
     private boolean isPointOutOfBounds(int x, int y) {
-        return (x < 0 || y < 0 || x >= COLUMNS || y >= ROWS);
+        return (x < 0 || y < 0 || x >= X || y >= Y);
     }
 
     private boolean isPointOutOfBounds(Point p) {
@@ -162,7 +162,7 @@ public class GameGrid implements Iterable<AbstractGameObject> {
 
         @Override
         public boolean hasNext() {
-            return (x < ROWS && y < COLUMNS);
+            return (x < Y && y < X);
         }
 
         @Override
@@ -170,7 +170,7 @@ public class GameGrid implements Iterable<AbstractGameObject> {
 
             AbstractGameObject toReturn = getGameObjectAt(x, y);
             x++;
-            if (x >= COLUMNS) {
+            if (x >= X) {
                 x = 0;
                 y++;
             }

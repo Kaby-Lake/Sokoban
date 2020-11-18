@@ -23,41 +23,42 @@ public final class Level implements Iterable<AbstractGameObject> {
         name = levelName;
         index = levelIndex;
 
-        int rows = rawLevel.size();
-        int columns = rawLevel.get(0).trim().length();
+        int Y = rawLevel.size();
+        int X = rawLevel.get(0).trim().length();
 
-        objectsGrid = new GameGrid(rows, columns);
-        diamondsGrid = new GameGrid(rows, columns);
+        objectsGrid = new GameGrid(X, Y);
+        diamondsGrid = new GameGrid(X, Y);
 
         GameObjectFactory factory = new GameObjectFactory();
 
-        for (int row = 0; row < rows; row++) {
+        for (int y = 0; y < Y; y++) {
 
-            for (int col = 0; col < columns; col++) {
-                char curChar = rawLevel.get(row).charAt(col);
+            for (int x = 0; x < X; x++) {
+
+                char curChar = rawLevel.get(y).charAt(x);
                 AbstractGameObject curTile;
 
                 if (Character.toUpperCase(curChar) == 'D') {
-                    curTile = factory.getGameObject(curChar, diamondsGrid, row, col);
-                    diamondsGrid.putGameObjectAt(curTile, row, col);
+                    curTile = factory.getGameObject(curChar, diamondsGrid, x, y);
+                    diamondsGrid.putGameObjectAt(curTile, x, y);
                     // then put Floor Object in objectsGrid
-                    curTile = factory.getGameObject(' ', objectsGrid, row, col);
+                    curTile = factory.getGameObject(' ', objectsGrid, x, y);
                 } else if (Character.toUpperCase(curChar) == 'S') {
-                    keeperPosition = new Point(row, col);
-                    curTile = factory.getGameObject(curChar, objectsGrid, row, col);
+                    keeperPosition = new Point(x, y);
+                    curTile = factory.getGameObject(curChar, objectsGrid, x, y);
                 } else {
-                    curTile = factory.getGameObject(curChar, objectsGrid, row, col);
+                    curTile = factory.getGameObject(curChar, objectsGrid, x, y);
                 }
 
-                objectsGrid.putGameObjectAt(curTile, row, col);}
+                objectsGrid.putGameObjectAt(curTile, x, y);}
         }
     }
 
     public boolean isComplete() {
         boolean isComplete = true;
-        for (int row = 0; row < objectsGrid.ROWS; row++) {
-            for (int col = 0; col < objectsGrid.COLUMNS; col++) {
-                AbstractGameObject thisObject = objectsGrid.getGameObjectAt(col, row);
+        for (int y = 0; y < objectsGrid.Y; y++) {
+            for (int x = 0; x < objectsGrid.X; x++) {
+                AbstractGameObject thisObject = objectsGrid.getGameObjectAt(x, y);
                 if (thisObject instanceof Crate && !((Crate) thisObject).isOnDiamond(this.diamondsGrid)) {
                     isComplete = false;
                 }
@@ -99,12 +100,12 @@ public final class Level implements Iterable<AbstractGameObject> {
 
         @Override
         public boolean hasNext() {
-            return !(row == objectsGrid.ROWS - 1 && column == objectsGrid.COLUMNS);
+            return !(row == objectsGrid.Y - 1 && column == objectsGrid.X);
         }
 
         @Override
         public AbstractGameObject next() {
-            if (column >= objectsGrid.COLUMNS) {
+            if (column >= objectsGrid.X) {
                 column = 0;
                 row++;
             }
