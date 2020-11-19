@@ -1,42 +1,43 @@
 package com.ae2dms.Business;
 
-import com.ae2dms.Business.Data.GameGrid;
 import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.Objects.Keeper;
 import com.ae2dms.IO.*;
-import com.ae2dms.GameObject.*;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class GameDocument {
+public class GameDocument implements Serializable {
     public int highestScore;
     public static final String GAME_NAME = "SokobanFX";
-    public static GameLogger logger;
+    public static transient GameLogger logger;
     public int movesCount = 0;
     public String mapSetName;
-    private static boolean debug = false;
+    private transient static boolean debug = false;
     private Level currentLevel;
     private List<Level> levels;
     private Keeper keeperObject;
     private boolean gameComplete = false;
 
     public GameDocument(InputStream input, boolean production) {
+        init(input);
+    }
 
+    private void init(InputStream input) {
         // TODO:
         this.highestScore = 200;
 
         try {
             logger = new GameLogger();
-            this.loadGameFile(input);
+            this.loadMapFile(input);
             currentLevel = getNextLevel();
         } catch (IOException x) {
             System.out.println("Cannot create logger.");
         } catch (NoSuchElementException e) {
-            logger.warning("Cannot load the default save file: " + e.getStackTrace());
+            logger.warning("Cannot load the default map file: " + e.getStackTrace());
         }
     }
 
@@ -49,26 +50,11 @@ public class GameDocument {
         return debug;
     }
 
-    public void move(Point delta) {
-
-//        if (keeperMoved) {
-//            keeperPosition.translate((int) delta.getX(), (int) delta.getY());
-//            movesCount++;
-//            if (currentLevel.isComplete()) {
-//                if (isDebugActive()) {
-//                    System.out.println("Level complete!");
-//                }
-//
-//                currentLevel = getNextLevel();
-//            }
-//        }
-    }
-
     // @change mapSetName
-    private void loadGameFile(InputStream input) {
-        GameFileLoader loader = new GameFileLoader();
+    private void loadMapFile(InputStream input) {
+        MapFileLoader loader = new MapFileLoader();
         try {
-            loader.loadGameFile(input);
+            loader.loadMapFile(input);
             this.levels = loader.getLevels();
             this.mapSetName = loader.getMapSetName();
 
@@ -79,8 +65,8 @@ public class GameDocument {
         }
     }
 
-    public boolean isGameComplete() {
-        return gameComplete;
+    public boolean isLevelComplete() {
+        return this.currentLevel.isComplete();
     }
 
     public Level getNextLevel() {
@@ -107,10 +93,31 @@ public class GameDocument {
     }
 
     public void reloadMapFromFile(InputStream input) {
-        // TODO: flush the whole Object with new Data
+        init(input);
+        this.highestScore = 0;
+        this.movesCount = 0;
     }
 
     public void reloadDataFromFile(InputStream input) {
         // TODO: flush the whole Object with new Data
+    }
+
+    public void serializeObject() {
+        try {
+            GameStageSaver.push(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void restoreObject(GameDocument object) {
+        this.highestScore = object.highestScore;
+        this.movesCount = object.movesCount;
+        this.mapSetName = object.mapSetName;
+        this.currentLevel = object.currentLevel;
+        this.levels = object.levels;
+        this.keeperObject = object.keeperObject;
+        this.gameComplete = object.gameComplete;
     }
 }

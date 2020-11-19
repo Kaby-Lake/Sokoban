@@ -22,7 +22,6 @@ public class ResourceFactory {
     public static AudioClip UNMOVABLE_AUDIO_CLIP = null;
     public static AudioClip MOVE_AUDIO_CLIP = null;
 
-
     static {
         try {
             MENU_BACKGROUND_MUSIC = new Media(ResourceFactory.class.getResource("/music/PaperClip-Jumping.mp3").toURI().toString());

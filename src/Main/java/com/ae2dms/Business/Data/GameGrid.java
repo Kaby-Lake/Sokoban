@@ -4,9 +4,10 @@ import com.ae2dms.Business.GameDocument;
 import com.ae2dms.GameObject.*;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Iterator;
 
-public class GameGrid implements Iterable<AbstractGameObject> {
+public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
 
     final int X;
     final int Y;

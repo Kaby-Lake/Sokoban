@@ -5,10 +5,11 @@ import com.ae2dms.GameObject.*;
 import com.ae2dms.GameObject.Objects.*;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
-public final class Level implements Iterable<AbstractGameObject> {
+public final class Level implements Iterable<AbstractGameObject>, Serializable {
     public final GameGrid objectsGrid;
     public final GameGrid diamondsGrid;
     private final String name;

@@ -3,8 +3,9 @@ package com.ae2dms.GameObject;
 import com.ae2dms.Business.Data.GameGrid;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public abstract class AbstractGameObject {
+public abstract class AbstractGameObject implements Serializable {
 
     // this grid does not contain Diamond
     protected GameGrid grid;
