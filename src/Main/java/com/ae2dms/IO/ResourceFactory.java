@@ -24,26 +24,29 @@ public class ResourceFactory {
 
     static {
         try {
-            MENU_BACKGROUND_MUSIC = new Media(ResourceFactory.class.getResource("/music/PaperClip-Jumping.mp3").toURI().toString());
-            GAME_BACKGROUND_MUSIC = new Media(ResourceFactory.class.getResource("/music/PETO-Okay.mp3").toURI().toString());
+            MENU_BACKGROUND_MUSIC = new Media(getResource("/music/PaperClip-Jumping.mp3"));
+            GAME_BACKGROUND_MUSIC = new Media(getResource("/music/PETO-Okay.mp3"));
 
-            STAGE_IMAGE = new Image(ResourceFactory.class.getResource("/ui/Assets/Game/Stage.png").toURI().toString());
-            DIAMOND_IMAGE = new Image(ResourceFactory.class.getResource("/ui/Assets/Game/Diamond.png").toURI().toString());
-            CRATE_IMAGE = new Image(ResourceFactory.class.getResource("/ui/Assets/Game/Crate.png").toURI().toString());
-            CRATE_ON_DIAMOND_IMAGE = new Image(ResourceFactory.class.getResource("/ui/Assets/Game/Crate_On_Diamond.png").toURI().toString());
-            PLAYER_FRONT_IMAGE = new Image(ResourceFactory.class.getResource("/ui/Assets/Game/Front.png").toURI().toString());
-            PLAYER_BACK_IMAGE = new Image(ResourceFactory.class.getResource("/ui/Assets/Game/Back.png").toURI().toString());
-            PLAYER_LEFT_IMAGE = new Image(ResourceFactory.class.getResource("/ui/Assets/Game/Left.png").toURI().toString());
-            PLAYER_RIGHT_IMAGE = new Image(ResourceFactory.class.getResource("/ui/Assets/Game/Right.png").toURI().toString());
+            STAGE_IMAGE = new Image(getResource("/ui/Assets/Game/Stage.png"));
+            DIAMOND_IMAGE = new Image(getResource("/ui/Assets/Game/Diamond.png"));
+            CRATE_IMAGE = new Image(getResource("/ui/Assets/Game/Crate.png"));
+            CRATE_ON_DIAMOND_IMAGE = new Image(getResource("/ui/Assets/Game/Crate_On_Diamond.png"));
+            PLAYER_FRONT_IMAGE = new Image(getResource("/ui/Assets/Game/Front.png"));
+            PLAYER_BACK_IMAGE = new Image(getResource("/ui/Assets/Game/Back.png"));
+            PLAYER_LEFT_IMAGE = new Image(getResource("/ui/Assets/Game/Left.png"));
+            PLAYER_RIGHT_IMAGE = new Image(getResource("/ui/Assets/Game/Right.png"));
 
-            UNMOVABLE_AUDIO_CLIP = new AudioClip(ResourceFactory.class.getResource("/music/Basso.mp3").toURI().toString());
-            MOVE_AUDIO_CLIP = new AudioClip(ResourceFactory.class.getResource("/music/Pop.mp3").toURI().toString());
+            UNMOVABLE_AUDIO_CLIP = new AudioClip(getResource("/music/Basso.mp3"));
+            MOVE_AUDIO_CLIP = new AudioClip(getResource("/music/Pop.mp3"));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
     }
 
+    public ResourceFactory() {
+    }
 
-    public ResourceFactory() throws Exception {
+    public static String getResource(String url) throws URISyntaxException {
+        return ResourceFactory.class.getResource(url).toURI().toString();
     }
 }

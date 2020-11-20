@@ -4,6 +4,13 @@ package com.ae2dms.GameObject.Objects;
 
 import com.ae2dms.Business.Data.GameGrid;
 import com.ae2dms.GameObject.*;
+import com.ae2dms.IO.ResourceFactory;
+import com.ae2dms.UI.Game.GameViewController;
+import javafx.animation.TranslateTransition;
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.util.UUID;
@@ -12,12 +19,16 @@ public class Crate extends AbstractGameObject implements Movable {
 
     private final UUID uuid = UUID.randomUUID();
 
-    public Crate(GameGrid linksTo, int atX, int atY) {
+    private GameGrid diamondsGrid;
+
+    public Crate(GameGrid linksTo, int atX, int atY, GameGrid diamondsGrid) {
         super(linksTo, atX, atY);
+        this.diamondsGrid = diamondsGrid;
     }
 
-    public Crate(GameGrid linksTo, Point at) {
+    public Crate(GameGrid linksTo, Point at, GameGrid diamondsGrid) {
         super(linksTo, at);
+        this.diamondsGrid = diamondsGrid;
     }
 
     @Override
@@ -28,6 +39,24 @@ public class Crate extends AbstractGameObject implements Movable {
     @Override
     public String getStringSymbol() {
         return "CRATE";
+    }
+
+    @Override
+    public ImageView render() {
+        if (this.view != null) {
+            if (isOnDiamond()) {
+                this.view.setImage(ResourceFactory.CRATE_ON_DIAMOND_IMAGE);
+            } else {
+                this.view.setImage(ResourceFactory.CRATE_IMAGE);
+            }
+        } else {
+            this.view = new ImageView(ResourceFactory.PLAYER_FRONT_IMAGE);
+            this.view.setFitHeight(38);
+            this.view.setFitWidth(35);
+            this.view.setTranslateX(7);
+            this.view.setTranslateY(-20);
+        }
+        return this.view;
     }
 
     // Movable Methods
@@ -47,6 +76,7 @@ public class Crate extends AbstractGameObject implements Movable {
         AbstractGameObject objectOnDestination = grid.getGameObjectAt(targetPosition);
         if (objectOnDestination instanceof Floor) {
             moveToFloor(targetPosition);
+            animateCrate(delta);
         } else {
             throw new IllegalMovementException();
         }
@@ -58,7 +88,7 @@ public class Crate extends AbstractGameObject implements Movable {
         this.updatePosition(targetPosition);
     }
 
-    public Boolean isOnDiamond(GameGrid diamondsGrid) {
+    public Boolean isOnDiamond() {
         return diamondsGrid.getGameObjectAt(at()) instanceof Diamond;
     }
 
@@ -71,6 +101,21 @@ public class Crate extends AbstractGameObject implements Movable {
         this.xPosition = position.x;
         this.yPosition = position.y;
     }
+
+    private void animateCrate(Point direction) {
+        isAnimating.set(true);
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), this.view);
+        translateTransition.setOnFinished((event) -> {
+            GameViewController.render.renderItemAndPLayer(grid);
+            isAnimating.set(false);
+        });
+
+        translateTransition.setByX(48*direction.x);
+        translateTransition.setByY(30*direction.y);
+        translateTransition.play();
+
+    }
+
 
 
     @Override

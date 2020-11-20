@@ -1,6 +1,7 @@
 package com.ae2dms.GameObject;
 
 import com.ae2dms.Business.Data.GameGrid;
+import javafx.scene.image.ImageView;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -11,6 +12,7 @@ public abstract class AbstractGameObject implements Serializable {
     protected GameGrid grid;
     protected int xPosition;
     protected int yPosition;
+    public transient ImageView view;
 
     public Point at() {
         return new Point(xPosition, yPosition);
@@ -31,4 +33,6 @@ public abstract class AbstractGameObject implements Serializable {
     public abstract char getCharSymbol();
 
     public abstract String getStringSymbol();
+
+    public abstract ImageView render();
 }

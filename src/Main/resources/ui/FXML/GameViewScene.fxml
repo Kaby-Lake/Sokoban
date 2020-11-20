@@ -204,7 +204,7 @@
 
         <StackPane layoutX="160.0" layoutY="30.0">
             <!--     itemGrid   -->
-           <GridPane fx:id="itemGrid">
+           <GridPane fx:id="crateGrid">
                <columnConstraints>
                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
