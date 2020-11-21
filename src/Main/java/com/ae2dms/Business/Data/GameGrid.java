@@ -34,7 +34,6 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
         return translatedPoint;
     }
 
-
     /**
      * @param source
      * @param delta
@@ -125,11 +124,11 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
 
 
 
-    private boolean isPointOutOfBounds(int x, int y) {
+    public boolean isPointOutOfBounds(int x, int y) {
         return (x < 0 || y < 0 || x >= X || y >= Y);
     }
 
-    private boolean isPointOutOfBounds(Point p) {
+    public boolean isPointOutOfBounds(Point p) {
         return isPointOutOfBounds(p.x, p.y);
     }
 

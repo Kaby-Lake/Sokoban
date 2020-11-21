@@ -9,10 +9,10 @@ import java.io.Serializable;
 public abstract class AbstractGameObject implements Serializable {
 
     // this grid does not contain Diamond
-    protected GameGrid grid;
-    protected int xPosition;
-    protected int yPosition;
-    public transient ImageView view;
+    protected volatile GameGrid grid;
+    public int xPosition;
+    public int yPosition;
+    protected transient ImageView view;
 
     public Point at() {
         return new Point(xPosition, yPosition);

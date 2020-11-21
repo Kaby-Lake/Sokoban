@@ -53,9 +53,9 @@ public class Player extends AbstractGameObject implements Movable {
     public ImageView headTo(Point direction) {
         Image playerDirectionalImage;
         if (new Point(0, 1).equals(direction)) {
-            playerDirectionalImage = ResourceFactory.PLAYER_BACK_IMAGE;
-        } else if (new Point(0, -1).equals(direction)) {
             playerDirectionalImage = ResourceFactory.PLAYER_FRONT_IMAGE;
+        } else if (new Point(0, -1).equals(direction)) {
+            playerDirectionalImage = ResourceFactory.PLAYER_BACK_IMAGE;
         } else if (new Point(-1, 0).equals(direction)) {
             playerDirectionalImage = ResourceFactory.PLAYER_LEFT_IMAGE;
         } else if (new Point(1, 0).equals(direction)) {
@@ -96,27 +96,17 @@ public class Player extends AbstractGameObject implements Movable {
         }
     }
 
-    public Crate willPushCrate(Point delta) {
-        Point targetPosition = GameGrid.translatePoint(this.at(), delta);
-        if (grid.isPointOutOfBounds(targetPosition)) {
-            return null;
-        }
-        AbstractGameObject theOne = grid.getGameObjectAt(targetPosition);
-        if (theOne instanceof Crate) {
-            return (Crate)theOne;
-        }
-        return null;
-    }
-
     @Override
     public void moveBy(Point delta) throws IllegalMovementException {
         isAnimating.set(true);
 
         headTo(delta);
+
         Point targetPosition = GameGrid.translatePoint(this.at(), delta);
         AbstractGameObject objectOnDestination = grid.getGameObjectAt(targetPosition);
         if (objectOnDestination instanceof Floor) {
             moveToFloor(targetPosition);
+            render.renderPlayerCrateHierarchyBeforeAnimation(this);
             animatePlayer(delta);
         } else if (objectOnDestination instanceof Crate) {
             ((Crate) objectOnDestination).moveBy(delta);
@@ -146,23 +136,21 @@ public class Player extends AbstractGameObject implements Movable {
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), this.view);
 
         translateTransition.setOnFinished((event) -> {
-            GameViewController.render.renderItemAndPLayer(grid);
             isAnimating.set(false);
         });
 
         translateTransition.setByX(48*direction.x);
         translateTransition.setByY(30*direction.y);
         translateTransition.play();
-
     }
 
 
     public boolean isOnNorthOfCrate() {
-        return (grid.getGameObjectAt(GameGrid.translatePoint(at(), new Point(0, -1)))) instanceof Crate;
+        return (grid.getGameObjectAt(GameGrid.translatePoint(at(), new Point(0, 1)))) instanceof Crate;
     }
 
     public boolean isOnSouthOfCrate() {
-        return (grid.getGameObjectAt(GameGrid.translatePoint(at(), new Point(0, 1)))) instanceof Crate;
+        return (grid.getGameObjectAt(GameGrid.translatePoint(at(), new Point(0, -1)))) instanceof Crate;
     }
 
     public void syncIsAnimating(BooleanProperty isAnimating) {
@@ -175,7 +163,6 @@ public class Player extends AbstractGameObject implements Movable {
 
         ParallelTransition parallelTransition = new ParallelTransition();
         parallelTransition.setOnFinished((event) -> {
-            GameViewController.render.renderItemAndPLayer(grid);
             isAnimating.set(false);
         });
 

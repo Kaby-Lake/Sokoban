@@ -1,7 +1,7 @@
 package com.ae2dms.Business;
 
 import com.ae2dms.Business.Data.Level;
-import com.ae2dms.GameObject.Objects.Keeper;
+import com.ae2dms.GameObject.Objects.Player;
 import com.ae2dms.IO.*;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class GameDocument implements Serializable {
     private transient static boolean debug = false;
     private Level currentLevel;
     private List<Level> levels;
-    private Keeper keeperObject;
+    private Player playerObject;
     private boolean gameComplete = false;
 
     public GameDocument(InputStream input, boolean production) {
@@ -41,8 +41,8 @@ public class GameDocument implements Serializable {
         }
     }
 
-    public Keeper getKeeper() {
-        return this.keeperObject;
+    public Player getPlayer() {
+        return this.playerObject;
 
     }
 
@@ -77,7 +77,7 @@ public class GameDocument implements Serializable {
         }
 
         Level nextLevel = levels.get(nextLevelIndex);
-        this.keeperObject = (Keeper) nextLevel.getTargetObject(nextLevel.getKeeperPosition(), null);
+        this.playerObject = (Player) nextLevel.getTargetObject(nextLevel.getPlayerPosition(), null);
         return nextLevel;
     }
 
@@ -87,9 +87,6 @@ public class GameDocument implements Serializable {
 
     public void toggleDebug(Boolean bool) {
         debug = bool;
-    }
-
-    public void toggleMusic(Boolean bool) {
     }
 
     public void reloadMapFromFile(InputStream input) {
@@ -108,7 +105,6 @@ public class GameDocument implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void restoreObject(GameDocument object) {
@@ -117,7 +113,7 @@ public class GameDocument implements Serializable {
         this.mapSetName = object.mapSetName;
         this.currentLevel = object.currentLevel;
         this.levels = object.levels;
-        this.keeperObject = object.keeperObject;
+        this.playerObject = object.playerObject;
         this.gameComplete = object.gameComplete;
     }
 }

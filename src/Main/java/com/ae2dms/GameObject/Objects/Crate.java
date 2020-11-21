@@ -50,7 +50,7 @@ public class Crate extends AbstractGameObject implements Movable {
                 this.view.setImage(ResourceFactory.CRATE_IMAGE);
             }
         } else {
-            this.view = new ImageView(ResourceFactory.PLAYER_FRONT_IMAGE);
+            this.view = new ImageView(ResourceFactory.CRATE_IMAGE);
             this.view.setFitHeight(38);
             this.view.setFitWidth(35);
             this.view.setTranslateX(7);
@@ -86,6 +86,7 @@ public class Crate extends AbstractGameObject implements Movable {
         grid.putGameObjectAt(new Floor(grid, at()), at());
         grid.putGameObjectAt(this, targetPosition);
         this.updatePosition(targetPosition);
+        this.render();
     }
 
     public Boolean isOnDiamond() {
@@ -106,7 +107,6 @@ public class Crate extends AbstractGameObject implements Movable {
         isAnimating.set(true);
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), this.view);
         translateTransition.setOnFinished((event) -> {
-            GameViewController.render.renderItemAndPLayer(grid);
             isAnimating.set(false);
         });
 

@@ -37,4 +37,11 @@ public class Floor extends AbstractGameObject {
         }
         return this.view;
     }
+
+    public static ImageView staticRender() {
+        ImageView floor = new ImageView(ResourceFactory.STAGE_IMAGE);
+        floor.setFitHeight(48);
+        floor.setFitWidth(48);
+        return floor;
+    }
 }
