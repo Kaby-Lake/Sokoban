@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -15,8 +16,8 @@
    <children>
 
       <!--     background    -->
-      <ImageView fitHeight="720.0" fitWidth="1715.0" layoutX="-77.0">
-            <Image url="@../Assets/Game/GameBackground.jpg" />
+      <ImageView fx:id="backgroundImage" fitHeight="720.0" fitWidth="1673.0" layoutX="-35.0">
+            <Image url="@../Assets/Game/GameBackground1.jpg" />
       </ImageView>
 
       <!--     BottomBar    -->
@@ -66,7 +67,7 @@
       </BorderPane>
 
        <!--   Stage Grid    -->
-      <GridPane fx:id="stageGrid" layoutX="160.0" layoutY="30.0">
+      <GridPane fx:id="stageGrid" layoutX="160.0" layoutY="54.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
@@ -151,7 +152,7 @@
 
 
         <!--     diamondsGrid  -->
-       <GridPane fx:id="diamondsGrid" layoutX="160.0" layoutY="30.0">
+       <GridPane fx:id="diamondsGrid" layoutX="160.0" layoutY="54.0">
            <columnConstraints>
                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
@@ -202,7 +203,7 @@
            </children>
        </GridPane>
 
-        <StackPane layoutX="160.0" layoutY="30.0">
+        <StackPane layoutX="160.0" layoutY="54.0">
             <!--     itemGrid   -->
            <GridPane fx:id="crateGrid" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="960.0" StackPane.alignment="CENTER">
                <columnConstraints>
@@ -313,6 +314,33 @@
       <ImageView layoutX="10.0" layoutY="14.0" onMouseClicked="#clickToMenu" styleClass="Button">
           <Image url="@../Assets/Game/To_Menu.png" />
       </ImageView>
+      <Group layoutX="565.0" layoutY="-1.0">
+         <children>
+            <ImageView fitHeight="54.0" fitWidth="200.0">
+               <image>
+                  <Image url="@../Assets/Game/Level_Progress.png" />
+               </image>
+            </ImageView>
+            <BorderPane layoutX="77.0" layoutY="10.0" prefHeight="24.0" prefWidth="40.0">
+               <center>
+                  <Label fx:id="this_level" alignment="CENTER" contentDisplay="CENTER" text="This_Level" textFill="#fc7b74" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Smartisan Maquette Bold" size="21.0" />
+                     </font>
+                  </Label>
+               </center>
+            </BorderPane>
+            <BorderPane layoutX="148.0" layoutY="10.0" prefHeight="24.0" prefWidth="40.0">
+               <center>
+                  <Label fx:id="all_level" alignment="CENTER" contentDisplay="CENTER" text="All_Level" textFill="#5f9ffc" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Smartisan Maquette Bold" size="21.0" />
+                     </font>
+                  </Label>
+               </center>
+            </BorderPane>
+         </children>
+      </Group>
 
    </children>
 </Pane>

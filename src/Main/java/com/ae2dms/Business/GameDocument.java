@@ -69,6 +69,11 @@ public class GameDocument implements Serializable {
         return this.currentLevel.isComplete();
     }
 
+    public void changeToNextLevel() {
+        assert(this.currentLevel.isComplete());
+        this.currentLevel = getNextLevel();
+    }
+
     public Level getNextLevel() {
         int nextLevelIndex = currentLevel == null ? 0 : currentLevel.getIndex() + 1;
         if (nextLevelIndex == levels.size()) {
@@ -83,6 +88,10 @@ public class GameDocument implements Serializable {
 
     public Level getCurrentLevel() {
         return currentLevel;
+    }
+
+    public int getLevelsCount() {
+        return levels.size();
     }
 
     public void toggleDebug(Boolean bool) {

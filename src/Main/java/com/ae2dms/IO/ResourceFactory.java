@@ -5,11 +5,18 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class ResourceFactory {
 
     public static Media MENU_BACKGROUND_MUSIC = null;
     public static Media GAME_BACKGROUND_MUSIC = null;
+
+    public static Image BACKGROUND_IMAGE1 = null;
+    public static Image BACKGROUND_IMAGE2 = null;
+    public static Image BACKGROUND_IMAGE3 = null;
+
 
     public static Image STAGE_IMAGE = null;
     public static Image DIAMOND_IMAGE = null;
@@ -26,6 +33,10 @@ public class ResourceFactory {
         try {
             MENU_BACKGROUND_MUSIC = new Media(getResource("/music/PaperClip-Jumping.mp3"));
             GAME_BACKGROUND_MUSIC = new Media(getResource("/music/PETO-Okay.mp3"));
+
+            BACKGROUND_IMAGE1 = new Image(getResource("/ui/Assets/Game/GameBackground1.jpg"));
+            BACKGROUND_IMAGE2 = new Image(getResource("/ui/Assets/Game/GameBackground2.jpg"));
+            BACKGROUND_IMAGE3 = new Image(getResource("/ui/Assets/Game/GameBackground3.jpg"));
 
             STAGE_IMAGE = new Image(getResource("/ui/Assets/Game/Stage.png"));
             DIAMOND_IMAGE = new Image(getResource("/ui/Assets/Game/Diamond.png"));
@@ -48,5 +59,14 @@ public class ResourceFactory {
 
     public static String getResource(String url) throws URISyntaxException {
         return ResourceFactory.class.getResource(url).toURI().toString();
+    }
+
+    public static Image randomBackgroundImage() {
+        ArrayList<Image> list = new ArrayList<>();
+        list.add(ResourceFactory.BACKGROUND_IMAGE1);
+        list.add(ResourceFactory.BACKGROUND_IMAGE2);
+        list.add(ResourceFactory.BACKGROUND_IMAGE3);
+        Random random = new Random();
+        return list.get(random.nextInt(3));
     }
 }

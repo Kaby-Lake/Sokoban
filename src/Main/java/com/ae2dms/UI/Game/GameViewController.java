@@ -15,7 +15,9 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -23,9 +25,19 @@ import javafx.scene.media.AudioClip;
 import javafx.util.Duration;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GameViewController extends AbstractBarController {
+
+    @FXML
+    private ImageView backgroundImage;
+
+    @FXML
+    private Label this_level;
+
+    @FXML
+    private Label all_level;
 
     private volatile GameDocument gameDocument = Main.gameDocument;
 
@@ -53,6 +65,8 @@ public class GameViewController extends AbstractBarController {
 
     public void initialize() throws IllegalStateException {
 
+        backgroundImage.setImage(ResourceFactory.randomBackgroundImage());
+
         super.disableButton("High score");
 
         this.highestScoreValue.setValue(gameDocument.highestScore);
@@ -60,6 +74,10 @@ public class GameViewController extends AbstractBarController {
         // this.isLevelComplete.bindBidirectional(gameDocument.isLevelComplete());
         soundEffects.put("UNMOVABLE_AUDIO_CLIP_MEDIA", ResourceFactory.UNMOVABLE_AUDIO_CLIP);
         soundEffects.put("MOVE_AUDIO_CLIP_MEDIA", ResourceFactory.MOVE_AUDIO_CLIP);
+
+        this_level.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
+
+        all_level.setText(Integer.toString(gameDocument.getLevelsCount()));
 
         musicSwitchToggle.addListener((observable, oldValue, newValue) -> {
             if (observable != null ) {
@@ -129,23 +147,32 @@ public class GameViewController extends AbstractBarController {
                 e.printStackTrace();
             }
         } else {
-            // will false animation
             player.shakeAnimation(direction);
         }
 //
 //        if (GameDocument.isDebugActive()) {
 //            System.out.println(code);
+        checkIsLevelComplete();
     }
 
-    public void clickToggleDebug() {
+    @FXML
+    private void clickToggleDebug() {
 //        gameDocument.toggleDebug(menuBarClickToggleDebug());
     }
 
-    public void clickToggleMusic(MouseEvent mouseEvent) {
+    private void checkIsLevelComplete() {
+        if (gameDocument.isLevelComplete()) {
+            gameDocument.changeToNextLevel();
+        }
+    }
+
+    @FXML
+    private void clickToggleMusic(MouseEvent mouseEvent) {
         menuBarClickToggleMusic();
     }
 
-    public void clickUndo(MouseEvent mouseEvent) {
+    @FXML
+    private void clickUndo(MouseEvent mouseEvent) {
         GameDocument restoreObject = GameStageSaver.pop();
         if (restoreObject != null) {
             Main.gameDocument.restoreObject(restoreObject);
@@ -157,10 +184,12 @@ public class GameViewController extends AbstractBarController {
 
     }
 
-    public void clickSaveGame(MouseEvent mouseEvent) {
+    @FXML
+    private void clickSaveGame(MouseEvent mouseEvent) {
     }
 
-    public void clickToMenu(MouseEvent mouseEvent) {
+    @FXML
+    private void clickToMenu(MouseEvent mouseEvent) {
         GameView.backgroundMusicPlayer.stop();
         Main.primaryStage.setScene(Main.menuScene);
         MenuView.backgroundMusicPlayer.play();
