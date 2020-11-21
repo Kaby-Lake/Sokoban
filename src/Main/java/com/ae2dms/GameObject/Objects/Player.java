@@ -9,6 +9,7 @@ import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -151,11 +152,6 @@ public class Player extends AbstractGameObject implements Movable {
 
     public boolean isOnSouthOfCrate() {
         return (grid.getGameObjectAt(GameGrid.translatePoint(at(), new Point(0, -1)))) instanceof Crate;
-    }
-
-    public void syncIsAnimating(BooleanProperty isAnimating) {
-        this.isAnimating.bindBidirectional(isAnimating);
-
     }
 
     public void shakeAnimation(Point direction) {

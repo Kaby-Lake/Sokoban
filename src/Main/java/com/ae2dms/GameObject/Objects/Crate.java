@@ -104,11 +104,7 @@ public class Crate extends AbstractGameObject implements Movable {
     }
 
     private void animateCrate(Point direction) {
-        isAnimating.set(true);
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), this.view);
-        translateTransition.setOnFinished((event) -> {
-            isAnimating.set(false);
-        });
 
         translateTransition.setByX(48*direction.x);
         translateTransition.setByY(30*direction.y);

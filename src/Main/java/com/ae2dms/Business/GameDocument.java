@@ -3,6 +3,8 @@ package com.ae2dms.Business;
 import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.Objects.Player;
 import com.ae2dms.IO.*;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +16,7 @@ public class GameDocument implements Serializable {
     public int highestScore;
     public static final String GAME_NAME = "SokobanFX";
     public static transient GameLogger logger;
-    public int movesCount = 0;
+    public transient IntegerProperty movesCount = new SimpleIntegerProperty(0);
     public String mapSetName;
     private transient static boolean debug = false;
     private Level currentLevel;
@@ -29,6 +31,7 @@ public class GameDocument implements Serializable {
     private void init(InputStream input) {
         // TODO:
         this.highestScore = 200;
+
 
         try {
             logger = new GameLogger();
@@ -75,7 +78,7 @@ public class GameDocument implements Serializable {
     }
 
     public Level getNextLevel() {
-        int nextLevelIndex = currentLevel == null ? 0 : currentLevel.getIndex() + 1;
+        int nextLevelIndex = currentLevel == null ? 0 : currentLevel.getIndex();
         if (nextLevelIndex == levels.size()) {
             gameComplete = true;
             return null;
@@ -101,7 +104,7 @@ public class GameDocument implements Serializable {
     public void reloadMapFromFile(InputStream input) {
         init(input);
         this.highestScore = 0;
-        this.movesCount = 0;
+        this.movesCount.set(0);
     }
 
     public void reloadDataFromFile(InputStream input) {

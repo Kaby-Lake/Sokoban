@@ -28,4 +28,8 @@ public interface Movable {
 
     BooleanProperty isAnimating = new SimpleBooleanProperty(false);
 
+    default void syncIsAnimating(BooleanProperty isAnimating) {
+        Movable.isAnimating.bindBidirectional(isAnimating);
+    }
+
 }

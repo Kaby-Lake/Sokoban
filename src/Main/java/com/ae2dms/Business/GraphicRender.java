@@ -28,6 +28,10 @@ public class GraphicRender {
     }
 
     public void renderMap(GameGrid objectsGridDocument, GameGrid diamondsGridDocument) {
+
+        this.stageGrid.getChildren().clear();
+        this.diamondsGrid.getChildren().clear();
+
         for (AbstractGameObject object : objectsGridDocument) {
             if (!(object instanceof Wall)) {
                 stageGrid.add((Floor.staticRender()), object.xPosition, object.yPosition);

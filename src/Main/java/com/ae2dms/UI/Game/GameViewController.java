@@ -8,27 +8,47 @@ import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.Menu.MenuView;
-import javafx.animation.TranslateTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.media.AudioClip;
-import javafx.util.Duration;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GameViewController extends AbstractBarController {
+
+    @FXML
+    private Label score;
+
+    @FXML
+    private ImageView Next_Level_Button;
+
+    @FXML
+    private BorderPane Level_Complete_Pop_Up;
+
+    @FXML
+    private Label Level_Complete_Level_Index;
+
+    @FXML
+    private Label Level_Complete_Time;
+
+    @FXML
+    private Label Level_Complete_Score;
+
+    @FXML
+    private Group canBlurGroup;
 
     @FXML
     private ImageView backgroundImage;
@@ -102,6 +122,8 @@ public class GameViewController extends AbstractBarController {
         render = new GraphicRender(stageGrid, crateGrid, playerGrid, diamondsGrid);
         render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
+        
+        score.textProperty().bind(this.gameDocument.movesCount.asString());
     }
 
     private BooleanProperty isAnimating = new SimpleBooleanProperty(false);
@@ -143,6 +165,7 @@ public class GameViewController extends AbstractBarController {
         if (player.canMoveBy(direction)) {
             try {
                 this.gameDocument.getPlayer().moveBy(direction);
+                this.gameDocument.movesCount.set(this.gameDocument.movesCount.getValue() + 1);
             } catch (IllegalMovementException e) {
                 e.printStackTrace();
             }
@@ -162,8 +185,31 @@ public class GameViewController extends AbstractBarController {
 
     private void checkIsLevelComplete() {
         if (gameDocument.isLevelComplete()) {
-            gameDocument.changeToNextLevel();
+            Level_Complete_Level_Index.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
+            Level_Complete_Time.setText("13");
+            Level_Complete_Score.setText(this.gameDocument.movesCount.toString());
+            Level_Complete_Pop_Up.getStyleClass().clear();
+
+            GaussianBlur gaussianBlur = new GaussianBlur();
+            gaussianBlur.setRadius(20);
+            canBlurGroup.setEffect(gaussianBlur);
+
+            Next_Level_Button.setOnMouseClicked((event) -> {
+                Level_Complete_Pop_Up.getStyleClass().add("Hide");
+                canBlurGroup.setEffect(null);
+                switchToNextLevel();
+            });
         }
+    }
+
+    private void switchToNextLevel() {
+        gameDocument.changeToNextLevel();
+        backgroundImage.setImage(ResourceFactory.randomBackgroundImage());
+
+        this_level.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
+
+        render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
+        gameDocument.getPlayer().syncIsAnimating(isAnimating);
     }
 
     @FXML
@@ -181,7 +227,6 @@ public class GameViewController extends AbstractBarController {
         } else {
 
         }
-
     }
 
     @FXML
@@ -194,5 +239,4 @@ public class GameViewController extends AbstractBarController {
         Main.primaryStage.setScene(Main.menuScene);
         MenuView.backgroundMusicPlayer.play();
     }
-
 }
