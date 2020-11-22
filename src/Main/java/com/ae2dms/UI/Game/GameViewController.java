@@ -17,14 +17,15 @@ import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.media.AudioClip;
+import javafx.stage.FileChooser;
 import javafx.util.converter.IntegerStringConverter;
 
 import java.awt.*;
+import java.io.File;
 import java.util.HashMap;
 
 public class GameViewController extends AbstractBarController {
@@ -83,6 +84,16 @@ public class GameViewController extends AbstractBarController {
 
     private BooleanProperty canUndo = new SimpleBooleanProperty(true);
 
+    // undo
+    private final KeyCombination keyCombCtrZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+
+    // mute
+    private final KeyCombination keyCombCtrM = new KeyCodeCombination(KeyCode.M, KeyCombination.SHORTCUT_DOWN);
+
+    // save
+    private final KeyCombination keyCombCtrS = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
+
+
     public void initialize() throws IllegalStateException {
 
         backgroundImage.setImage(ResourceFactory.randomBackgroundImage());
@@ -126,17 +137,36 @@ public class GameViewController extends AbstractBarController {
         score.textProperty().bind(this.gameDocument.movesCount.asString());
     }
 
-    private BooleanProperty isAnimating = new SimpleBooleanProperty(false);
+    private final BooleanProperty isAnimating = new SimpleBooleanProperty(false);
 
-    public void handleKey(KeyCode code) {
+    public void handleKey(KeyEvent event) {
         // simply ignore keys when animating
         if (isAnimating.getValue()) {
             return;
         }
-        gameDocument.serializeObject();
+
+        // if is shortcuts
+
+        if (keyCombCtrZ.match(event)) {
+            this.clickUndo(null);
+            return;
+        }
+
+        if (keyCombCtrM.match(event)) {
+            this.clickToggleMusic(null);
+            return;
+        }
+
+        if (keyCombCtrS.match(event)) {
+            this.clickSaveGame(null);
+            return;
+        }
+
         canUndo.set(!GameStageSaver.isEmpty());
         Player player = gameDocument.getPlayer();
         Point direction = new Point(0, 0);
+
+        KeyCode code = event.getCode();
         switch (code) {
             case UP -> {
                 direction = new Point(0, -1);
@@ -161,6 +191,7 @@ public class GameViewController extends AbstractBarController {
 
         }
         isAnimating.set(true);
+        gameDocument.serializeObject();
 
         if (player.canMoveBy(direction)) {
             try {
@@ -231,6 +262,7 @@ public class GameViewController extends AbstractBarController {
 
     @FXML
     private void clickSaveGame(MouseEvent mouseEvent) {
+        GameStageSaver.saveToFile(this.gameDocument);
     }
 
     @FXML

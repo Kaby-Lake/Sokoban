@@ -1,7 +1,11 @@
 package com.ae2dms.Business;
 
+import com.ae2dms.Main.Main;
+import javafx.stage.FileChooser;
+
 import java.io.*;
 import java.util.Base64;
+import java.util.Date;
 import java.util.LinkedList;
 
 public class GameStageSaver {
@@ -43,6 +47,38 @@ public class GameStageSaver {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void saveToFile(GameDocument object) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Current State to file\n You can always reload it to restore the state");
+        Date day = new Date();
+        String fileName = "[" + object.mapSetName + "]" + day.toString().replace(' ', '_') + ".skbsave";
+        fileName = fileName.replace(' ', '_');
+        fileChooser.setInitialFileName(fileName);
+
+        //Set extension filter for text files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Save files", "*.skbsave");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(Main.primaryStage);
+
+        if (file != null) {
+            try {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream( baos );
+                oos.writeObject(object);
+                oos.close();
+
+                FileWriter writer = new FileWriter(file);
+                writer.write(Base64.getEncoder().encodeToString(baos.toByteArray()));
+                writer.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

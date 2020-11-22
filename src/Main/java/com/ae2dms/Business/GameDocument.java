@@ -17,6 +17,7 @@ public class GameDocument implements Serializable {
     public static final String GAME_NAME = "SokobanFX";
     public static transient GameLogger logger;
     public transient IntegerProperty movesCount = new SimpleIntegerProperty(0);
+    private int movesCountSerializable; // only used when Serializing
     public String mapSetName;
     private transient static boolean debug = false;
     private Level currentLevel;
@@ -113,6 +114,7 @@ public class GameDocument implements Serializable {
 
     public void serializeObject() {
         try {
+            this.movesCountSerializable = this.movesCount.getValue();
             GameStageSaver.push(this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,7 +123,7 @@ public class GameDocument implements Serializable {
 
     public void restoreObject(GameDocument object) {
         this.highestScore = object.highestScore;
-        this.movesCount = object.movesCount;
+        this.movesCount.set(object.movesCountSerializable);
         this.mapSetName = object.mapSetName;
         this.currentLevel = object.currentLevel;
         this.levels = object.levels;
