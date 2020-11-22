@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GameFileLoader {
+public class MapFileLoader {
     private final ArrayList<Level> levels;
     private String mapSetName;
 
-    public GameFileLoader() {
+    public MapFileLoader() {
         levels = new ArrayList<>(5);
     }
 
@@ -27,7 +27,7 @@ public class GameFileLoader {
         return this.mapSetName;
     }
 
-    public void loadGameFile(InputStream input) throws IOException, NullPointerException {
+    public void loadMapFile(InputStream input) throws IOException, NullPointerException {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
             boolean firstLevelIsParsed = false;

@@ -4,9 +4,10 @@ import com.ae2dms.Business.GameDocument;
 import com.ae2dms.GameObject.*;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Iterator;
 
-public class GameGrid implements Iterable<AbstractGameObject> {
+public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
 
     final int X;
     final int Y;
@@ -32,7 +33,6 @@ public class GameGrid implements Iterable<AbstractGameObject> {
         translatedPoint.translate((int) delta.getX(), (int) delta.getY());
         return translatedPoint;
     }
-
 
     /**
      * @param source
@@ -124,11 +124,11 @@ public class GameGrid implements Iterable<AbstractGameObject> {
 
 
 
-    private boolean isPointOutOfBounds(int x, int y) {
+    public boolean isPointOutOfBounds(int x, int y) {
         return (x < 0 || y < 0 || x >= X || y >= Y);
     }
 
-    private boolean isPointOutOfBounds(Point p) {
+    public boolean isPointOutOfBounds(Point p) {
         return isPointOutOfBounds(p.x, p.y);
     }
 

@@ -1,15 +1,18 @@
 package com.ae2dms.GameObject;
 
 import com.ae2dms.Business.Data.GameGrid;
+import javafx.scene.image.ImageView;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public abstract class AbstractGameObject {
+public abstract class AbstractGameObject implements Serializable {
 
     // this grid does not contain Diamond
-    protected GameGrid grid;
-    protected int xPosition;
-    protected int yPosition;
+    protected volatile GameGrid grid;
+    public int xPosition;
+    public int yPosition;
+    protected transient ImageView view;
 
     public Point at() {
         return new Point(xPosition, yPosition);
@@ -30,4 +33,6 @@ public abstract class AbstractGameObject {
     public abstract char getCharSymbol();
 
     public abstract String getStringSymbol();
+
+    public abstract ImageView render();
 }

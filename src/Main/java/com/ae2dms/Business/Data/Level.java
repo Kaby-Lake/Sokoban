@@ -5,15 +5,16 @@ import com.ae2dms.GameObject.*;
 import com.ae2dms.GameObject.Objects.*;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
-public final class Level implements Iterable<AbstractGameObject> {
+public final class Level implements Iterable<AbstractGameObject>, Serializable {
     public final GameGrid objectsGrid;
     public final GameGrid diamondsGrid;
     private final String name;
     private final int index;
-    private Point keeperPosition = new Point(0, 0);
+    private Point playerPosition = new Point(0, 0);
 
     public Level(String levelName, int levelIndex, List<String> rawLevel) {
         if (GameDocument.isDebugActive()) {
@@ -39,15 +40,15 @@ public final class Level implements Iterable<AbstractGameObject> {
                 AbstractGameObject curTile;
 
                 if (Character.toUpperCase(curChar) == 'D') {
-                    curTile = factory.getGameObject(curChar, diamondsGrid, x, y);
+                    curTile = factory.getGameObject(curChar, objectsGrid, x, y, diamondsGrid);
                     diamondsGrid.putGameObjectAt(curTile, x, y);
                     // then put Floor Object in objectsGrid
-                    curTile = factory.getGameObject(' ', objectsGrid, x, y);
+                    curTile = factory.getGameObject(' ', objectsGrid, x, y, diamondsGrid);
                 } else if (Character.toUpperCase(curChar) == 'S') {
-                    keeperPosition = new Point(x, y);
-                    curTile = factory.getGameObject(curChar, objectsGrid, x, y);
+                    playerPosition = new Point(x, y);
+                    curTile = factory.getGameObject(curChar, objectsGrid, x, y, diamondsGrid);
                 } else {
-                    curTile = factory.getGameObject(curChar, objectsGrid, x, y);
+                    curTile = factory.getGameObject(curChar, objectsGrid, x, y, diamondsGrid);
                 }
 
                 objectsGrid.putGameObjectAt(curTile, x, y);}
@@ -59,7 +60,7 @@ public final class Level implements Iterable<AbstractGameObject> {
         for (int y = 0; y < objectsGrid.Y; y++) {
             for (int x = 0; x < objectsGrid.X; x++) {
                 AbstractGameObject thisObject = objectsGrid.getGameObjectAt(x, y);
-                if (thisObject instanceof Crate && !((Crate) thisObject).isOnDiamond(this.diamondsGrid)) {
+                if (thisObject instanceof Crate && !((Crate) thisObject).isOnDiamond()) {
                     isComplete = false;
                 }
             }
@@ -75,8 +76,8 @@ public final class Level implements Iterable<AbstractGameObject> {
         return index;
     }
 
-    public Point getKeeperPosition() {
-        return keeperPosition;
+    public Point getPlayerPosition() {
+        return playerPosition;
     }
 
     public AbstractGameObject getTargetObject(Point source, Point delta) {
@@ -111,10 +112,6 @@ public final class Level implements Iterable<AbstractGameObject> {
             }
 
             return objectsGrid.getGameObjectAt(column, row);
-        }
-
-        public Point getcurrentposition() {
-            return new Point(column, row);
         }
     }
 }

@@ -2,6 +2,8 @@ package com.ae2dms.GameObject;
 
 import com.ae2dms.Business.Data.GameGrid;
 import com.ae2dms.GameObject.Objects.IllegalMovementException;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 import java.awt.*;
 
@@ -23,4 +25,11 @@ public interface Movable {
     default Boolean moveMoreThanOneStep(Point delta) {
         return delta.distance(0, 0) > 1;
     }
+
+    BooleanProperty isAnimating = new SimpleBooleanProperty(false);
+
+    default void syncIsAnimating(BooleanProperty isAnimating) {
+        Movable.isAnimating.bindBidirectional(isAnimating);
+    }
+
 }

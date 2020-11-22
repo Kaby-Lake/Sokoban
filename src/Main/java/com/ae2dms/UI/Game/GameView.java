@@ -37,7 +37,7 @@ public class GameView {
 
     public void bind(Scene scene) {
         scene.setOnKeyPressed(keyEvent ->  {
-            controller.handleKey(keyEvent.getCode());
+            controller.handleKey(keyEvent);
         });
     }
 }

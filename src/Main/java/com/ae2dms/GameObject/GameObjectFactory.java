@@ -4,36 +4,10 @@ import com.ae2dms.Business.Data.GameGrid;
 import com.ae2dms.GameObject.Objects.*;
 
 public class GameObjectFactory {
-    public AbstractGameObject getGameObject(String type, GameGrid linkTo, int xPosition, int yPosition) {
 
-        if (type == null) {
-            System.err.println("GameObject Type Missing");
-            return null;
-        }
 
-        switch (type.toUpperCase()) {
-            case "CRATE" -> {
-                return new Crate(linkTo, xPosition, yPosition);
-            }
-            case "DIAMOND" -> {
-                return new Diamond(linkTo, xPosition, yPosition);
-            }
-            case "FLOOR" -> {
-                return new Floor(linkTo, xPosition, yPosition);
-            }
-            case "KEEPER" -> {
-                return new Keeper(linkTo, xPosition, yPosition);
-            }
-            case "WALL" -> {
-                return new Wall(linkTo, xPosition, yPosition);
-            }
-            default -> {
-                System.err.println("Unrecognizable GameObject Type");
-                return null;
-            }
-        }
-    }
-    public AbstractGameObject getGameObject(Character type, GameGrid linkTo, int xPosition, int yPosition) {
+    // diamonds Object is only for Crate object to detect whether on diamond
+    public AbstractGameObject getGameObject(Character type, GameGrid linkTo, int xPosition, int yPosition, GameGrid diamondsGrid) {
 
         if (type == null) {
             System.err.println("GameObject Type Missing");
@@ -42,7 +16,7 @@ public class GameObjectFactory {
 
         switch (Character.toUpperCase(type)) {
             case 'C' -> {
-                return new Crate(linkTo, xPosition, yPosition);
+                return new Crate(linkTo, xPosition, yPosition, diamondsGrid);
             }
             case 'D' -> {
                 return new Diamond(linkTo, xPosition, yPosition);
@@ -51,7 +25,7 @@ public class GameObjectFactory {
                 return new Floor(linkTo, xPosition, yPosition);
             }
             case 'S' -> {
-                return new Keeper(linkTo, xPosition, yPosition);
+                return new Player(linkTo, xPosition, yPosition);
             }
             case 'W' -> {
                 return new Wall(linkTo, xPosition, yPosition);

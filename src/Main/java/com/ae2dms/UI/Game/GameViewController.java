@@ -1,102 +1,187 @@
 package com.ae2dms.UI.Game;
 
-import com.ae2dms.Business.Data.GameGrid;
 import com.ae2dms.Business.GameDocument;
-import com.ae2dms.GameObject.AbstractGameObject;
+import com.ae2dms.Business.GameStageSaver;
+import com.ae2dms.Business.GraphicRender;
 import com.ae2dms.GameObject.Objects.*;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.Menu.MenuView;
-import javafx.animation.ParallelTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.TranslateTransition;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.image.Image;
+import javafx.scene.control.Label;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.media.AudioClip;
-import javafx.util.Duration;
+import javafx.stage.FileChooser;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.awt.*;
+import java.io.File;
 import java.util.HashMap;
 
 public class GameViewController extends AbstractBarController {
 
-    private final GameDocument gameDocument = Main.gameDocument;
+    @FXML
+    private Label score;
 
     @FXML
-    private GridPane stageGrid;
+    private ImageView Next_Level_Button;
 
     @FXML
-    private GridPane itemGrid;
+    private BorderPane Level_Complete_Pop_Up;
 
     @FXML
-    private GridPane playerGrid;
+    private Label Level_Complete_Level_Index;
 
     @FXML
-    private GridPane diamondsGrid;
+    private Label Level_Complete_Time;
 
-    private ImageView keeperImageView;
+    @FXML
+    private Label Level_Complete_Score;
 
-    private final HashMap<Crate, ImageView> crateImageViewMap = new HashMap<>();
+    @FXML
+    private Group canBlurGroup;
 
-    private final IntegerProperty highestScoreValue;
+    @FXML
+    private ImageView backgroundImage;
 
-    public GameViewController() {
-        this.highestScoreValue = new SimpleIntegerProperty();
-    }
+    @FXML
+    private Label this_level;
+
+    @FXML
+    private Label all_level;
+
+    private volatile GameDocument gameDocument = Main.gameDocument;
+
+    public volatile static GraphicRender render;
+
+    @FXML
+    private volatile GridPane stageGrid;
+
+    @FXML
+    private volatile GridPane crateGrid;
+
+    @FXML
+    private volatile GridPane playerGrid;
+
+    @FXML
+    private volatile GridPane diamondsGrid;
+
+    private final IntegerProperty highestScoreValue = new SimpleIntegerProperty();
+
+    public static HashMap<String, AudioClip> soundEffects = new HashMap<>();
+
+    private BooleanProperty isLevelComplete;
+
+    private BooleanProperty canUndo = new SimpleBooleanProperty(true);
+
+    // undo
+    private final KeyCombination keyCombCtrZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+
+    // mute
+    private final KeyCombination keyCombCtrM = new KeyCodeCombination(KeyCode.M, KeyCombination.SHORTCUT_DOWN);
+
+    // save
+    private final KeyCombination keyCombCtrS = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
+
 
     public void initialize() throws IllegalStateException {
 
-        super.disableButton("High score");
+        backgroundImage.setImage(ResourceFactory.randomBackgroundImage());
 
-        musicSwitchToggle.addListener((observable, oldValue, newValue) -> {
-            if (observable != null ) {
-                MenuView.backgroundMusicPlayer.setMute(!observable.getValue());
-            }
-        });
+        super.disableButton("High score");
 
         this.highestScoreValue.setValue(gameDocument.highestScore);
         this.bindHighestScore(highestScoreValue);
+        // this.isLevelComplete.bindBidirectional(gameDocument.isLevelComplete());
+        soundEffects.put("UNMOVABLE_AUDIO_CLIP_MEDIA", ResourceFactory.UNMOVABLE_AUDIO_CLIP);
+        soundEffects.put("MOVE_AUDIO_CLIP_MEDIA", ResourceFactory.MOVE_AUDIO_CLIP);
 
-        this.renderMap();
+        this_level.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
+
+        all_level.setText(Integer.toString(gameDocument.getLevelsCount()));
+
+        musicSwitchToggle.addListener((observable, oldValue, newValue) -> {
+            if (observable != null ) {
+                boolean isMute = !observable.getValue();
+                GameView.backgroundMusicPlayer.setMute(isMute);
+                for (AudioClip mediaPlayer : soundEffects.values()) {
+                    mediaPlayer.setVolume(isMute ? 0 : 100);
+                }
+            }
+        });
+
+        canUndo.addListener((observable, oldValue, newValue) -> {
+            if (observable != null ) {
+                if (observable.getValue()) {
+                    enableButton("Undo");
+                } else {
+                    disableButton("Undo");
+                }
+            }
+        });
+
+        render = new GraphicRender(stageGrid, crateGrid, playerGrid, diamondsGrid);
+        render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
+        gameDocument.getPlayer().syncIsAnimating(isAnimating);
+        
+        score.textProperty().bind(this.gameDocument.movesCount.asString());
     }
 
-    private boolean isAnimating = false;
+    private final BooleanProperty isAnimating = new SimpleBooleanProperty(false);
 
-    public void handleKey(KeyCode code) {
+    public void handleKey(KeyEvent event) {
         // simply ignore keys when animating
-        if (isAnimating) {
+        if (isAnimating.getValue()) {
             return;
         }
-        Keeper keeper = gameDocument.getKeeper();
+
+        // if is shortcuts
+
+        if (keyCombCtrZ.match(event)) {
+            this.clickUndo(null);
+            return;
+        }
+
+        if (keyCombCtrM.match(event)) {
+            this.clickToggleMusic(null);
+            return;
+        }
+
+        if (keyCombCtrS.match(event)) {
+            this.clickSaveGame(null);
+            return;
+        }
+
+        canUndo.set(!GameStageSaver.isEmpty());
+        Player player = gameDocument.getPlayer();
         Point direction = new Point(0, 0);
+
+        KeyCode code = event.getCode();
         switch (code) {
             case UP -> {
                 direction = new Point(0, -1);
-                keeperImageView.setImage(ResourceFactory.PLAYER_BACK_IMAGE);
             }
 
             case RIGHT -> {
                 direction = new Point(1, 0);
-                keeperImageView.setImage(ResourceFactory.PLAYER_RIGHT_IMAGE);
             }
 
             case DOWN -> {
                 direction = new Point(0, 1);
-                keeperImageView.setImage(ResourceFactory.PLAYER_FRONT_IMAGE);
             }
 
             case LEFT -> {
                 direction = new Point(-1, 0);
-                keeperImageView.setImage(ResourceFactory.PLAYER_LEFT_IMAGE);
             }
 
             default -> {
@@ -105,179 +190,85 @@ public class GameViewController extends AbstractBarController {
             }
 
         }
+        isAnimating.set(true);
+        gameDocument.serializeObject();
 
-        isAnimating = true;
-
-        if (isDestinationOnTopOfCrate(GameGrid.translatePoint(keeper.at(), direction))) {
-            renderPlayerCrateHierarchy(false);
-        } else if (isDestinationOnBottomOfCrate(GameGrid.translatePoint(keeper.at(), direction))){
-            renderPlayerCrateHierarchy(true);
-        }
-
-        if (keeper.canMoveBy(direction)) {
+        if (player.canMoveBy(direction)) {
             try {
-                Crate crate = keeper.willPushCrate(direction);
-                if (crate != null) {
-                    animateCrate(crateImageViewMap.get(crate), direction);
-                    crate.moveBy(direction);
-                    if(crate.isOnDiamond(this.gameDocument.getCurrentLevel().diamondsGrid)) {
-                        crateImageViewMap.get(crate).setImage(ResourceFactory.CRATE_ON_DIAMOND_IMAGE);
-                    } else {
-                        crateImageViewMap.get(crate).setImage(ResourceFactory.CRATE_IMAGE);
-                    }
-                }
-                animateKeeper(keeperImageView, direction);
-                this.gameDocument.getKeeper().moveBy(direction);
+                this.gameDocument.getPlayer().moveBy(direction);
+                this.gameDocument.movesCount.set(this.gameDocument.movesCount.getValue() + 1);
             } catch (IllegalMovementException e) {
                 e.printStackTrace();
             }
         } else {
-            shakeAnimation(keeperImageView, direction);
+            player.shakeAnimation(direction);
         }
 //
 //        if (GameDocument.isDebugActive()) {
 //            System.out.println(code);
+        checkIsLevelComplete();
     }
 
-    private void shakeAnimation(Node item, Point direction) {
-        AudioClip clip = ResourceFactory.UNMOVABLE_AUDIO_CLIP;
-        clip.play();
-
-        ParallelTransition parallelTransition = new ParallelTransition();
-        parallelTransition.setOnFinished((event) -> isAnimating = false);
-
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(150), item);
-        translateTransition.setByX(10*direction.x);
-        translateTransition.setByY(10*direction.y);
-        translateTransition.setCycleCount(2);
-        translateTransition.setAutoReverse(true);
-
-        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), item);
-        scaleTransition.setToY(0.5);
-        scaleTransition.setCycleCount(2);
-        scaleTransition.setAutoReverse(true);
-
-        parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
-        parallelTransition.play();
-
-    }
-
-    private void animateKeeper(Node item, Point direction) {
-        isAnimating = true;
-
-        AudioClip clip = ResourceFactory.MOVE_AUDIO_CLIP;
-        clip.play();
-
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), item);
-
-        translateTransition.setOnFinished((event) -> isAnimating = false);
-
-        translateTransition.setByX(48*direction.x);
-        translateTransition.setByY(30*direction.y);
-        translateTransition.play();
-
-    }
-
-    private void animateCrate(Node item, Point direction) {
-        isAnimating = true;
-
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), item);
-        translateTransition.setByX(48*direction.x);
-        translateTransition.setByY(30*direction.y);
-        translateTransition.play();
-
-    }
-
-    private boolean isDestinationOnTopOfCrate(Point destination) {
-        return (this.gameDocument.getCurrentLevel().objectsGrid.getGameObjectAt(GameGrid.translatePoint(destination, new Point(0, 1)))) instanceof Crate;
-    }
-
-    private boolean isDestinationOnBottomOfCrate(Point destination) {
-        return (this.gameDocument.getCurrentLevel().objectsGrid.getGameObjectAt(GameGrid.translatePoint(destination, new Point(0, -1)))) instanceof Crate;
-    }
-
-    public void clickToggleDebug() {
+    @FXML
+    private void clickToggleDebug() {
 //        gameDocument.toggleDebug(menuBarClickToggleDebug());
     }
 
-    public void clickToggleMusic(MouseEvent mouseEvent) {
+    private void checkIsLevelComplete() {
+        if (gameDocument.isLevelComplete()) {
+            Level_Complete_Level_Index.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
+            Level_Complete_Time.setText("13");
+            Level_Complete_Score.setText(this.gameDocument.movesCount.toString());
+            Level_Complete_Pop_Up.getStyleClass().clear();
+
+            GaussianBlur gaussianBlur = new GaussianBlur();
+            gaussianBlur.setRadius(20);
+            canBlurGroup.setEffect(gaussianBlur);
+
+            Next_Level_Button.setOnMouseClicked((event) -> {
+                Level_Complete_Pop_Up.getStyleClass().add("Hide");
+                canBlurGroup.setEffect(null);
+                switchToNextLevel();
+            });
+        }
+    }
+
+    private void switchToNextLevel() {
+        gameDocument.changeToNextLevel();
+        backgroundImage.setImage(ResourceFactory.randomBackgroundImage());
+
+        this_level.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
+
+        render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
+        gameDocument.getPlayer().syncIsAnimating(isAnimating);
+    }
+
+    @FXML
+    private void clickToggleMusic(MouseEvent mouseEvent) {
         menuBarClickToggleMusic();
     }
 
-    public void clickUndo(MouseEvent mouseEvent) {
-        // gameDocument.undo();
-        renderMap();
+    @FXML
+    private void clickUndo(MouseEvent mouseEvent) {
+        GameDocument restoreObject = GameStageSaver.pop();
+        if (restoreObject != null) {
+            Main.gameDocument.restoreObject(restoreObject);
+            canUndo.set(!GameStageSaver.isEmpty());
+            render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
+        } else {
+
+        }
     }
 
-    public void clickSaveGame(MouseEvent mouseEvent) {
+    @FXML
+    private void clickSaveGame(MouseEvent mouseEvent) {
+        GameStageSaver.saveToFile(this.gameDocument);
     }
 
-    public void clickToMenu(MouseEvent mouseEvent) {
+    @FXML
+    private void clickToMenu(MouseEvent mouseEvent) {
         GameView.backgroundMusicPlayer.stop();
         Main.primaryStage.setScene(Main.menuScene);
         MenuView.backgroundMusicPlayer.play();
-    }
-
-    private void renderMap() {
-
-        itemGrid.getChildren().removeAll();
-        playerGrid.getChildren().removeAll();
-
-        Image stageImage = ResourceFactory.STAGE_IMAGE;
-        for (AbstractGameObject object : gameDocument.getCurrentLevel().objectsGrid) {
-            if (!(object instanceof Wall)) {
-                ImageView stageImageView = new ImageView(stageImage);
-                stageImageView.setFitHeight(48);
-                stageImageView.setFitWidth(48);
-                stageGrid.add(stageImageView, object.at().x, object.at().y);
-            }
-        }
-
-        Image diamondImage = ResourceFactory.DIAMOND_IMAGE;
-        for (AbstractGameObject object : gameDocument.getCurrentLevel().diamondsGrid) {
-            if (object instanceof Diamond) {
-                ImageView diamondImageView = new ImageView(diamondImage);
-                diamondImageView.setFitHeight(16);
-                diamondImageView.setFitWidth(16);
-                diamondImageView.setTranslateX(16);
-                diamondImageView.setTranslateY(-10);
-                diamondsGrid.add(diamondImageView, object.at().x, object.at().y);
-            }
-        }
-
-        Image crateImage = ResourceFactory.CRATE_IMAGE;
-        for (AbstractGameObject object : gameDocument.getCurrentLevel().objectsGrid) {
-            if (object instanceof Crate) {
-                ImageView crateImageView = new ImageView(crateImage);
-                crateImageView.setFitHeight(38);
-                crateImageView.setFitWidth(35);
-                crateImageView.setTranslateX(7);
-                crateImageView.setTranslateY(-20);
-                itemGrid.add(crateImageView, object.at().x, object.at().y);
-
-                crateImageViewMap.put((Crate)object, crateImageView);
-            }
-        }
-
-        Image playerFrontImage = ResourceFactory.PLAYER_FRONT_IMAGE;
-        for (AbstractGameObject object : gameDocument.getCurrentLevel().objectsGrid) {
-            if (object instanceof Keeper) {
-                ImageView playerImageView = new ImageView(playerFrontImage);
-                playerImageView.setFitHeight(38);
-                playerImageView.setFitWidth(35);
-                playerImageView.setTranslateX(7);
-                playerImageView.setTranslateY(-20);
-                this.keeperImageView = playerImageView;
-                playerGrid.add(playerImageView, object.at().x, object.at().y);
-            }
-        }
-    }
-
-    private void renderPlayerCrateHierarchy(boolean isPlayerOnFirstStage) {
-        if (isPlayerOnFirstStage) {
-            playerGrid.toFront();
-        } else {
-            itemGrid.toFront();
-        }
     }
 }

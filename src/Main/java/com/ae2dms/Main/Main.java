@@ -37,6 +37,7 @@ public class Main extends Application {
     public static Stage primaryStage;
     public static GameDocument gameDocument;
     public static Scene menuScene;
+    public static Font smartisanMaquetteBold;
     private File saveFile;
 
     public static void main(String[] args) {
@@ -46,7 +47,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Font.loadFont(Main.class.getResource("/font/SmartisanMaquetteBold.woff.ttf").toExternalForm(), 10);
+        smartisanMaquetteBold = Font.loadFont(Main.class.getResourceAsStream("/font/SmartisanMaquetteBold.ttf"), 20);
 
         Main.primaryStage = primaryStage;
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/icon/icon.jpg")));
