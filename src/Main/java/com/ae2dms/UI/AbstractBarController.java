@@ -83,12 +83,12 @@ public class AbstractBarController {
         switch (name) {
             case "Undo" -> {
                 undoSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Undo.png"))));
-                undoSwitch.getStyleClass().clear();
+                undoSwitch.getStyleClass().add("Button");
                 undoSwitch.setDisable(false);
             }
             case "Save Game" -> {
                 saveGameSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Save_Game.png"))));
-                saveGameSwitch.getStyleClass().clear();
+                saveGameSwitch.getStyleClass().add("Button");
                 saveGameSwitch.setDisable(false);
             }
         };

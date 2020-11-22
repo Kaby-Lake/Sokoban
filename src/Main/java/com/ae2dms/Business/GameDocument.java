@@ -1,8 +1,9 @@
 package com.ae2dms.Business;
 
+import com.ae2dms.Business.Data.GameRecord;
 import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.Objects.Player;
-import com.ae2dms.IO.*;
+import com.ae2dms.IO.MapFileLoader;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -13,26 +14,30 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class GameDocument implements Serializable {
-    public int highestScore;
+    public transient IntegerProperty highestScore = new SimpleIntegerProperty(0);  // IntegerProperty cannot be Serialized
+    private int highestScoreSerializable;   // only used for backup of IntegerProperty highestScore
+
     public static final String GAME_NAME = "SokobanFX";
     public static transient GameLogger logger;
+
     public transient IntegerProperty movesCount = new SimpleIntegerProperty(0);
-    private int movesCountSerializable; // only used when Serializing
+    private int movesCountSerializable; // only used for backup of IntegerProperty movesCount
+
     public String mapSetName;
     private transient static boolean debug = false;
     private Level currentLevel;
     private List<Level> levels;
     private Player playerObject;
     private boolean gameComplete = false;
+    private int initialMapHashCode;
+
+    private transient GameRecord records = new GameRecord();
 
     public GameDocument(InputStream input, boolean production) {
         init(input);
     }
 
     private void init(InputStream input) {
-        // TODO:
-        this.highestScore = 200;
-
 
         try {
             logger = new GameLogger();
@@ -41,13 +46,16 @@ public class GameDocument implements Serializable {
         } catch (IOException x) {
             System.out.println("Cannot create logger.");
         } catch (NoSuchElementException e) {
-            logger.warning("Cannot load the default map file: " + e.getStackTrace());
+            logger.warning("Cannot load the map file: " + e.getStackTrace());
         }
+
+        loadGameRecords();
+        this.highestScore.bindBidirectional(records.highestScore);
+        serializeInitialState();
     }
 
     public Player getPlayer() {
         return this.playerObject;
-
     }
 
     public static boolean isDebugActive() {
@@ -61,6 +69,7 @@ public class GameDocument implements Serializable {
             loader.loadMapFile(input);
             this.levels = loader.getLevels();
             this.mapSetName = loader.getMapSetName();
+            this.initialMapHashCode = loader.getMapHashCode();
 
         } catch (IOException e) {
             logger.severe("Error trying to load the game file: " + e);
@@ -71,6 +80,13 @@ public class GameDocument implements Serializable {
 
     public boolean isLevelComplete() {
         return this.currentLevel.isComplete();
+    }
+
+    public boolean isGameComplete() {
+        for (Level level : levels) {
+            if (!level.isComplete()) return false;
+        }
+        return true;
     }
 
     public void changeToNextLevel() {
@@ -104,17 +120,18 @@ public class GameDocument implements Serializable {
 
     public void reloadMapFromFile(InputStream input) {
         init(input);
-        this.highestScore = 0;
+        loadGameRecords();
         this.movesCount.set(0);
     }
 
-    public void reloadDataFromFile(InputStream input) {
+    public void reloadStateFromFile(InputStream input) {
         // TODO: flush the whole Object with new Data
     }
 
-    public void serializeObject() {
+    public void serializeCurrentState() {
         try {
             this.movesCountSerializable = this.movesCount.getValue();
+            this.highestScoreSerializable = this.highestScore.getValue();
             GameStageSaver.push(this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,12 +139,31 @@ public class GameDocument implements Serializable {
     }
 
     public void restoreObject(GameDocument object) {
-        this.highestScore = object.highestScore;
+        if (object == null) {
+            return;
+        }
+        this.highestScore.set(object.highestScoreSerializable);
         this.movesCount.set(object.movesCountSerializable);
+
         this.mapSetName = object.mapSetName;
         this.currentLevel = object.currentLevel;
         this.levels = object.levels;
         this.playerObject = object.playerObject;
         this.gameComplete = object.gameComplete;
+        this.initialMapHashCode = object.initialMapHashCode;
+    }
+
+    public void serializeInitialState() {
+        try {
+            this.movesCountSerializable = this.movesCount.getValue();
+            this.highestScoreSerializable = this.highestScore.getValue();
+            GameStageSaver.pushInitialState(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadGameRecords() {
+        records.readInRecords(this.mapSetName, this.initialMapHashCode);
     }
 }

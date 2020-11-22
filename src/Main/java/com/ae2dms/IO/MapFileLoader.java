@@ -1,11 +1,9 @@
 package com.ae2dms.IO;
 
 import com.ae2dms.Business.Data.Level;
+import org.apache.commons.io.IOUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,6 +11,7 @@ import java.util.List;
 public class MapFileLoader {
     private final ArrayList<Level> levels;
     private String mapSetName;
+    private String rawMapFile;
 
     public MapFileLoader() {
         levels = new ArrayList<>(5);
@@ -29,7 +28,9 @@ public class MapFileLoader {
 
     public void loadMapFile(InputStream input) throws IOException, NullPointerException {
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+        rawMapFile = IOUtils.toString(input, "utf-8");
+
+        BufferedReader reader = new BufferedReader(new StringReader(rawMapFile));
             boolean firstLevelIsParsed = false;
             List<String> rawLevel = new ArrayList<>();
             String levelName = "";
@@ -72,5 +73,9 @@ public class MapFileLoader {
                 }
             }
 
+    }
+
+    public int getMapHashCode() {
+        return rawMapFile.hashCode();
     }
 }

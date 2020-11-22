@@ -38,7 +38,6 @@ public class Main extends Application {
     public static GameDocument gameDocument;
     public static Scene menuScene;
     public static Font smartisanMaquetteBold;
-    private File saveFile;
 
     public static void main(String[] args) {
         launch(args);
@@ -52,11 +51,7 @@ public class Main extends Application {
         Main.primaryStage = primaryStage;
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/icon/icon.jpg")));
 
-//        GridPane root = new GridPane();
-//        root.add(menuBarInit(), 0, 0);
-//        root.add(gameGrid, 0, 1);
-//        root.add(MenuView.getInstance(), 0, 1);
-        loadDefaultGameMapAndInitDocument(Main.primaryStage);
+        loadDefaultGameMapAndInitDocument();
         Pane menuView = MenuView.getInstance();
 
 
@@ -68,64 +63,9 @@ public class Main extends Application {
 
     }
 
-    private MenuBar menuBarInit() {
-        MenuBar menu = new MenuBar();
-
-        MenuItem menuItemSaveGame = new MenuItem("Save Game");
-        menuItemSaveGame.setDisable(true);
-        menuItemSaveGame.setOnAction(actionEvent -> saveGame());
-        MenuItem menuItemLoadGame = new MenuItem("Load Game");
-        menuItemLoadGame.setOnAction(actionEvent -> loadGame());
-        MenuItem menuItemExit = new MenuItem("Exit");
-        menuItemExit.setOnAction(actionEvent -> closeGame());
-        Menu menuFile = new Menu("File");
-        menuFile.getItems().addAll(menuItemSaveGame, menuItemLoadGame, new SeparatorMenuItem(), menuItemExit);
-
-        MenuItem menuItemUndo = new MenuItem("Undo");
-        menuItemUndo.setDisable(true);
-        menuItemUndo.setOnAction(actionEvent -> undo());
-        RadioMenuItem radioMenuItemMusic = new RadioMenuItem("Toggle Music");
-        radioMenuItemMusic.setOnAction(actionEvent -> toggleMusic());
-        RadioMenuItem radioMenuItemDebug = new RadioMenuItem("Toggle Debug");
-        radioMenuItemDebug.setOnAction(actionEvent -> toggleDebug());
-        MenuItem menuItemResetLevel = new MenuItem("Reset Level");
-        menuItemResetLevel.setOnAction(actionEvent -> resetLevel());
-        Menu menuLevel = new Menu("Level");
-        menuLevel.getItems().addAll(menuItemUndo, radioMenuItemMusic, radioMenuItemDebug,
-                new SeparatorMenuItem(), menuItemResetLevel);
-
-        MenuItem menuItemGame = new MenuItem("About This Game");
-        Menu menuAbout = new Menu("About");
-        menuAbout.setOnAction(actionEvent -> showAbout());
-        menuAbout.getItems().addAll(menuItemGame);
-        menu.getMenus().addAll(menuFile, menuLevel, menuAbout);
-
-        return menu;
-    }
-
-    void loadDefaultGameMapAndInitDocument(Stage primaryStage) {
-        Main.primaryStage = primaryStage;
+    void loadDefaultGameMapAndInitDocument() {
         InputStream in = getClass().getClassLoader().getResourceAsStream("level/SampleGame.skb");
         Main.gameDocument = new GameDocument(in, true);
-    }
-
-    private void loadGameFile() throws FileNotFoundException {
-
-    }
-
-    private void reloadGrid() {
-//        if (gameDocument.isGameComplete()) {
-//            showVictoryMessage();
-//            return;
-//        }
-//
-//        Level currentLevel = gameDocument.getCurrentLevel();
-//        Level.LevelIterator levelGridIterator = (Level.LevelIterator) currentLevel.iterator();
-//        gameGrid.getChildren().clear();
-//        while (levelGridIterator.hasNext()) {
-//            addObjectToGrid(levelGridIterator.next(), levelGridIterator.getcurrentposition());
-//        }gameGrid.autosize();
-//        primaryStage.sizeToScene();
     }
 
     private void showVictoryMessage() {
@@ -159,49 +99,5 @@ public class Main extends Application {
         Scene dialogScene = new Scene(dialogVbox, 350, 150);
         dialog.setScene(dialogScene);
         dialog.show();
-    }
-
-    private void addObjectToGrid(AbstractGameObject gameObject, Point location) {
-//        GraphicObject graphicObject = new GraphicObject(gameObject);
-//        gameGrid.add(graphicObject, location.y, location.x);
-    }
-
-    public void closeGame() {
-        System.exit(0);
-    }
-
-    public void saveGame() {
-    }
-
-    public void loadGame() {
-        try {
-            loadGameFile();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void undo() {
-        closeGame();
-    }
-
-    public void resetLevel() {
-        //TODO: implement Reset Level functionality
-    }
-
-    public void showAbout() {
-        String title = "About this game";
-        String message = "Game created by XXX\n";
-
-        newDialog(title, message, null);
-    }
-
-    public void toggleMusic() {
-        // TODO: implement Toggle music functionality
-    }
-
-    public void toggleDebug() {
-        // gameDocument.toggleDebug();
-        reloadGrid();
     }
 }
