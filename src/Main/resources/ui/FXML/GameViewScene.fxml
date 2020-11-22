@@ -283,7 +283,7 @@
             <Group layoutX="45.0">
                <children>
                    <ImageView layoutX="1110.0" layoutY="15.0">
-                       <Image url="@../Assets/Game/Score_Board.png"/>
+                       <Image url="@../Assets/Game/Score_Board.png" />
                    </ImageView>
 
             
@@ -306,7 +306,7 @@
                   <Group layoutX="555.0">
                      <children>
                          <ImageView fitHeight="54.0" fitWidth="200.0">
-                             <Image url="@../Assets/Game/Level_Progress.png"/>
+                             <Image url="@../Assets/Game/Level_Progress.png" />
                          </ImageView>
                         <BorderPane layoutX="77.0" layoutY="10.0" prefHeight="24.0" prefWidth="40.0">
                            <center>
@@ -377,7 +377,28 @@
                   </Group>
                </children>
             </Group>
-         </center></BorderPane>
+         </center>
+      </BorderPane>
+
+       <BorderPane fx:id="Confirm_Exit_Pop_Up" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="Hide">
+           <center>
+               <Group BorderPane.alignment="CENTER">
+               <children>
+                   <ImageView fitHeight="359.0" fitWidth="622.0">
+                       <Image url="@../Assets/Game/Confirm_Exit.png"/>
+                   </ImageView>
+                   <ImageView fx:id="Confirm_Exit_Back" layoutX="33.0" layoutY="280.0" styleClass="Button">
+                       <Image url="@../Assets/Game/Back_To_Game.png"/>
+                   </ImageView>
+                   <ImageView fx:id="Confirm_Exit_Exit" layoutX="405.0" layoutY="280.0" styleClass="Button">
+                       <Image url="@../Assets/Game/Exit_Game.png"/>
+                   </ImageView>
+                   <ImageView layoutX="218.0" layoutY="193.0" styleClass="Button" onMouseClicked="#clickSaveGame">
+                       <Image url="@../Assets/Game/Save_Game.png"/>
+                   </ImageView>
+               </children></Group>
+           </center>
+       </BorderPane>
 
    </children>
 </Pane>

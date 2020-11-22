@@ -1,33 +1,80 @@
 package com.ae2dms.Business;
 
 import com.ae2dms.Main.Main;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.stage.FileChooser;
 
+import javax.sound.sampled.BooleanControl;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.LinkedList;
 
 public class GameStageSaver {
-    private static LinkedList<String> GameDocumentJsonList = new LinkedList<>();
-    private static int limit = 15;
 
-    /** Read the object from Base64 string. */
-    public static boolean isEmpty() {
-        return GameDocumentJsonList.isEmpty();
+    private static ObservableList<String> GameDocumentJsonList = FXCollections.observableList(new ArrayList<String>());
+
+    private static String initialGameDocumentState;
+    private static final int LIMIT = 15;
+
+    public static BooleanProperty canUndo = new SimpleBooleanProperty(!GameDocumentJsonList.isEmpty());
+
+    static {
+        GameDocumentJsonList.addListener((ListChangeListener) change -> canUndo.setValue(!GameDocumentJsonList.isEmpty()));
+    }
+
+    public static void clear() {
+        GameDocumentJsonList.clear();
+        initialGameDocumentState = null;
     }
 
     public static GameDocument pop() {
         try {
-            if (isEmpty()) {
+            if (!canUndo.getValue()) {
                 return null;
             }
-            String string = GameDocumentJsonList.pop();
-            byte[] data = Base64.getDecoder().decode(string);
-            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
-            GameDocument object = (GameDocument) ois.readObject();
-            ois.close();
-            return object;
+            return (GameDocument) decode(GameDocumentJsonList.remove(GameDocumentJsonList.size() - 1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Object decode(String coding) throws IOException, ClassNotFoundException {
+        byte[] data = Base64.getDecoder().decode(coding);
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+        Object object = ois.readObject();
+        ois.close();
+        return object;
+    }
+
+    public static String encode(Object object) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream( baos );
+        oos.writeObject(object);
+        oos.close();
+        return Base64.getEncoder().encodeToString(baos.toByteArray());
+    }
+
+    public static void pushInitialState(GameDocument object) {
+        try {
+            initialGameDocumentState = encode(object);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static GameDocument getInitialState() {
+        try {
+            if (initialGameDocumentState == null) {
+                return null;
+            }
+            return (GameDocument) decode(initialGameDocumentState);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -37,13 +84,9 @@ public class GameStageSaver {
     /** Write the object to a Base64 string. */
     public static void push(GameDocument object) {
         try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream( baos );
-            oos.writeObject(object);
-            oos.close();
-            GameDocumentJsonList.push(Base64.getEncoder().encodeToString(baos.toByteArray()));
-            if (GameDocumentJsonList.size() > 15) {
-                GameDocumentJsonList.removeLast();
+            GameDocumentJsonList.add(encode(object));
+            if (GameDocumentJsonList.size() > LIMIT) {
+                GameDocumentJsonList.remove(0);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,15 +110,9 @@ public class GameStageSaver {
 
         if (file != null) {
             try {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ObjectOutputStream oos = new ObjectOutputStream( baos );
-                oos.writeObject(object);
-                oos.close();
-
                 FileWriter writer = new FileWriter(file);
-                writer.write(Base64.getEncoder().encodeToString(baos.toByteArray()));
+                writer.write(encode(object));
                 writer.close();
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

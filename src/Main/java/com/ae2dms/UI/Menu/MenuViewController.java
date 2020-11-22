@@ -1,6 +1,7 @@
 package com.ae2dms.UI.Menu;
 
 import com.ae2dms.Business.GameDocument;
+import com.ae2dms.Business.GameStageSaver;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.Game.GameView;
@@ -47,7 +48,7 @@ public class MenuViewController extends AbstractBarController {
             }
         });
 
-        this.highestScoreValue.setValue(gameDocument.highestScore);
+        this.highestScoreValue.bindBidirectional(gameDocument.highestScore);
         this.bindHighestScore(highestScoreValue);
 
         setKeyboardHandler();
@@ -89,6 +90,7 @@ public class MenuViewController extends AbstractBarController {
     public void clickStartGame(MouseEvent mouseEvent) throws Exception {
         MenuView.backgroundMusicPlayer.stop();
 
+        this.gameDocument.restoreObject(GameStageSaver.getInitialState());
         GameView gameView = new GameView();
         Scene gameViewScene = new Scene(gameView.getView());
         gameView.bind(gameViewScene);
