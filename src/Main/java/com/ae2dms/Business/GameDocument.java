@@ -119,8 +119,7 @@ public class GameDocument implements Serializable {
     }
 
     public void reloadMapFromFile(InputStream input) {
-        init(input);
-        loadGameRecords();
+        this.init(input);
         this.movesCount.set(0);
     }
 

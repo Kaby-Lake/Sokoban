@@ -8,19 +8,18 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.stage.FileChooser;
 
-import javax.sound.sampled.BooleanControl;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
-import java.util.LinkedList;
 
 public class GameStageSaver {
 
-    private static ObservableList<String> GameDocumentJsonList = FXCollections.observableList(new ArrayList<String>());
+    private static final int LIMIT = 20;
+
+    private static ObservableList<String> GameDocumentJsonList = FXCollections.observableList(new ArrayList<>(LIMIT));
 
     private static String initialGameDocumentState;
-    private static final int LIMIT = 15;
 
     public static BooleanProperty canUndo = new SimpleBooleanProperty(!GameDocumentJsonList.isEmpty());
 
@@ -84,10 +83,10 @@ public class GameStageSaver {
     /** Write the object to a Base64 string. */
     public static void push(GameDocument object) {
         try {
-            GameDocumentJsonList.add(encode(object));
-            if (GameDocumentJsonList.size() > LIMIT) {
+            if (GameDocumentJsonList.size() >= LIMIT - 1) {
                 GameDocumentJsonList.remove(0);
             }
+            GameDocumentJsonList.add(encode(object));
         } catch (Exception e) {
             e.printStackTrace();
         }

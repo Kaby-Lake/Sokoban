@@ -1,16 +1,13 @@
 package com.ae2dms.GameObject.Objects;
 
 import com.ae2dms.Business.Data.GameGrid;
-import com.ae2dms.Business.GraphicRender;
-import com.ae2dms.GameObject.*;
+import com.ae2dms.GameObject.AbstractGameObject;
+import com.ae2dms.GameObject.Movable;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.UI.Game.GameViewController;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
@@ -108,11 +105,11 @@ public class Player extends AbstractGameObject implements Movable {
         if (objectOnDestination instanceof Floor) {
             moveToFloor(targetPosition);
             render.renderPlayerCrateHierarchyBeforeAnimation(this);
-            animatePlayer(delta);
+            animatePlayer(delta, 0);
         } else if (objectOnDestination instanceof Crate) {
             ((Crate) objectOnDestination).moveBy(delta);
             moveToFloor(targetPosition);
-            animatePlayer(delta);
+            animatePlayer(delta, 1);
         } else {
             throw new IllegalMovementException();
         }
@@ -129,10 +126,16 @@ public class Player extends AbstractGameObject implements Movable {
         this.yPosition = position.y;
     }
 
-    private void animatePlayer(Point direction) {
+    private void animatePlayer(Point direction, int SFXType) {
+        switch (SFXType) {
+            case 0 -> {
+                GameViewController.soundEffects.get("MOVE_AUDIO_CLIP_MEDIA").play();
+            }
+            case 1 -> {
+                GameViewController.soundEffects.get("MOVE_CRATE_AUDIO_CLIP_MEDIA").play();
+            }
+        }
         isAnimating.set(true);
-
-        GameViewController.soundEffects.get("MOVE_AUDIO_CLIP_MEDIA").play();
 
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), this.view);
 

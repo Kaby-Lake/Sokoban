@@ -1,8 +1,10 @@
 package com.ae2dms.UI;
 
+import com.ae2dms.Main.Main;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -13,14 +15,16 @@ public class AbstractBarController {
     @FXML
     private ImageView undoSwitch;
 
-    public final BooleanProperty musicSwitchToggle;
+    public BooleanProperty musicIsMute = new SimpleBooleanProperty();
+
     @FXML
     private ImageView musicSwitch;
 
     @FXML
     public Label highestScore;
 
-    public final BooleanProperty debugSwitchToggle;
+    public final BooleanProperty debugSwitchToggle = new SimpleBooleanProperty(false);
+
     @FXML
     private ImageView debugSwitch;
 
@@ -32,9 +36,8 @@ public class AbstractBarController {
 
 
     public AbstractBarController() {
-        this.musicSwitchToggle = new SimpleBooleanProperty(true);
-        this.debugSwitchToggle = new SimpleBooleanProperty(false);
 
+        musicIsMute.bindBidirectional(Main.prefMusicIsMute);
 
         debugSwitchToggle.addListener((observable, oldValue, newValue) -> {
             if (observable != null && observable.getValue()==true) {
@@ -44,11 +47,11 @@ public class AbstractBarController {
             }
         });
 
-        musicSwitchToggle.addListener((observable, oldValue, newValue) -> {
+        musicIsMute.addListener((observable, oldValue, newValue) -> {
             if (observable != null && observable.getValue()==true) {
-                musicSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Music_on.png"))));
-            } else if (observable != null && observable.getValue()==false){
                 musicSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Music_off.png"))));
+            } else if (observable != null && observable.getValue()==false){
+                musicSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Music_on.png"))));
             }
         });
     }
@@ -101,11 +104,11 @@ public class AbstractBarController {
     }
 
     public void menuBarClickToggleMusic() {
-        musicSwitchToggle.setValue(!musicSwitchToggle.getValue());
+        musicIsMute.setValue(!musicIsMute.getValue());
     }
 
-    public void bindHighestScore(IntegerProperty _highestScore) {
-        this.highestScore.textProperty().bind(_highestScore.asString());
+    public void menuBarSetMusicIsMute(boolean value) {
+        musicIsMute.setValue(value);
     }
 
 }

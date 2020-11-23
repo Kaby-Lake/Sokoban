@@ -1,17 +1,11 @@
 package com.ae2dms.UI.Game;
 
-import com.ae2dms.Business.GameDocument;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.UI.ViewUtilities;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 public class GameView {
 
@@ -20,9 +14,12 @@ public class GameView {
     private GameViewController controller;
 
     public GameView() throws Exception {
-        Media backgroundMusic = ResourceFactory.GAME_BACKGROUND_MUSIC;
-        backgroundMusicPlayer = new MediaPlayer(backgroundMusic);
-        backgroundMusicPlayer.setOnEndOfMedia(() -> backgroundMusicPlayer.seek(Duration.ZERO));
+
+        backgroundMusicPlayer = new MediaPlayer(ResourceFactory.randomBackgroundMusic());
+        backgroundMusicPlayer.setOnEndOfMedia(() -> {
+            backgroundMusicPlayer = new MediaPlayer(ResourceFactory.randomBackgroundMusic());
+            backgroundMusicPlayer.play();
+        });
         backgroundMusicPlayer.play();
 
         FXMLLoader gameLoader = new FXMLLoader(GameView.class.getResource("/ui/FXML/GameViewScene.fxml"));

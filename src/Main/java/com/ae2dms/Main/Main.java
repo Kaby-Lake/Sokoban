@@ -1,43 +1,33 @@
 package com.ae2dms.Main;
 
-import com.ae2dms.UI.Game.GameView;
+import com.ae2dms.Business.GameDocument;
+import com.ae2dms.UI.Menu.MenuView;
 import javafx.application.Application;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.*;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.MotionBlur;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.text.Font;
 
-import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import com.ae2dms.GameObject.*;
-import com.ae2dms.Business.*;
-import com.ae2dms.Business.Data.*;
-import com.ae2dms.UI.Menu.*;
-import javafx.scene.image.Image;
 
 public class Main extends Application {
     public static Stage primaryStage;
     public static GameDocument gameDocument;
     public static Scene menuScene;
     public static Font smartisanMaquetteBold;
+
+    public static BooleanProperty prefMusicIsMute = new SimpleBooleanProperty(false);
 
     public static void main(String[] args) {
         launch(args);

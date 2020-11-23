@@ -1,14 +1,11 @@
 package com.ae2dms.GameObject.Objects;
 
 
-
 import com.ae2dms.Business.Data.GameGrid;
-import com.ae2dms.GameObject.*;
+import com.ae2dms.GameObject.AbstractGameObject;
+import com.ae2dms.GameObject.Movable;
 import com.ae2dms.IO.ResourceFactory;
-import com.ae2dms.UI.Game.GameViewController;
 import javafx.animation.TranslateTransition;
-import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 

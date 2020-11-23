@@ -1,14 +1,18 @@
 package com.ae2dms.Business.Data;
 
-import com.ae2dms.Business.GameDocument;
 import com.ae2dms.Business.GameStageSaver;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import org.apache.commons.io.FileUtils;
 
-import java.io.*;
-import java.util.*;
-import java.util.logging.FileHandler;
+import java.io.EOFException;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.UUID;
 
 public class GameRecord implements Serializable {
 
@@ -58,6 +62,7 @@ public class GameRecord implements Serializable {
             }
             String recordsObjectEncode = FileUtils.readFileToString(file);
             GameRecord object = (GameRecord)GameStageSaver.decode(recordsObjectEncode);
+            this.records.clear();
             for (Record record : object.getRecords()) {
                 this.pushRecord(record.score, record.date, record.playerName, record.durationSeconds);
             }
