@@ -7,6 +7,7 @@ import com.ae2dms.Business.GraphicRender;
 import com.ae2dms.GameObject.Objects.IllegalMovementException;
 import com.ae2dms.GameObject.Objects.Player;
 import com.ae2dms.IO.ResourceFactory;
+import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.MediaState;
@@ -128,15 +129,15 @@ public class GameViewController extends AbstractBarController {
 
     public void initialize() throws IllegalStateException {
 
-        Background_Image.setImage(ResourceFactory.randomBackgroundImage());
+        Background_Image.setImage(ResourceFactory.getRandomBackgroundImage());
 
         super.disableButton("High score");
 
         // this.isLevelComplete.bindBidirectional(gameDocument.isLevelComplete());
-        soundEffects.put("UNMOVABLE_AUDIO_CLIP_MEDIA", ResourceFactory.UNMOVABLE_AUDIO_CLIP);
-        soundEffects.put("MOVE_AUDIO_CLIP_MEDIA", ResourceFactory.MOVE_AUDIO_CLIP);
-        soundEffects.put("MOVE_CRATE_AUDIO_CLIP_MEDIA", ResourceFactory.MOVE_CRATE_AUDIO_CLIP);
-        soundEffects.put("LEVEL_COMPLETE_AUDIO_CLIP", ResourceFactory.LEVEL_COMPLETE_AUDIO_CLIP);
+        soundEffects.put("UNMOVABLE_AUDIO_CLIP_MEDIA", (AudioClip)ResourceFactory.getResource("UNMOVABLE_AUDIO_CLIP", ResourceType.AudioClip));
+        soundEffects.put("MOVE_AUDIO_CLIP_MEDIA", (AudioClip)ResourceFactory.getResource("MOVE_AUDIO_CLIP", ResourceType.AudioClip));
+        soundEffects.put("MOVE_CRATE_AUDIO_CLIP_MEDIA", (AudioClip)ResourceFactory.getResource("MOVE_CRATE_AUDIO_CLIP", ResourceType.AudioClip));
+        soundEffects.put("LEVEL_COMPLETE_AUDIO_CLIP", (AudioClip)ResourceFactory.getResource("LEVEL_COMPLETE_AUDIO_CLIP",ResourceType.AudioClip));
 
         This_Level_Index.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
 
@@ -319,7 +320,7 @@ public class GameViewController extends AbstractBarController {
 
     private void switchToNextLevel() {
         gameDocument.changeToNextLevel();
-        Background_Image.setImage(ResourceFactory.randomBackgroundImage());
+        Background_Image.setImage(ResourceFactory.getRandomBackgroundImage());
 
         This_Level_Index.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
 

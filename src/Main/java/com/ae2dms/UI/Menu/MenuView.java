@@ -17,9 +17,9 @@ public class MenuView {
     private Pane view;
 
     private MenuView() {
-        backgroundMusicPlayer = new MediaPlayer(ResourceFactory.randomBackgroundMusic());
+        backgroundMusicPlayer = new MediaPlayer(ResourceFactory.getRandomBackgroundMusic());
         backgroundMusicPlayer.setOnEndOfMedia(() -> {
-            backgroundMusicPlayer = new MediaPlayer(ResourceFactory.randomBackgroundMusic());
+            backgroundMusicPlayer = new MediaPlayer(ResourceFactory.getRandomBackgroundMusic());
             backgroundMusicPlayer.play();
         });
         backgroundMusicPlayer.play();
