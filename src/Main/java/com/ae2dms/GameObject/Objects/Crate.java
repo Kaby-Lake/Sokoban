@@ -5,8 +5,10 @@ import com.ae2dms.Business.Data.GameGrid;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.GameObject.Movable;
 import com.ae2dms.IO.ResourceFactory;
+import com.ae2dms.IO.ResourceType;
 import javafx.animation.TranslateTransition;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
+import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 import java.awt.*;
@@ -42,12 +44,12 @@ public class Crate extends AbstractGameObject implements Movable {
     public ImageView render() {
         if (this.view != null) {
             if (isOnDiamond()) {
-                this.view.setImage(ResourceFactory.CRATE_ON_DIAMOND_IMAGE);
+                this.view.setImage((Image)ResourceFactory.getResource("CRATE_ON_DIAMOND_IMAGE", ResourceType.Image));
             } else {
-                this.view.setImage(ResourceFactory.CRATE_IMAGE);
+                this.view.setImage((Image)ResourceFactory.getResource("CRATE_IMAGE", ResourceType.Image));
             }
         } else {
-            this.view = new ImageView(ResourceFactory.CRATE_IMAGE);
+            this.view = new ImageView((Image)ResourceFactory.getResource("CRATE_IMAGE", ResourceType.Image));
             this.view.setFitHeight(38);
             this.view.setFitWidth(35);
             this.view.setTranslateX(7);

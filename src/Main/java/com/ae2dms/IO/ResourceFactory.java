@@ -56,11 +56,11 @@ public class ResourceFactory {
         return null;
     }
 
-    public static Object getResource(String name, String type) {
+    public static Object getResource(String name, ResourceType type) {
         String url = urlMap.get(name);
 
         switch (type) {
-            case "Media" -> {
+            case Media -> {
                 if (mediaShelf.containsKey(url)) {
                     return mediaShelf.get(url);
                 } else {
@@ -69,7 +69,7 @@ public class ResourceFactory {
                     return object;
                 }
             }
-            case "Image" -> {
+            case Image -> {
                 if (imageShelf.containsKey(url)) {
                     return imageShelf.get(url);
                 } else {
@@ -78,7 +78,7 @@ public class ResourceFactory {
                     return object;
                 }
             }
-            case "AudioClip" -> {
+            case AudioClip -> {
                 if (audioClipShelf.containsKey(url)) {
                     return audioClipShelf.get(url);
                 } else {

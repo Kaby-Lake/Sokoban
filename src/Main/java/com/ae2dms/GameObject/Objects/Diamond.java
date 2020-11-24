@@ -3,6 +3,8 @@ package com.ae2dms.GameObject.Objects;
 import com.ae2dms.Business.Data.GameGrid;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.IO.ResourceFactory;
+import com.ae2dms.IO.ResourceType;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.awt.*;
@@ -31,7 +33,7 @@ public class Diamond extends AbstractGameObject {
     @Override
     public ImageView render() {
         if (this.view == null) {
-            this.view = new ImageView(ResourceFactory.DIAMOND_IMAGE);
+            this.view = new ImageView((Image) ResourceFactory.getResource("DIAMOND_IMAGE", ResourceType.Image));
             this.view.setFitHeight(16);
             this.view.setFitWidth(16);
             this.view.setTranslateX(16);
