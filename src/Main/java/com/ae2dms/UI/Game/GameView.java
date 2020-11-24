@@ -15,9 +15,9 @@ public class GameView {
 
     public GameView() throws Exception {
 
-        backgroundMusicPlayer = new MediaPlayer(ResourceFactory.randomBackgroundMusic());
+        backgroundMusicPlayer = new MediaPlayer(ResourceFactory.getRandomBackgroundMusic());
         backgroundMusicPlayer.setOnEndOfMedia(() -> {
-            backgroundMusicPlayer = new MediaPlayer(ResourceFactory.randomBackgroundMusic());
+            backgroundMusicPlayer = new MediaPlayer(ResourceFactory.getRandomBackgroundMusic());
             backgroundMusicPlayer.play();
         });
         backgroundMusicPlayer.play();

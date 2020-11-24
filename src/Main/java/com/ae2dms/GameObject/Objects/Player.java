@@ -4,6 +4,7 @@ import com.ae2dms.Business.Data.GameGrid;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.GameObject.Movable;
 import com.ae2dms.IO.ResourceFactory;
+import com.ae2dms.IO.ResourceType;
 import com.ae2dms.UI.Game.GameViewController;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
@@ -51,15 +52,15 @@ public class Player extends AbstractGameObject implements Movable {
     public ImageView headTo(Point direction) {
         Image playerDirectionalImage;
         if (new Point(0, 1).equals(direction)) {
-            playerDirectionalImage = ResourceFactory.PLAYER_FRONT_IMAGE;
+            playerDirectionalImage = (Image)ResourceFactory.getResource("PLAYER_FRONT_IMAGE", ResourceType.Image);
         } else if (new Point(0, -1).equals(direction)) {
-            playerDirectionalImage = ResourceFactory.PLAYER_BACK_IMAGE;
+            playerDirectionalImage = (Image)ResourceFactory.getResource("PLAYER_BACK_IMAGE", ResourceType.Image);
         } else if (new Point(-1, 0).equals(direction)) {
-            playerDirectionalImage = ResourceFactory.PLAYER_LEFT_IMAGE;
+            playerDirectionalImage = (Image)ResourceFactory.getResource("PLAYER_LEFT_IMAGE", ResourceType.Image);
         } else if (new Point(1, 0).equals(direction)) {
-            playerDirectionalImage = ResourceFactory.PLAYER_RIGHT_IMAGE;
+            playerDirectionalImage = (Image)ResourceFactory.getResource("PLAYER_RIGHT_IMAGE", ResourceType.Image);
         } else {
-            playerDirectionalImage = ResourceFactory.PLAYER_FRONT_IMAGE;
+            playerDirectionalImage = (Image)ResourceFactory.getResource("PLAYER_FRONT_IMAGE", ResourceType.Image);
         }
 
         if (this.view != null) {
