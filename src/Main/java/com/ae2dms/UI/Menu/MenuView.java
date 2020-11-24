@@ -14,9 +14,9 @@ public class MenuView {
 
     public static Pane getInstance() throws Exception {
         if(view == null) {
-            backgroundMusicPlayer = new MediaPlayer(ResourceFactory.randomBackgroundMusic());
+            backgroundMusicPlayer = new MediaPlayer(ResourceFactory.getRandomBackgroundMusic());
             backgroundMusicPlayer.setOnEndOfMedia(() -> {
-                backgroundMusicPlayer = new MediaPlayer(ResourceFactory.randomBackgroundMusic());
+                backgroundMusicPlayer = new MediaPlayer(ResourceFactory.getRandomBackgroundMusic());
                 backgroundMusicPlayer.play();
             });
             backgroundMusicPlayer.play();

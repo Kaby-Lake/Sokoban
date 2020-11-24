@@ -127,7 +127,7 @@ public class GameViewController extends AbstractBarController {
 
     public void initialize() throws IllegalStateException {
 
-        Background_Image.setImage(ResourceFactory.randomBackgroundImage());
+        Background_Image.setImage(ResourceFactory.getRandomBackgroundImage());
 
         super.disableButton("High score");
 
@@ -318,7 +318,7 @@ public class GameViewController extends AbstractBarController {
 
     private void switchToNextLevel() {
         gameDocument.changeToNextLevel();
-        Background_Image.setImage(ResourceFactory.randomBackgroundImage());
+        Background_Image.setImage(ResourceFactory.getRandomBackgroundImage());
 
         This_Level_Index.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
 
