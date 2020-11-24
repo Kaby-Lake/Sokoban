@@ -5,6 +5,7 @@ import com.ae2dms.Business.GameStageSaver;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.Game.GameView;
+import com.ae2dms.UI.MediaState;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
@@ -38,7 +39,11 @@ public class MenuViewController extends AbstractBarController {
 
         musicIsMute.addListener((observable, oldValue, newValue) -> {
             if (observable != null ) {
-                MenuView.backgroundMusicPlayer.setMute(observable.getValue());
+                if (observable.getValue() == true) {
+                    MenuView.getInstance().setMusic(MediaState.MUTE);
+                } else {
+                    MenuView.getInstance().setMusic(MediaState.NON_MUTE);
+                }
             }
         });
 
@@ -47,7 +52,7 @@ public class MenuViewController extends AbstractBarController {
 
 
     public void clickStartGame(MouseEvent mouseEvent) throws Exception {
-        MenuView.backgroundMusicPlayer.stop();
+        MenuView.getInstance().setMusic(MediaState.STOP);
 
         this.gameDocument.restoreObject(GameStageSaver.getInitialState());
         GameView gameView = new GameView();

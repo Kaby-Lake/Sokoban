@@ -10,6 +10,7 @@ import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
+import com.ae2dms.UI.MediaState;
 import com.ae2dms.UI.Menu.MenuView;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -365,7 +366,7 @@ public class GameViewController extends AbstractBarController {
 
             GameView.backgroundMusicPlayer.stop();
             Main.primaryStage.setScene(Main.menuScene);
-            MenuView.backgroundMusicPlayer.play();
+            MenuView.getInstance().setMusic(MediaState.PLAY);
         });
 
         Confirm_Exit_Back.setOnMouseClicked((event) -> {
