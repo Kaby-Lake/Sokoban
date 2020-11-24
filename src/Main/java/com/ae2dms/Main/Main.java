@@ -42,7 +42,7 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/icon/icon.jpg")));
 
         loadDefaultGameMapAndInitDocument();
-        Pane menuView = MenuView.getInstance();
+        Pane menuView = MenuView.getInstance().getView();
 
 
         primaryStage.setTitle(GameDocument.GAME_NAME);

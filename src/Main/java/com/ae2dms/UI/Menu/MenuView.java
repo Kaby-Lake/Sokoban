@@ -48,6 +48,7 @@ public class MenuView {
     public void setMusic(MediaState state) {
         switch (state) {
             case MUTE -> backgroundMusicPlayer.setMute(true);
+            case NON_MUTE -> backgroundMusicPlayer.setMute(false);
             case PLAY -> backgroundMusicPlayer.play();
             case PAUSE -> backgroundMusicPlayer.pause();
             case STOP -> backgroundMusicPlayer.stop();
