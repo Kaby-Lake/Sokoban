@@ -266,10 +266,11 @@ public class GameViewController extends AbstractBarController {
 
     private void checkIsLevelComplete() {
         if (gameDocument.isLevelComplete()) {
-
             GameViewController.soundEffects.get("LEVEL_COMPLETE_AUDIO_CLIP").play();
             this.timer.pause();
             this.gameStatus = GameStatus.PAUSE;
+
+            GameDebugger.logLevelComplete(this.gameDocument.getCurrentLevel(), this.Time_Spend.getText(), this.Score.getText());
 
             Level_Complete_Level_Index.setText(Integer.toString(this.gameDocument.getCurrentLevel().getIndex()));
             Level_Complete_Time.setText(this.Time_Spend.getText());
@@ -293,6 +294,8 @@ public class GameViewController extends AbstractBarController {
 
             timer.stop();
             gameStatus = GameStatus.END;
+
+            GameDebugger.logGameComplete(gameDocument.getLevelsCount(), this.Time_Spend.getText(), this.Score.getText());
 
             // TODO:
 
@@ -331,10 +334,13 @@ public class GameViewController extends AbstractBarController {
 
     @FXML
     private void clickUndo(MouseEvent mouseEvent) {
+        GameDebugger.logLevelComplete(this.gameDocument.getCurrentLevel(), this.Time_Spend.getText(), this.Score.getText());
+
         GameDocument restoreObject = GameStageSaver.pop();
         if (restoreObject != null) {
             Main.gameDocument.restoreObject(restoreObject);
             render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
+            GameDebugger.logUndo(this.gameDocument);
         }
     }
 

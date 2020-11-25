@@ -95,13 +95,9 @@ public class MenuViewController extends AbstractBarController {
         fileChooser.setTitle("Open Game Map File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban Map file", "*.skb"));
         File file = fileChooser.showOpenDialog(loadGameFileButton.getScene().getWindow());
-        GameDebugger.logLoadMapFile(file);
         if (file != null) {
-//            // System.out.println(file.getAbsolutePath());
-//            if (GameDocument.isDebugActive()) {
-//                GameDocument.logger.info("Loading save file: " + file.getName());
-//            }
             gameDocument.reloadMapFromFile(new FileInputStream(file));
+            GameDebugger.logLoadMapFile(file);
         }
     }
 

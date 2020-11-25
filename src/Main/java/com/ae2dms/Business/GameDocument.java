@@ -42,8 +42,6 @@ public class GameDocument implements Serializable {
             logger = new GameLogger();
             this.loadMapFile(input);
             currentLevel = getNextLevel();
-        } catch (IOException x) {
-            System.out.println("Cannot create logger.");
         } catch (NoSuchElementException e) {
             logger.warning("Cannot load the map file: " + e.getStackTrace());
         }
@@ -61,7 +59,11 @@ public class GameDocument implements Serializable {
     private void loadMapFile(InputStream input) {
         MapFileLoader loader = new MapFileLoader();
         try {
-            loader.loadMapFile(input);
+            if (!loader.loadMapFile(input)) {
+                GameDebugger.logLoadMapFailure();
+                return;
+            }
+
             this.levels = loader.getLevels();
             this.mapSetName = loader.getMapSetName();
             this.initialMapHashCode = loader.getMapHashCode();
