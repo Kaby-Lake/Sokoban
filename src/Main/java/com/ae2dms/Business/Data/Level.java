@@ -1,5 +1,6 @@
 package com.ae2dms.Business.Data;
 
+import com.ae2dms.Business.GameDebugger;
 import com.ae2dms.Business.GameDocument;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.GameObject.GameObjectFactory;
@@ -18,9 +19,10 @@ public final class Level implements Iterable<AbstractGameObject>, Serializable {
     private Point playerPosition = new Point(0, 0);
 
     public Level(String levelName, int levelIndex, List<String> rawLevel) {
-        if (GameDocument.isDebugActive()) {
-            System.out.printf("[ADDING LEVEL] LEVEL [%d]: %s\n", levelIndex, levelName);
-        }
+        GameDebugger.logReadLevel(levelIndex, levelName);
+//        if (GameDocument.isDebugActive()) {
+//            System.out.printf("[ADDING LEVEL] LEVEL [%d]: %s\n", levelIndex, levelName);
+//        }
 
         name = levelName;
         index = levelIndex;

@@ -179,6 +179,6 @@ public class Player extends AbstractGameObject implements Movable {
 
         parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
         parallelTransition.play();
-
     }
+
 }

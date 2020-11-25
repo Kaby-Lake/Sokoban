@@ -24,7 +24,6 @@ public class GameDocument implements Serializable {
     private int movesCountSerializable; // only used for backup of IntegerProperty movesCount
 
     public String mapSetName;
-    private transient static boolean debug = false;
     private Level currentLevel;
     private List<Level> levels;
     private Player playerObject;
@@ -56,10 +55,6 @@ public class GameDocument implements Serializable {
 
     public Player getPlayer() {
         return this.playerObject;
-    }
-
-    public static boolean isDebugActive() {
-        return debug;
     }
 
     // @change mapSetName
@@ -114,10 +109,6 @@ public class GameDocument implements Serializable {
         return levels.size();
     }
 
-    public void toggleDebug(Boolean bool) {
-        debug = bool;
-    }
-
     public void reloadMapFromFile(InputStream input) {
         this.init(input);
         this.movesCount.set(0);
@@ -125,6 +116,16 @@ public class GameDocument implements Serializable {
 
     public void reloadStateFromFile(InputStream input) {
         // TODO: flush the whole Object with new Data
+    }
+
+    private void serializeInitialState() {
+        try {
+            this.movesCountSerializable = this.movesCount.getValue();
+            this.highestScoreSerializable = this.highestScore.getValue();
+            GameStageSaver.pushInitialState(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void serializeCurrentState() {
@@ -150,16 +151,6 @@ public class GameDocument implements Serializable {
         this.playerObject = object.playerObject;
         this.gameComplete = object.gameComplete;
         this.initialMapHashCode = object.initialMapHashCode;
-    }
-
-    public void serializeInitialState() {
-        try {
-            this.movesCountSerializable = this.movesCount.getValue();
-            this.highestScoreSerializable = this.highestScore.getValue();
-            GameStageSaver.pushInitialState(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void loadGameRecords() {

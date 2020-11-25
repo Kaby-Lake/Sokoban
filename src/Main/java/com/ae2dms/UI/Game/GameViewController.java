@@ -1,9 +1,6 @@
 package com.ae2dms.UI.Game;
 
-import com.ae2dms.Business.GameDocument;
-import com.ae2dms.Business.GameStageSaver;
-import com.ae2dms.Business.GameTimer;
-import com.ae2dms.Business.GraphicRender;
+import com.ae2dms.Business.*;
 import com.ae2dms.GameObject.Objects.IllegalMovementException;
 import com.ae2dms.GameObject.Objects.Player;
 import com.ae2dms.IO.ResourceFactory;
@@ -245,6 +242,7 @@ public class GameViewController extends AbstractBarController {
         }
         isAnimating.set(true);
         gameDocument.serializeCurrentState();
+        GameDebugger.logMovement(this.gameDocument, direction);
 
         if (player.canMoveBy(direction)) {
             try {
@@ -257,15 +255,13 @@ public class GameViewController extends AbstractBarController {
             player.headTo(direction);
             player.shakeAnimation(direction);
         }
-//
-//        if (GameDocument.isDebugActive()) {
-//            System.out.println(code);
+
         checkIsLevelComplete();
     }
 
     @FXML
     private void clickToggleDebug() {
-//        gameDocument.toggleDebug(menuBarClickToggleDebug());
+        menuBarClickToggleDebug();
     }
 
     private void checkIsLevelComplete() {
