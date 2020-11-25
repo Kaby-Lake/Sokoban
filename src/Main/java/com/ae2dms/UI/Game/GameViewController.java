@@ -1,17 +1,16 @@
 package com.ae2dms.UI.Game;
 
-import com.ae2dms.Business.GameDocument;
-import com.ae2dms.Business.GameStageSaver;
-import com.ae2dms.Business.GraphicRender;
-import com.ae2dms.GameObject.Objects.*;
+import com.ae2dms.Business.*;
+import com.ae2dms.GameObject.Objects.IllegalMovementException;
+import com.ae2dms.GameObject.Objects.Player;
 import com.ae2dms.IO.ResourceFactory;
+import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
+import com.ae2dms.UI.MediaState;
 import com.ae2dms.UI.Menu.MenuView;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -21,23 +20,41 @@ import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.media.AudioClip;
-import javafx.stage.FileChooser;
-import javafx.util.converter.IntegerStringConverter;
 
 import java.awt.*;
-import java.io.File;
 import java.util.HashMap;
 
 public class GameViewController extends AbstractBarController {
 
-    @FXML
-    private Label score;
+    //Group: Confirm Exit Pop Up
+
 
     @FXML
-    private ImageView Next_Level_Button;
+    private BorderPane Confirm_Exit_Pop_Up;
+
+    @FXML
+    private ImageView Confirm_Exit_Exit;
+
+    @FXML
+    private ImageView Confirm_Exit_Back;
+
+
+    //TextBinding: Score of current game, top_right
+
+    @FXML
+    private Label Score;
+
+    @FXML
+    private Label Time_Spend;
+
+
+    //Group: Level Complete Pop Up
 
     @FXML
     private BorderPane Level_Complete_Pop_Up;
+
+    @FXML
+    private ImageView Next_Level_Button;
 
     @FXML
     private Label Level_Complete_Level_Index;
@@ -48,21 +65,27 @@ public class GameViewController extends AbstractBarController {
     @FXML
     private Label Level_Complete_Score;
 
-    @FXML
-    private Group canBlurGroup;
+
+    //Group: Content Group, used to be blurred when pop up shows
 
     @FXML
-    private ImageView backgroundImage;
+    private Group Can_Blur_Group;
 
     @FXML
-    private Label this_level;
+    private ImageView Background_Image;
+
+
+    //Assigned to numbers
 
     @FXML
-    private Label all_level;
+    private Label This_Level_Index;
 
-    private volatile GameDocument gameDocument = Main.gameDocument;
+    @FXML
+    private Label All_Level_Count;
 
-    public volatile static GraphicRender render;
+
+
+    // Map to manipulate
 
     @FXML
     private volatile GridPane stageGrid;
@@ -76,13 +99,20 @@ public class GameViewController extends AbstractBarController {
     @FXML
     private volatile GridPane diamondsGrid;
 
-    private final IntegerProperty highestScoreValue = new SimpleIntegerProperty();
+
+
+
+    private volatile GameDocument gameDocument = Main.gameDocument;
+
+    public volatile static GraphicRender render;
+
+    private GameStatus gameStatus = GameStatus.READY;
+
+    private GameTimer timer = new GameTimer();
 
     public static HashMap<String, AudioClip> soundEffects = new HashMap<>();
 
-    private BooleanProperty isLevelComplete;
-
-    private BooleanProperty canUndo = new SimpleBooleanProperty(true);
+    private final BooleanProperty canUndo = new SimpleBooleanProperty(true);
 
     // undo
     private final KeyCombination keyCombCtrZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
@@ -96,23 +126,23 @@ public class GameViewController extends AbstractBarController {
 
     public void initialize() throws IllegalStateException {
 
-        backgroundImage.setImage(ResourceFactory.randomBackgroundImage());
+        Background_Image.setImage(ResourceFactory.getRandomBackgroundImage());
 
         super.disableButton("High score");
 
-        this.highestScoreValue.setValue(gameDocument.highestScore);
-        this.bindHighestScore(highestScoreValue);
         // this.isLevelComplete.bindBidirectional(gameDocument.isLevelComplete());
-        soundEffects.put("UNMOVABLE_AUDIO_CLIP_MEDIA", ResourceFactory.UNMOVABLE_AUDIO_CLIP);
-        soundEffects.put("MOVE_AUDIO_CLIP_MEDIA", ResourceFactory.MOVE_AUDIO_CLIP);
+        soundEffects.put("UNMOVABLE_AUDIO_CLIP_MEDIA", (AudioClip)ResourceFactory.getResource("UNMOVABLE_AUDIO_CLIP", ResourceType.AudioClip));
+        soundEffects.put("MOVE_AUDIO_CLIP_MEDIA", (AudioClip)ResourceFactory.getResource("MOVE_AUDIO_CLIP", ResourceType.AudioClip));
+        soundEffects.put("MOVE_CRATE_AUDIO_CLIP_MEDIA", (AudioClip)ResourceFactory.getResource("MOVE_CRATE_AUDIO_CLIP", ResourceType.AudioClip));
+        soundEffects.put("LEVEL_COMPLETE_AUDIO_CLIP", (AudioClip)ResourceFactory.getResource("LEVEL_COMPLETE_AUDIO_CLIP",ResourceType.AudioClip));
 
-        this_level.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
+        This_Level_Index.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
 
-        all_level.setText(Integer.toString(gameDocument.getLevelsCount()));
+        All_Level_Count.setText(Integer.toString(gameDocument.getLevelsCount()));
 
-        musicSwitchToggle.addListener((observable, oldValue, newValue) -> {
+        musicIsMute.addListener((observable, oldValue, newValue) -> {
             if (observable != null ) {
-                boolean isMute = !observable.getValue();
+                boolean isMute = observable.getValue();
                 GameView.backgroundMusicPlayer.setMute(isMute);
                 for (AudioClip mediaPlayer : soundEffects.values()) {
                     mediaPlayer.setVolume(isMute ? 0 : 100);
@@ -130,16 +160,37 @@ public class GameViewController extends AbstractBarController {
             }
         });
 
+        canUndo.bind(GameStageSaver.canUndo);
+
+        Time_Spend.textProperty().bind(timer.timeToDisplay);
+
         render = new GraphicRender(stageGrid, crateGrid, playerGrid, diamondsGrid);
         render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
-        
-        score.textProperty().bind(this.gameDocument.movesCount.asString());
+
+        this.highestScore.textProperty().bind(this.gameDocument.highestScore.asString());
+        Score.textProperty().bind(this.gameDocument.movesCount.asString());
     }
 
     private final BooleanProperty isAnimating = new SimpleBooleanProperty(false);
 
     public void handleKey(KeyEvent event) {
+
+        switch (gameStatus) {
+            case READY -> {
+                timer.start();
+                gameStatus = GameStatus.PLAY;
+            }
+
+            case PAUSE -> {
+                timer.resume();
+                gameStatus = GameStatus.PLAY;
+            }
+            case END -> {
+                return;
+            }
+        }
+
         // simply ignore keys when animating
         if (isAnimating.getValue()) {
             return;
@@ -162,7 +213,6 @@ public class GameViewController extends AbstractBarController {
             return;
         }
 
-        canUndo.set(!GameStageSaver.isEmpty());
         Player player = gameDocument.getPlayer();
         Point direction = new Point(0, 0);
 
@@ -191,7 +241,8 @@ public class GameViewController extends AbstractBarController {
 
         }
         isAnimating.set(true);
-        gameDocument.serializeObject();
+        gameDocument.serializeCurrentState();
+        GameDebugger.logMovement(this.gameDocument, direction);
 
         if (player.canMoveBy(direction)) {
             try {
@@ -201,21 +252,54 @@ public class GameViewController extends AbstractBarController {
                 e.printStackTrace();
             }
         } else {
+            player.headTo(direction);
             player.shakeAnimation(direction);
         }
-//
-//        if (GameDocument.isDebugActive()) {
-//            System.out.println(code);
+
         checkIsLevelComplete();
     }
 
     @FXML
     private void clickToggleDebug() {
-//        gameDocument.toggleDebug(menuBarClickToggleDebug());
+        menuBarClickToggleDebug();
     }
 
     private void checkIsLevelComplete() {
         if (gameDocument.isLevelComplete()) {
+            GameViewController.soundEffects.get("LEVEL_COMPLETE_AUDIO_CLIP").play();
+            this.timer.pause();
+            this.gameStatus = GameStatus.PAUSE;
+
+            GameDebugger.logLevelComplete(this.gameDocument.getCurrentLevel(), this.Time_Spend.getText(), this.Score.getText());
+
+            Level_Complete_Level_Index.setText(Integer.toString(this.gameDocument.getCurrentLevel().getIndex()));
+            Level_Complete_Time.setText(this.Time_Spend.getText());
+            Level_Complete_Score.setText(this.Score.getText());
+            Level_Complete_Pop_Up.getStyleClass().clear();
+
+            GaussianBlur gaussianBlur = new GaussianBlur();
+            gaussianBlur.setRadius(20);
+            Can_Blur_Group.setEffect(gaussianBlur);
+
+            Next_Level_Button.setOnMouseClicked((event) -> {
+                Level_Complete_Pop_Up.getStyleClass().add("Hide");
+                Can_Blur_Group.setEffect(null);
+                switchToNextLevel();
+            });
+        }
+    }
+
+    private void checkIsGameComplete() {
+        if (gameDocument.isGameComplete()) {
+
+            timer.stop();
+            gameStatus = GameStatus.END;
+
+            GameDebugger.logGameComplete(gameDocument.getLevelsCount(), this.Time_Spend.getText(), this.Score.getText());
+
+            // TODO:
+
+
             Level_Complete_Level_Index.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
             Level_Complete_Time.setText("13");
             Level_Complete_Score.setText(this.gameDocument.movesCount.toString());
@@ -223,11 +307,11 @@ public class GameViewController extends AbstractBarController {
 
             GaussianBlur gaussianBlur = new GaussianBlur();
             gaussianBlur.setRadius(20);
-            canBlurGroup.setEffect(gaussianBlur);
+            Can_Blur_Group.setEffect(gaussianBlur);
 
             Next_Level_Button.setOnMouseClicked((event) -> {
                 Level_Complete_Pop_Up.getStyleClass().add("Hide");
-                canBlurGroup.setEffect(null);
+                Can_Blur_Group.setEffect(null);
                 switchToNextLevel();
             });
         }
@@ -235,9 +319,9 @@ public class GameViewController extends AbstractBarController {
 
     private void switchToNextLevel() {
         gameDocument.changeToNextLevel();
-        backgroundImage.setImage(ResourceFactory.randomBackgroundImage());
+        Background_Image.setImage(ResourceFactory.getRandomBackgroundImage());
 
-        this_level.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
+        This_Level_Index.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
 
         render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
@@ -250,13 +334,13 @@ public class GameViewController extends AbstractBarController {
 
     @FXML
     private void clickUndo(MouseEvent mouseEvent) {
+        GameDebugger.logLevelComplete(this.gameDocument.getCurrentLevel(), this.Time_Spend.getText(), this.Score.getText());
+
         GameDocument restoreObject = GameStageSaver.pop();
         if (restoreObject != null) {
             Main.gameDocument.restoreObject(restoreObject);
-            canUndo.set(!GameStageSaver.isEmpty());
             render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
-        } else {
-
+            GameDebugger.logUndo(this.gameDocument);
         }
     }
 
@@ -267,8 +351,36 @@ public class GameViewController extends AbstractBarController {
 
     @FXML
     private void clickToMenu(MouseEvent mouseEvent) {
-        GameView.backgroundMusicPlayer.stop();
-        Main.primaryStage.setScene(Main.menuScene);
-        MenuView.backgroundMusicPlayer.play();
+
+        Confirm_Exit_Pop_Up.getStyleClass().clear();
+
+        GaussianBlur gaussianBlur = new GaussianBlur();
+        gaussianBlur.setRadius(20);
+        Can_Blur_Group.setEffect(gaussianBlur);
+
+        Confirm_Exit_Exit.setOnMouseClicked((event) -> {
+            timer.stop();
+
+            Confirm_Exit_Pop_Up.getStyleClass().add("Hide");
+            Can_Blur_Group.setEffect(null);
+            gameDocument.restoreObject(GameStageSaver.getInitialState());
+            GameStageSaver.clear();
+
+            GameView.backgroundMusicPlayer.stop();
+            Main.primaryStage.setScene(Main.menuScene);
+            MenuView.getInstance().setMusic(MediaState.PLAY);
+        });
+
+        Confirm_Exit_Back.setOnMouseClicked((event) -> {
+            Confirm_Exit_Pop_Up.getStyleClass().add("Hide");
+            Can_Blur_Group.setEffect(null);
+        });
+
     }
 }
+
+enum GameStatus {
+    READY, PAUSE, PLAY, END;
+};
+
+

@@ -14,11 +14,11 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@GlobalCSS.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ae2dms.UI.Game.GameViewController">
    <children>
-      <Group fx:id="canBlurGroup" layoutX="-35.0" layoutY="-1.0">
+      <Group fx:id="Can_Blur_Group" layoutX="-35.0" layoutY="-1.0">
          <children>
       
                   <!--     background    -->
-            <ImageView fx:id="backgroundImage" fitHeight="720.0" fitWidth="1673.0" layoutX="35.0" layoutY="1.0">
+            <ImageView fx:id="Background_Image" fitHeight="720.0" fitWidth="1673.0" layoutX="35.0" layoutY="1.0">
                   <Image url="@../Assets/Game/GameBackground1.jpg" />
             </ImageView>
             <Group layoutY="1.0">
@@ -282,8 +282,8 @@
               </StackPane>
             <Group layoutX="45.0">
                <children>
-                   <ImageView layoutX="1110.0" layoutY="15.0">
-                       <Image url="@../Assets/Game/Score_Board.png"/>
+                   <ImageView layoutX="1020.0" layoutY="15.0">
+                       <Image url="@../Assets/Game/Score_Board.png" />
                    </ImageView>
 
             
@@ -292,9 +292,18 @@
                       <Image url="@../Assets/Game/To_Menu.png" />
                   </ImageView>
 
-                  <BorderPane layoutX="1201.0" layoutY="26.0" prefHeight="30.0" prefWidth="44.0">
+                  <BorderPane layoutX="1118.0" layoutY="26.0" prefHeight="30.0" prefWidth="44.0">
                      <center>
-                        <Label fx:id="score" text="Score" textFill="WHITE" BorderPane.alignment="CENTER">
+                        <Label fx:id="Score" text="Score" textFill="WHITE" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font name="Smartisan Maquette Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </center>
+                  </BorderPane>
+                  <BorderPane layoutX="1174.0" layoutY="26.0" prefHeight="30.0" prefWidth="65.0">
+                     <center>
+                        <Label fx:id="Time_Spend" alignment="CENTER" prefWidth="61.0" text="Time_Spend" textFill="#787c9f" BorderPane.alignment="CENTER">
                            <font>
                               <Font name="Smartisan Maquette Bold" size="20.0" />
                            </font>
@@ -306,11 +315,11 @@
                   <Group layoutX="555.0">
                      <children>
                          <ImageView fitHeight="54.0" fitWidth="200.0">
-                             <Image url="@../Assets/Game/Level_Progress.png"/>
+                             <Image url="@../Assets/Game/Level_Progress.png" />
                          </ImageView>
                         <BorderPane layoutX="77.0" layoutY="10.0" prefHeight="24.0" prefWidth="40.0">
                            <center>
-                              <Label fx:id="this_level" alignment="CENTER" contentDisplay="CENTER" text="This_Level" textFill="#fc7b74" BorderPane.alignment="CENTER">
+                              <Label fx:id="This_Level_Index" alignment="CENTER" contentDisplay="CENTER" text="This_Level" textFill="#fc7b74" BorderPane.alignment="CENTER">
                                  <font>
                                     <Font name="Smartisan Maquette Bold" size="21.0" />
                                  </font>
@@ -319,7 +328,7 @@
                         </BorderPane>
                         <BorderPane layoutX="148.0" layoutY="10.0" prefHeight="24.0" prefWidth="40.0">
                            <center>
-                              <Label fx:id="all_level" alignment="CENTER" contentDisplay="CENTER" text="All_Level" textFill="#5f9ffc" BorderPane.alignment="CENTER">
+                              <Label fx:id="All_Level_Count" alignment="CENTER" contentDisplay="CENTER" text="All_Level" textFill="#5f9ffc" BorderPane.alignment="CENTER">
                                  <font>
                                     <Font name="Smartisan Maquette Bold" size="21.0" />
                                  </font>
@@ -348,7 +357,7 @@
                          </ImageView>
                         <BorderPane layoutX="81.0" layoutY="138.0" prefHeight="106.0" prefWidth="108.0">
                            <center>
-                              <Label fx:id="Level_Complete_Level_Index" text="5" textFill="#ffcc00" BorderPane.alignment="CENTER">
+                              <Label fx:id="Level_Complete_Level_Index" text="Level" textFill="#ffcc00" BorderPane.alignment="CENTER">
                                  <font>
                                     <Font name="Smartisan Maquette Bold" size="80.0" />
                                  </font>
@@ -357,18 +366,18 @@
                         </BorderPane>
                         <BorderPane layoutX="416.0" layoutY="138.0" prefHeight="106.0" prefWidth="146.0">
                            <center>
-                              <Label fx:id="Level_Complete_Time" text="5" textFill="#ffb45c" BorderPane.alignment="CENTER">
+                              <Label fx:id="Level_Complete_Time" text="Time" textFill="#ffb45c" BorderPane.alignment="CENTER">
                                  <font>
-                                    <Font name="Smartisan Maquette Bold" size="80.0" />
+                                    <Font name="Smartisan Maquette Bold" size="46.0" />
                                  </font>
                               </Label>
                            </center>
                         </BorderPane>
                         <BorderPane layoutX="239.0" layoutY="138.0" prefHeight="106.0" prefWidth="147.0">
                            <center>
-                              <Label fx:id="Level_Complete_Score" text="5" textFill="#96a2ff" BorderPane.alignment="CENTER">
+                              <Label fx:id="Level_Complete_Score" text="Score" textFill="#96a2ff" BorderPane.alignment="CENTER">
                                  <font>
-                                    <Font name="Smartisan Maquette Bold" size="80.0" />
+                                    <Font name="Smartisan Maquette Bold" size="68.0" />
                                  </font>
                               </Label>
                            </center>
@@ -377,7 +386,28 @@
                   </Group>
                </children>
             </Group>
-         </center></BorderPane>
+         </center>
+      </BorderPane>
+
+       <BorderPane fx:id="Confirm_Exit_Pop_Up" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="Hide">
+           <center>
+               <Group BorderPane.alignment="CENTER">
+               <children>
+                   <ImageView fitHeight="359.0" fitWidth="622.0">
+                       <Image url="@../Assets/Game/Confirm_Exit.png" />
+                   </ImageView>
+                   <ImageView fx:id="Confirm_Exit_Back" layoutX="33.0" layoutY="280.0" styleClass="Button">
+                       <Image url="@../Assets/Game/Back_To_Game.png" />
+                   </ImageView>
+                   <ImageView fx:id="Confirm_Exit_Exit" layoutX="405.0" layoutY="280.0" styleClass="Button">
+                       <Image url="@../Assets/Game/Exit_Game.png" />
+                   </ImageView>
+                   <ImageView layoutX="218.0" layoutY="193.0" onMouseClicked="#clickSaveGame" styleClass="Button">
+                       <Image url="@../Assets/Game/Save_Game.png" />
+                   </ImageView>
+               </children></Group>
+           </center>
+       </BorderPane>
 
    </children>
 </Pane>

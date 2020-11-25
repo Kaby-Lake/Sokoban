@@ -1,9 +1,11 @@
 package com.ae2dms.GameObject.Objects;
 
 import com.ae2dms.Business.Data.GameGrid;
-import com.ae2dms.GameObject.*;
+import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.IO.ResourceFactory;
-import javafx.scene.image.ImageView;
+import com.ae2dms.IO.ResourceType;
+import javafx.scene.image.*;
+import javafx.scene.image.Image;
 
 import java.awt.*;
 
@@ -31,7 +33,7 @@ public class Floor extends AbstractGameObject {
     @Override
     public ImageView render() {
         if (this.view == null) {
-            this.view = new ImageView(ResourceFactory.STAGE_IMAGE);
+            this.view = new ImageView((Image)ResourceFactory.getResource("STAGE_IMAGE", ResourceType.Image));
             this.view.setFitHeight(48);
             this.view.setFitWidth(48);
         }
@@ -39,7 +41,7 @@ public class Floor extends AbstractGameObject {
     }
 
     public static ImageView staticRender() {
-        ImageView floor = new ImageView(ResourceFactory.STAGE_IMAGE);
+        ImageView floor = new ImageView((Image)ResourceFactory.getResource("STAGE_IMAGE", ResourceType.Image));
         floor.setFitHeight(48);
         floor.setFitWidth(48);
         return floor;

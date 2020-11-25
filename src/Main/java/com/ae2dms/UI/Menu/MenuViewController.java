@@ -1,9 +1,12 @@
 package com.ae2dms.UI.Menu;
 
+import com.ae2dms.Business.GameDebugger;
 import com.ae2dms.Business.GameDocument;
+import com.ae2dms.Business.GameStageSaver;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.Game.GameView;
+import com.ae2dms.UI.MediaState;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
@@ -26,14 +29,8 @@ public class MenuViewController extends AbstractBarController {
     @FXML
     private Group infoGroup;
 
-    private IntegerProperty highestScoreValue;
-
     @FXML
     private ImageView loadGameFileButton;
-
-    public MenuViewController() {
-        this.highestScoreValue = new SimpleIntegerProperty();
-    }
 
     public void initialize() throws IllegalStateException {
 
@@ -41,54 +38,24 @@ public class MenuViewController extends AbstractBarController {
         super.disableButton("Save Game");
         super.disableButton("Undo");
 
-        musicSwitchToggle.addListener((observable, oldValue, newValue) -> {
+        musicIsMute.addListener((observable, oldValue, newValue) -> {
             if (observable != null ) {
-                MenuView.backgroundMusicPlayer.setMute(!observable.getValue());
+                if (observable.getValue() == true) {
+                    MenuView.getInstance().setMusic(MediaState.MUTE);
+                } else {
+                    MenuView.getInstance().setMusic(MediaState.NON_MUTE);
+                }
             }
         });
 
-        this.highestScoreValue.setValue(gameDocument.highestScore);
-        this.bindHighestScore(highestScoreValue);
-
-        setKeyboardHandler();
-
+        this.highestScore.textProperty().bind(Main.gameDocument.highestScore.asString());
     }
 
-    public void handleKey(KeyCode code) {
-//        switch (code) {
-//            case UP:
-//                gameDocument.move(new Point(-1, 0));
-//                break;
-//
-//            case RIGHT:
-//                gameDocument.move(new Point(0, 1));
-//                break;
-//
-//            case DOWN:
-//                gameDocument.move(new Point(1, 0));
-//                break;
-//
-//            case LEFT:
-//                gameDocument.move(new Point(0, -1));
-//                break;
-//
-//            default:
-//                // TODO: implement something funny.
-//        }
-//        updateView();
-//
-//        if (GameDocument.isDebugActive()) {
-//            System.out.println(code);
-//        }
-    }
-
-    public void clickToggleDebug() {
-//        gameDocument.toggleDebug(menuBarClickToggleDebug());
-    }
 
     public void clickStartGame(MouseEvent mouseEvent) throws Exception {
-        MenuView.backgroundMusicPlayer.stop();
+        MenuView.getInstance().setMusic(MediaState.STOP);
 
+        this.gameDocument.restoreObject(GameStageSaver.getInitialState());
         GameView gameView = new GameView();
         Scene gameViewScene = new Scene(gameView.getView());
         gameView.bind(gameViewScene);
@@ -101,10 +68,6 @@ public class MenuViewController extends AbstractBarController {
         menuBarClickToggleMusic();
     }
 
-    public void clickUndo(MouseEvent mouseEvent) {
-//        gameDocument.undo();
-    }
-
     public void clickInformation(MouseEvent mouseEvent) {
         infoGroup.getStyleClass().clear();
     }
@@ -114,8 +77,7 @@ public class MenuViewController extends AbstractBarController {
         infoGroup.getStyleClass().add("Hide");
     }
 
-    public void clickSaveGame(MouseEvent mouseEvent) {
-    }
+
 
     public void clickLoadGame(MouseEvent mouseEvent) {
         FileChooser fileChooser = new FileChooser();
@@ -134,11 +96,8 @@ public class MenuViewController extends AbstractBarController {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban Map file", "*.skb"));
         File file = fileChooser.showOpenDialog(loadGameFileButton.getScene().getWindow());
         if (file != null) {
-            // System.out.println(file.getAbsolutePath());
-            if (GameDocument.isDebugActive()) {
-                GameDocument.logger.info("Loading save file: " + file.getName());
-            }
             gameDocument.reloadMapFromFile(new FileInputStream(file));
+            GameDebugger.logLoadMapFile(file);
         }
     }
 
@@ -146,9 +105,18 @@ public class MenuViewController extends AbstractBarController {
         System.exit(0);
     }
 
-    private void setKeyboardHandler() {
-        Main.primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            this.handleKey(event.getCode());
-        });
+
+
+
+    // Not used in MenuViewController
+
+    public void clickToggleDebug() {
     }
+    public void clickUndo(MouseEvent mouseEvent) {
+    }
+    public void clickSaveGame(MouseEvent mouseEvent) {
+    }
+
+
+
 }
