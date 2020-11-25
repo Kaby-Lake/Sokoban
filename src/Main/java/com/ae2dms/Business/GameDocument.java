@@ -24,7 +24,6 @@ public class GameDocument implements Serializable {
     private int movesCountSerializable; // only used for backup of IntegerProperty movesCount
 
     public String mapSetName;
-    private transient static boolean debug = false;
     private Level currentLevel;
     private List<Level> levels;
     private Player playerObject;
@@ -43,8 +42,6 @@ public class GameDocument implements Serializable {
             logger = new GameLogger();
             this.loadMapFile(input);
             currentLevel = getNextLevel();
-        } catch (IOException x) {
-            System.out.println("Cannot create logger.");
         } catch (NoSuchElementException e) {
             logger.warning("Cannot load the map file: " + e.getStackTrace());
         }
@@ -58,15 +55,15 @@ public class GameDocument implements Serializable {
         return this.playerObject;
     }
 
-    public static boolean isDebugActive() {
-        return debug;
-    }
-
     // @change mapSetName
     private void loadMapFile(InputStream input) {
         MapFileLoader loader = new MapFileLoader();
         try {
-            loader.loadMapFile(input);
+            if (!loader.loadMapFile(input)) {
+                GameDebugger.logLoadMapFailure();
+                return;
+            }
+
             this.levels = loader.getLevels();
             this.mapSetName = loader.getMapSetName();
             this.initialMapHashCode = loader.getMapHashCode();
@@ -114,10 +111,6 @@ public class GameDocument implements Serializable {
         return levels.size();
     }
 
-    public void toggleDebug(Boolean bool) {
-        debug = bool;
-    }
-
     public void reloadMapFromFile(InputStream input) {
         this.init(input);
         this.movesCount.set(0);
@@ -125,6 +118,16 @@ public class GameDocument implements Serializable {
 
     public void reloadStateFromFile(InputStream input) {
         // TODO: flush the whole Object with new Data
+    }
+
+    private void serializeInitialState() {
+        try {
+            this.movesCountSerializable = this.movesCount.getValue();
+            this.highestScoreSerializable = this.highestScore.getValue();
+            GameStageSaver.pushInitialState(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void serializeCurrentState() {
@@ -150,16 +153,6 @@ public class GameDocument implements Serializable {
         this.playerObject = object.playerObject;
         this.gameComplete = object.gameComplete;
         this.initialMapHashCode = object.initialMapHashCode;
-    }
-
-    public void serializeInitialState() {
-        try {
-            this.movesCountSerializable = this.movesCount.getValue();
-            this.highestScoreSerializable = this.highestScore.getValue();
-            GameStageSaver.pushInitialState(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void loadGameRecords() {

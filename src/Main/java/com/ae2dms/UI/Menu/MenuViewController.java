@@ -1,5 +1,6 @@
 package com.ae2dms.UI.Menu;
 
+import com.ae2dms.Business.GameDebugger;
 import com.ae2dms.Business.GameDocument;
 import com.ae2dms.Business.GameStageSaver;
 import com.ae2dms.Main.Main;
@@ -95,11 +96,8 @@ public class MenuViewController extends AbstractBarController {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban Map file", "*.skb"));
         File file = fileChooser.showOpenDialog(loadGameFileButton.getScene().getWindow());
         if (file != null) {
-            // System.out.println(file.getAbsolutePath());
-            if (GameDocument.isDebugActive()) {
-                GameDocument.logger.info("Loading save file: " + file.getName());
-            }
             gameDocument.reloadMapFromFile(new FileInputStream(file));
+            GameDebugger.logLoadMapFile(file);
         }
     }
 

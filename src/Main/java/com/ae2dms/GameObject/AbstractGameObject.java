@@ -35,4 +35,9 @@ public abstract class AbstractGameObject implements Serializable {
     public abstract String getStringSymbol();
 
     public abstract ImageView render();
+
+    @Override
+    public String toString() {
+        return getStringSymbol() + " at " + at().toString();
+    }
 }

@@ -15,16 +15,21 @@ public class GameLogger extends Logger {
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private Calendar calendar = Calendar.getInstance();
 
-    public GameLogger() throws IOException {
+    public GameLogger() {
         super("com.aes2dms.sokoban", null);
 
         File directory = new File(System.getProperty("user.dir") + "/" + "logs");
         directory.mkdirs();
 
-        FileHandler fh = new FileHandler(directory + "/" + GameDocument.GAME_NAME + ".log");
-        logger.addHandler(fh);
+        FileHandler fileHandler = null;
+        try {
+            fileHandler = new FileHandler(directory + "/" + GameDocument.GAME_NAME + ".log");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        logger.addHandler(fileHandler);
         SimpleFormatter formatter = new SimpleFormatter();
-        fh.setFormatter(formatter);
+        fileHandler.setFormatter(formatter);
     }
 
     private String createFormattedMessage(String message) {
@@ -33,16 +38,22 @@ public class GameLogger extends Logger {
 
     @Override
     public void info(String message) {
-        logger.info(createFormattedMessage(message));
+        String log = createFormattedMessage(message);
+        logger.info(log);
+        System.out.println(log);
     }
 
     @Override
     public void warning(String message) {
-        logger.warning(createFormattedMessage(message));
+        String log = createFormattedMessage(message);
+        logger.warning(log);
+        System.out.println(log);
     }
 
     @Override
     public void severe(String message) {
-        logger.severe(createFormattedMessage(message));
+        String log = createFormattedMessage(message);
+        logger.severe(log);
+        System.out.println(log);
     }
 }

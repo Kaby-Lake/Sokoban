@@ -1,10 +1,9 @@
 package com.ae2dms.UI;
 
+import com.ae2dms.Business.GameDebugger;
 import com.ae2dms.Main.Main;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -23,7 +22,7 @@ public class AbstractBarController {
     @FXML
     public Label highestScore;
 
-    public final BooleanProperty debugSwitchToggle = new SimpleBooleanProperty(false);
+    public BooleanProperty debugIsActive = new SimpleBooleanProperty(false);
 
     @FXML
     private ImageView debugSwitch;
@@ -39,7 +38,9 @@ public class AbstractBarController {
 
         musicIsMute.bindBidirectional(Main.prefMusicIsMute);
 
-        debugSwitchToggle.addListener((observable, oldValue, newValue) -> {
+        debugIsActive.bindBidirectional(GameDebugger.active);
+
+        debugIsActive.addListener((observable, oldValue, newValue) -> {
             if (observable != null && observable.getValue()==true) {
                 debugSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Debug_on.png"))));
             } else if (observable != null && observable.getValue()==false){
@@ -100,7 +101,7 @@ public class AbstractBarController {
 
 
     public void menuBarClickToggleDebug() {
-        debugSwitchToggle.setValue(!debugSwitchToggle.getValue());
+        debugIsActive.setValue(!debugIsActive.getValue());
     }
 
     public void menuBarClickToggleMusic() {
