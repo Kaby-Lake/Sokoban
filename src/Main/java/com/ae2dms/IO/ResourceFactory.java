@@ -33,6 +33,9 @@ public class ResourceFactory {
         urlMap.put("GameBackground_2", "/ui/Assets/Game/GameBackground2.jpg");
         urlMap.put("GameBackground_3", "/ui/Assets/Game/GameBackground3.jpg");
 
+        urlMap.put("SCORE_ITEM_BACKGROUND", "/ui/Assets/HighScore/Score_Item.png");
+        urlMap.put("TIME_ITEM_BACKGROUND", "/ui/Assets/HighScore/Time_Item.png");
+
         urlMap.put("STAGE_IMAGE", "/ui/Assets/Game/Stage.png");
         urlMap.put("DIAMOND_IMAGE", "/ui/Assets/Game/Diamond.png");
         urlMap.put("CRATE_IMAGE", "/ui/Assets/Game/Crate.png");

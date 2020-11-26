@@ -9,10 +9,7 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 public class GameRecord implements Serializable {
 
@@ -43,7 +40,24 @@ public class GameRecord implements Serializable {
         Collections.sort(records);
     }
 
-    private ArrayList<Record> getRecords() {
+    public List<Record> sortRecordsByTime() {
+
+        ArrayList<Record> recordsSortedByTime = new ArrayList<>(this.records);
+
+        recordsSortedByTime.sort((record1, record2) -> {
+            // TODO Auto-generated method stub
+            if (record1.getDurationSeconds() >= record2.getDurationSeconds()) {
+                return 1;
+            } else {
+                return -1;
+            }
+        });
+
+        return recordsSortedByTime;
+    }
+
+
+    public ArrayList<Record> getRecords() {
         return records;
     }
 
@@ -77,7 +91,7 @@ public class GameRecord implements Serializable {
 
 
     // inner class
-    private class Record implements Serializable, Comparable<Record> {
+    public class Record implements Serializable, Comparable<Record> {
 
         private final UUID uuid = UUID.randomUUID();
 
@@ -99,6 +113,18 @@ public class GameRecord implements Serializable {
             this.date = date;
             this.playerName = playerName;
             this.durationSeconds = durationSeconds;
+        }
+
+        public int getDurationSeconds() {
+            return durationSeconds;
+        }
+
+        public String getName() {
+            return playerName;
+        }
+
+        public int getScore() {
+            return score;
         }
 
 
