@@ -7,14 +7,10 @@ import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.Game.GameView;
 import com.ae2dms.UI.MediaState;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 
@@ -57,7 +53,7 @@ public class MenuViewController extends AbstractBarController {
 
         this.gameDocument.restoreObject(GameStageSaver.getInitialState());
         GameView gameView = new GameView();
-        Scene gameViewScene = new Scene(gameView.getView());
+        Scene gameViewScene = new Scene(gameView.getGameView());
         gameView.bind(gameViewScene);
 
         Main.primaryStage.setScene(gameViewScene);
@@ -103,6 +99,10 @@ public class MenuViewController extends AbstractBarController {
 
     public void clickExit(MouseEvent mouseEvent) {
         System.exit(0);
+    }
+
+    public void clickHighScoreList() {
+        menuBarClickToggleHighScoreList();
     }
 
 

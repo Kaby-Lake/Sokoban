@@ -45,8 +45,8 @@
       </ImageView>
 
       <!--     High Score List button    -->
-      <ImageView fx:id="highScoreSwitch" accessibleRole="BUTTON" fitHeight="57.0" fitWidth="232.0" layoutX="1046.0" layoutY="667.0" styleClass="Button">
-         <Image url="@../Assets/BottomBar/High_Score_List.png" />
+      <ImageView fx:id="highScoreSwitch" accessibleRole="BUTTON" layoutX="1046.0" layoutY="667.0" onMouseClicked="#clickHighScoreList" styleClass="Button">
+         <Image url="@../Assets/BottomBar/High_Score_List_off.png" />
       </ImageView>
 
       <!--     Highest Score    -->
@@ -98,15 +98,12 @@
       <!--     Info    -->
       <Group fx:id="infoGroup" styleClass="Hide">
          <ImageView fitHeight="366.0" fitWidth="588.0" layoutX="579.0" layoutY="205.0">
-            <image>
-               <Image url="@../Assets/Menu/InfoGrid.png" />
-            </image>
+            <Image url="@../Assets/Menu/InfoGrid.png"/>
          </ImageView>
 
-         <ImageView accessibleRole="BUTTON" layoutX="805.0" layoutY="518.0" onMouseClicked="#clickCloseInformation" styleClass="Button">
-            <image>
-               <Image url="@../Assets/Menu/Dismiss.png" />
-            </image>
+         <ImageView accessibleRole="BUTTON" layoutX="805.0" layoutY="518.0" onMouseClicked="#clickCloseInformation"
+                    styleClass="Button">
+            <Image url="@../Assets/Menu/Dismiss.png"/>
          </ImageView>
       </Group>
 
