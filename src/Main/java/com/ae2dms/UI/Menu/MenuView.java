@@ -51,7 +51,10 @@ public class MenuView {
             case NON_MUTE -> backgroundMusicPlayer.setMute(false);
             case PLAY -> backgroundMusicPlayer.play();
             case PAUSE -> backgroundMusicPlayer.pause();
-            case STOP -> backgroundMusicPlayer.stop();
+            case STOP -> {
+                backgroundMusicPlayer.stop();
+                backgroundMusicPlayer = new MediaPlayer(ResourceFactory.getRandomBackgroundMusic());
+            }
         }
     }
 }

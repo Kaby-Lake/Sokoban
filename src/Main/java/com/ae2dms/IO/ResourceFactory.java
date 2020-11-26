@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 
+import java.io.File;
 import java.net.URISyntaxException;
 import java.util.*;
 
@@ -25,6 +26,7 @@ public class ResourceFactory {
         urlMap.put("PaperClip-Jumping","/music/Songs/PaperClip-Jumping.mp3");
         urlMap.put("PaperClip-KINGSTON","/music/Songs/PaperClip-KINGSTON.mp3");
         urlMap.put("PaperClip-Lust","/music/Songs/PaperClip-Lust.mp3");
+        urlMap.put("PaperClip-Heat Up","/music/Songs/PaperClip-Heat Up.mp3");
         urlMap.put("PETO-Okay","/music/Songs/PETO-Okay.mp3");
 
         urlMap.put("GameBackground_1", "/ui/Assets/Game/GameBackground1.jpg");
@@ -39,6 +41,23 @@ public class ResourceFactory {
         urlMap.put("PLAYER_BACK_IMAGE", "/ui/Assets/Game/Back.png");
         urlMap.put("PLAYER_LEFT_IMAGE", "/ui/Assets/Game/Left.png");
         urlMap.put("PLAYER_RIGHT_IMAGE", "/ui/Assets/Game/Right.png");
+
+        urlMap.put("DEBUG_ON_ICON", "/ui/Assets/BottomBar/Debug_on.png");
+        urlMap.put("DEBUG_OFF_ICON", "/ui/Assets/BottomBar/Debug_off.png");
+        urlMap.put("DEBUG_NULL_ICON", "/ui/Assets/BottomBar/Debug_null.png");
+
+        urlMap.put("MUSIC_ON_ICON", "/ui/Assets/BottomBar/Music_on.png");
+        urlMap.put("MUSIC_OFF_ICON", "/ui/Assets/BottomBar/Music_off.png");
+
+        urlMap.put("UNDO_ICON", "/ui/Assets/BottomBar/Undo.png");
+        urlMap.put("UNDO_NULL_ICON", "/ui/Assets/BottomBar/Undo_null.png");
+        urlMap.put("HIGH_SCORE_LIST_ON_ICON", "/ui/Assets/BottomBar/High_Score_List_on.png");
+        urlMap.put("HIGH_SCORE_LIST_OFF_ICON", "/ui/Assets/BottomBar/High_Score_List_off.png");
+        urlMap.put("HIGH_SCORE_LIST_NULL_ICON", "/ui/Assets/BottomBar/High_Score_List_null.png");
+        urlMap.put("SAVE_RECORD", "/ui/Assets/Game/GameCompletePopUp/Save_Record.png");
+        urlMap.put("SAVE_RECORD_DONE", "/ui/Assets/Game/GameCompletePopUp/Save_Record_done.png");
+        urlMap.put("SAVE_GAME_ICON", "/ui/Assets/BottomBar/Save_Game.png");
+        urlMap.put("SAVE_GAME_NULL_ICON", "/ui/Assets/BottomBar/Save_Game_null.png");
 
         urlMap.put("UNMOVABLE_AUDIO_CLIP", "/music/SFX/Basso.mp3");
         urlMap.put("MOVE_AUDIO_CLIP", "/music/SFX/Pop.mp3");
@@ -94,14 +113,29 @@ public class ResourceFactory {
     }
 
     public static Image getRandomBackgroundImage() {
-        List<Image> list = (List<Image>) imageShelf.values();
+        ArrayList<String> list = new ArrayList<>();
+        list.add("GameBackground_1");
+        list.add("GameBackground_2");
+        list.add("GameBackground_3");
         Random random = new Random();
-        return list.get(random.nextInt(list.size()));
+        String name = list.get(random.nextInt(list.size()));
+        return (Image)getResource(name, ResourceType.Image);
     }
 
     public static Media getRandomBackgroundMusic() {
-        List<Media> list = (List<Media>) mediaShelf.values();
+        ArrayList<String> list = new ArrayList<>();
+        list.add("PaperClip-Blip");
+        list.add("PaperClip-BOUNCE");
+        list.add("PaperClip-DEMONS");
+        list.add("PaperClip-Distant");
+        list.add("PaperClip-Heeyha");
+        list.add("PaperClip-Jumping");
+        list.add("PaperClip-KINGSTON");
+        list.add("PaperClip-Lust");
+        list.add("PaperClip-Heat Up");
+        list.add("PETO-Okay");
         Random random = new Random();
-        return list.get(random.nextInt(list.size()));
+        String name = list.get(random.nextInt(list.size()));
+        return (Media)getResource(name, ResourceType.Media);
     }
 }

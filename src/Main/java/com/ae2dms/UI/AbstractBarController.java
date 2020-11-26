@@ -1,6 +1,8 @@
 package com.ae2dms.UI;
 
 import com.ae2dms.Business.GameDebugger;
+import com.ae2dms.IO.ResourceFactory;
+import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -30,6 +32,8 @@ public class AbstractBarController {
     @FXML
     private ImageView saveGameSwitch;
 
+    public BooleanProperty highScoreIsShown = new SimpleBooleanProperty(false);
+
     @FXML
     private ImageView highScoreSwitch;
 
@@ -42,17 +46,25 @@ public class AbstractBarController {
 
         debugIsActive.addListener((observable, oldValue, newValue) -> {
             if (observable != null && observable.getValue()==true) {
-                debugSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Debug_on.png"))));
+                debugSwitch.setImage((Image)ResourceFactory.getResource("DEBUG_ON_ICON", ResourceType.Image));
             } else if (observable != null && observable.getValue()==false){
-                debugSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Debug_off.png"))));
+                debugSwitch.setImage((Image)ResourceFactory.getResource("DEBUG_OFF_ICON", ResourceType.Image));
             }
         });
 
         musicIsMute.addListener((observable, oldValue, newValue) -> {
             if (observable != null && observable.getValue()==true) {
-                musicSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Music_off.png"))));
+                musicSwitch.setImage((Image)ResourceFactory.getResource("MUSIC_OFF_ICON", ResourceType.Image));
             } else if (observable != null && observable.getValue()==false){
-                musicSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Music_on.png"))));
+                musicSwitch.setImage((Image)ResourceFactory.getResource("MUSIC_ON_ICON", ResourceType.Image));
+            }
+        });
+
+        highScoreIsShown.addListener((observable, oldValue, newValue) -> {
+            if (observable != null && observable.getValue()==true) {
+                highScoreSwitch.setImage((Image)ResourceFactory.getResource("HIGH_SCORE_LIST_ON_ICON", ResourceType.Image));
+            } else if (observable != null && observable.getValue()==false){
+                highScoreSwitch.setImage((Image)ResourceFactory.getResource("HIGH_SCORE_LIST_OFF_ICON", ResourceType.Image));
             }
         });
     }
@@ -60,22 +72,16 @@ public class AbstractBarController {
     public void disableButton(String name) {
         switch (name) {
             case "Debug" -> {
-                debugSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Debug_null.png"))));
-                debugSwitch.getStyleClass().clear();
+                debugSwitch.setImage((Image)ResourceFactory.getResource("DEBUG_NULL_ICON", ResourceType.Image));
                 debugSwitch.setDisable(true);
             }
             case "Undo" -> {
-                undoSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Undo_null.png"))));
+                undoSwitch.setImage((Image)ResourceFactory.getResource("UNDO_NULL_ICON", ResourceType.Image));
                 undoSwitch.getStyleClass().clear();
                 undoSwitch.setDisable(true);
             }
-            case "High score" -> {
-                highScoreSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/High_Score_List_null.png"))));
-                highScoreSwitch.getStyleClass().clear();
-                highScoreSwitch.setDisable(true);
-            }
             case "Save Game" -> {
-                saveGameSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Save_Game_null.png"))));
+                saveGameSwitch.setImage((Image)ResourceFactory.getResource("SAVE_GAME_NULL_ICON", ResourceType.Image));
                 saveGameSwitch.getStyleClass().clear();
                 saveGameSwitch.setDisable(true);
 
@@ -86,18 +92,17 @@ public class AbstractBarController {
     public void enableButton(String name) {
         switch (name) {
             case "Undo" -> {
-                undoSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Undo.png"))));
+                undoSwitch.setImage((Image)ResourceFactory.getResource("UNDO_ICON", ResourceType.Image));
                 undoSwitch.getStyleClass().add("Button");
                 undoSwitch.setDisable(false);
             }
             case "Save Game" -> {
-                saveGameSwitch.setImage(new Image(String.valueOf(getClass().getResource("/ui/Assets/BottomBar/Save_Game.png"))));
+                saveGameSwitch.setImage((Image)ResourceFactory.getResource("SAVE_GAME_ICON", ResourceType.Image));
                 saveGameSwitch.getStyleClass().add("Button");
                 saveGameSwitch.setDisable(false);
             }
         };
     }
-
 
 
     public void menuBarClickToggleDebug() {
@@ -110,6 +115,11 @@ public class AbstractBarController {
 
     public void menuBarSetMusicIsMute(boolean value) {
         musicIsMute.setValue(value);
+    }
+
+    public void menuBarClickToggleHighScoreList() {
+        highScoreIsShown.setValue(!highScoreIsShown.getValue());
+
     }
 
 }

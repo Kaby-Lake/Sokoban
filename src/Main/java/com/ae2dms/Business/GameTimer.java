@@ -22,7 +22,9 @@ public class GameTimer {
     }
 
     public void stop(){
-        timer.stop();
+        if (timer != null) {
+            timer.stop();
+        }
     }
 
     public void pause() {
