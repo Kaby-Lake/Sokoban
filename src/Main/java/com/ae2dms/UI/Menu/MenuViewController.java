@@ -6,12 +6,15 @@ import com.ae2dms.Business.GameStageSaver;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.Game.GameView;
+import com.ae2dms.UI.Game.GameViewController;
+import com.ae2dms.UI.HighScoreBar.HighScoreBarController;
 import com.ae2dms.UI.MediaState;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -24,6 +27,8 @@ public class MenuViewController extends AbstractBarController {
 
     @FXML
     private Group infoGroup;
+
+    private HighScoreBarController highScoreBarController;
 
     @FXML
     private ImageView loadGameFileButton;
@@ -45,6 +50,7 @@ public class MenuViewController extends AbstractBarController {
         });
 
         this.highestScore.textProperty().bind(Main.gameDocument.highestScore.asString());
+        highScoreBarController = this.loadBottomBar();
     }
 
 
