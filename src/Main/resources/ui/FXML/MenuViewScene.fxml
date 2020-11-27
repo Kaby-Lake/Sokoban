@@ -134,6 +134,10 @@
          </center>
       </BorderPane>
 
+      <!--     BottomBar Alias   -->
+      <Pane fx:id="MusicControllerAlias">
+
+      </Pane>
 
    </children>
 </Pane>

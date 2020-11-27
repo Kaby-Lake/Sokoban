@@ -19,8 +19,9 @@ public class GameView {
 
     public GameView() {
 
-        FXMLLoader levelCompleteViewLoader = new FXMLLoader(GameView.class.getResource("/ui/FXML/LevelCompletePopUp.fxml"));
-        levelCompleteView = levelCompleteViewLoader.load();
+        try {
+            FXMLLoader levelCompleteViewLoader = new FXMLLoader(GameView.class.getResource("/ui/FXML/LevelCompletePopUp.fxml"));
+            levelCompleteView = levelCompleteViewLoader.load();
 
             FXMLLoader gameCompleteViewLoader = new FXMLLoader(GameView.class.getResource("/ui/FXML/GameCompletePopUp.fxml"));
             gameCompleteView = gameCompleteViewLoader.load();

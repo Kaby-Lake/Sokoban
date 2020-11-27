@@ -350,6 +350,8 @@
          </children>
       </Group>
 
+       <Pane fx:id="MusicControllerAlias" />
+
 
    </children>
 </Pane>

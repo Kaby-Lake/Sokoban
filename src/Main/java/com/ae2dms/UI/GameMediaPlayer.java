@@ -68,18 +68,9 @@ public class GameMediaPlayer {
                 Duration startTime = totalTime.multiply((double) observable.getValue());
                 backgroundMusicPlayer.stop();
                 backgroundMusicPlayer.setStartTime(startTime);
-                backgroundMusicPlayer.play();
+                this.setMusic(MediaState.PLAY);
             }
         });
-
-        backgroundMusicPlayer.startTimeProperty().addListener((observable, oldValue, newValue) -> {
-            if (observable != null) {
-                Duration totalTime = backgroundMusicPlayer.getTotalDuration();
-                Duration thisTime = observable.getValue();
-                this.MusicProgress.setValue(thisTime.toSeconds() % totalTime.toSeconds());
-            }
-        });
-
     }
 
     public static synchronized GameMediaPlayer getInstance()
@@ -92,23 +83,28 @@ public class GameMediaPlayer {
 
     public void play(String musicName) {
         backgroundMusicPlayer = new MediaPlayer((Media)ResourceFactory.getResource(musicName, ResourceType.Media));
-        backgroundMusicPlayer.play();
+        this.nowPlaying.setValue(musicName);
+        this.setMusic(MediaState.PLAY);
+
         backgroundMusicPlayer.setOnEndOfMedia(() -> {
             String newSongName = getRandomBackgroundMusicName();
             this.nowPlaying.setValue(newSongName);
             backgroundMusicPlayer = new MediaPlayer((Media)ResourceFactory.getResource(newSongName, ResourceType.Media));
-            backgroundMusicPlayer.play();
+            this.setMusic(MediaState.PLAY);
         });
     }
 
     public void play() {
-        backgroundMusicPlayer = new MediaPlayer((Media)ResourceFactory.getResource(getRandomBackgroundMusicName(), ResourceType.Media));
-        backgroundMusicPlayer.play();
+        String songName = getRandomBackgroundMusicName();
+        backgroundMusicPlayer = new MediaPlayer((Media)ResourceFactory.getResource(songName, ResourceType.Media));
+        this.nowPlaying.setValue(songName);
+        this.setMusic(MediaState.PLAY);
+
         backgroundMusicPlayer.setOnEndOfMedia(() -> {
             String newSongName = getRandomBackgroundMusicName();
             this.nowPlaying.setValue(newSongName);
             backgroundMusicPlayer = new MediaPlayer((Media)ResourceFactory.getResource(newSongName, ResourceType.Media));
-            backgroundMusicPlayer.play();
+            this.setMusic(MediaState.PLAY);
         });
     }
 
@@ -119,13 +115,28 @@ public class GameMediaPlayer {
 
     public void setMusic(MediaState state) {
         switch (state) {
-            case PLAY -> backgroundMusicPlayer.play();
+            case PLAY -> {
+                backgroundMusicPlayer.play();
+                bindDurationSlider();
+            }
             case PAUSE -> backgroundMusicPlayer.pause();
             case STOP -> {
                 backgroundMusicPlayer.stop();
-                backgroundMusicPlayer = new MediaPlayer(ResourceFactory.getRandomBackgroundMusicName());
+                String newSongName = getRandomBackgroundMusicName();
+                this.nowPlaying.setValue(newSongName);
+                backgroundMusicPlayer = new MediaPlayer((Media)ResourceFactory.getResource(newSongName, ResourceType.Media));
             }
         }
+    }
+
+    private void bindDurationSlider() {
+        backgroundMusicPlayer.startTimeProperty().addListener((observable, oldValue, newValue) -> {
+            if (observable != null) {
+                Duration totalTime = backgroundMusicPlayer.getTotalDuration();
+                Duration thisTime = observable.getValue();
+                this.MusicProgress.setValue(thisTime.toSeconds() % totalTime.toSeconds());
+            }
+        });
     }
 
 }

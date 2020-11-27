@@ -6,7 +6,6 @@ import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.HighScoreBar.HighScoreBarController;
-import com.ae2dms.UI.Menu.MenuView;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -24,6 +23,14 @@ import java.util.List;
 
 public class AbstractBarController {
 
+
+    @FXML
+    private Pane MusicControllerAlias;
+
+    Pane MusicController;
+
+    private SoundPreferenceController soundPreferenceController;
+
     @FXML
     private Pane BottomBarAlias;
 
@@ -34,7 +41,7 @@ public class AbstractBarController {
     @FXML
     private ImageView undoSwitch;
 
-    public BooleanProperty musicIsMute = new SimpleBooleanProperty();
+    public BooleanProperty musicControlIsShowing = new SimpleBooleanProperty(false);
 
     @FXML
     private ImageView musicSwitch;
@@ -58,8 +65,6 @@ public class AbstractBarController {
 
     public AbstractBarController() {
 
-        musicIsMute.bindBidirectional(Main.prefMusicIsMute);
-
         debugIsActive.bindBidirectional(GameDebugger.active);
 
         debugIsActive.addListener((observable, oldValue, newValue) -> {
@@ -67,14 +72,6 @@ public class AbstractBarController {
                 debugSwitch.setImage((Image)ResourceFactory.getResource("DEBUG_ON_ICON", ResourceType.Image));
             } else if (observable != null && observable.getValue()==false){
                 debugSwitch.setImage((Image)ResourceFactory.getResource("DEBUG_OFF_ICON", ResourceType.Image));
-            }
-        });
-
-        musicIsMute.addListener((observable, oldValue, newValue) -> {
-            if (observable != null && observable.getValue()==true) {
-                musicSwitch.setImage((Image)ResourceFactory.getResource("MUSIC_OFF_ICON", ResourceType.Image));
-            } else if (observable != null && observable.getValue()==false){
-                musicSwitch.setImage((Image)ResourceFactory.getResource("MUSIC_ON_ICON", ResourceType.Image));
             }
         });
 
@@ -137,6 +134,35 @@ public class AbstractBarController {
         return highScoreBarController;
     }
 
+    public SoundPreferenceController loadMusicController() {
+        // load real pane
+        Pane musicView = null;
+        FXMLLoader musicLoader = null;
+        try {
+            musicLoader = new FXMLLoader(getClass().getResource("/ui/FXML/SoundPreference.fxml"));
+            musicView = musicLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        musicView.setVisible(false);
+
+        // get children of parent of secPane (the VBox)
+        List<Node> parentChildren = ((Pane) MusicControllerAlias.getParent()).getChildren();
+
+        // replace the child that contained the old secPane
+        parentChildren.set(parentChildren.indexOf(MusicControllerAlias), musicView);
+
+        // store the new pane in the secPane field to allow replacing it the same way later
+        MusicController = musicView;
+
+        soundPreferenceController = musicLoader.getController();
+
+        return soundPreferenceController;
+    }
+
+
+
     public void disableButton(String name) {
         switch (name) {
             case "Debug" -> {
@@ -178,11 +204,11 @@ public class AbstractBarController {
     }
 
     public void menuBarClickToggleMusic() {
-        musicIsMute.setValue(!musicIsMute.getValue());
+        musicControlIsShowing.setValue(!musicControlIsShowing.getValue());
     }
 
     public void menuBarSetMusicIsMute(boolean value) {
-        musicIsMute.setValue(value);
+        musicControlIsShowing.setValue(value);
     }
 
     public void menuBarClickToggleHighScoreList() {

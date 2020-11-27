@@ -7,6 +7,7 @@ import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
+import com.ae2dms.UI.GameMediaPlayer;
 import com.ae2dms.UI.MediaState;
 import com.ae2dms.UI.Menu.MenuView;
 import javafx.beans.property.BooleanProperty;
@@ -28,6 +29,9 @@ import java.awt.*;
 import java.util.HashMap;
 
 public class GameViewController extends AbstractBarController {
+
+    @FXML
+    private Pane MusicControllerAlias;
 
     //Group: LevelCompletePopUp and GameCompletePopUp
     @FXML
@@ -82,6 +86,7 @@ public class GameViewController extends AbstractBarController {
     private ExitPopUpController exitPopUpController;
 
 
+    private GameMediaPlayer player = GameMediaPlayer.getInstance();
 
     private volatile GameDocument gameDocument = Main.gameDocument;
 
@@ -91,7 +96,7 @@ public class GameViewController extends AbstractBarController {
 
     private GameTimer timer = new GameTimer();
 
-    public static HashMap<String, AudioClip> soundEffects = new HashMap<>();
+    public static HashMap<String, AudioClip> soundEffects = GameMediaPlayer.getInstance().soundEffects;
 
     private final BooleanProperty canUndo = new SimpleBooleanProperty(true);
 
@@ -122,16 +127,6 @@ public class GameViewController extends AbstractBarController {
 
         All_Level_Count.setText(Integer.toString(gameDocument.getLevelsCount()));
 
-        musicIsMute.addListener((observable, oldValue, newValue) -> {
-            if (observable != null ) {
-                boolean isMute = observable.getValue();
-                GameView.backgroundMusicPlayer.setMute(isMute);
-                for (AudioClip mediaPlayer : soundEffects.values()) {
-                    mediaPlayer.setVolume(isMute ? 0 : 100);
-                }
-            }
-        });
-
         canUndo.addListener((observable, oldValue, newValue) -> {
             if (observable != null ) {
                 if (observable.getValue()) {
@@ -155,6 +150,8 @@ public class GameViewController extends AbstractBarController {
         Score.textProperty().bindBidirectional(this.gameDocument.movesCount, converter);
 
         loadBottomBar();
+
+        loadMusicController();
 
     }
 
@@ -325,9 +322,9 @@ public class GameViewController extends AbstractBarController {
                 gameDocument.restoreObject(GameStageSaver.getInitialState());
                 GameStageSaver.clear();
 
-                GameView.backgroundMusicPlayer.stop();
+                player.setMusic(MediaState.STOP);
                 Main.primaryStage.setScene(Main.menuScene);
-                MenuView.getInstance().setMusic(MediaState.PLAY);
+                player.setMusic(MediaState.PLAY);
 
             });
         }
@@ -384,9 +381,9 @@ public class GameViewController extends AbstractBarController {
             gameDocument.restoreObject(GameStageSaver.getInitialState());
             GameStageSaver.clear();
 
-            GameView.backgroundMusicPlayer.stop();
+            player.setMusic(MediaState.STOP);
             Main.primaryStage.setScene(Main.menuScene);
-            MenuView.getInstance().setMusic(MediaState.PLAY);
+            player.setMusic(MediaState.PLAY);
         });
 
         exitPopUpController.Confirm_Exit_Back.setOnMouseClicked((event) -> {

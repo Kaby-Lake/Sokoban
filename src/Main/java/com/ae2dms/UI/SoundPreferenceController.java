@@ -16,6 +16,8 @@ import javafx.util.converter.NumberStringConverter;
 
 public class SoundPreferenceController {
 
+    private final GameMediaPlayer player = GameMediaPlayer.getInstance();
+
     @FXML
     private Label MusicName;
 
@@ -76,27 +78,22 @@ public class SoundPreferenceController {
 
         StringConverter<Number> converter = new NumberStringConverter();
 
-        MusicName.textProperty().bindBidirectional(GameMediaPlayer.getInstance().nowPlaying);
-        MusicProgressSlider.valueProperty().bindBidirectional(GameMediaPlayer.getInstance().MusicProgress);
+        MusicName.textProperty().bindBidirectional(player.nowPlaying);
+        MusicProgressSlider.valueProperty().bindBidirectional(player.MusicProgress);
         
         MusicSliderValue.textProperty().bindBidirectional(MusicSlider.valueProperty(), converter);
-        MusicSlider.valueProperty().bindBidirectional(GameMediaPlayer.getInstance().MusicVolume);
-        SFXSlider.valueProperty().bindBidirectional(GameMediaPlayer.getInstance().SFXVolume);
+        MusicSlider.valueProperty().bindBidirectional(player.MusicVolume);
+        SFXSlider.valueProperty().bindBidirectional(player.SFXVolume);
         SFXSliderValue.textProperty().bindBidirectional(SFXSlider.valueProperty(), converter);
 
-        MusicList.setItems(GameMediaPlayer.getInstance().bgmList);
+        MusicList.setItems(player.bgmList);
 
         MusicList.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) ->{
                     String musicName = (String)observable.getValue();
-                    GameMediaPlayer.getInstance().play(musicName);
+                    player.setMusic(MediaState.STOP);
+                    player.play(musicName);
                 });
 
-
     }
-    
-    
-    
-    
-    
 }
