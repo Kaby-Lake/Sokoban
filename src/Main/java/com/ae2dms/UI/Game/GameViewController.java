@@ -21,6 +21,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.AudioClip;
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -148,7 +150,8 @@ public class GameViewController extends AbstractBarController {
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
 
         this.highestScore.textProperty().bind(this.gameDocument.highestScore.asString());
-        Score.textProperty().bind(this.gameDocument.movesCount.asString());
+        StringConverter<Number> converter = new NumberStringConverter();
+        Score.textProperty().bindBidirectional(this.gameDocument.movesCount, converter);
 
     }
 

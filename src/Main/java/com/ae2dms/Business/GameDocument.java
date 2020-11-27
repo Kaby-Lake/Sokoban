@@ -41,7 +41,7 @@ public class GameDocument implements Serializable {
         try {
             logger = new GameLogger();
             this.loadMapFile(input);
-            currentLevel = getNextLevel();
+            currentLevel = getFirstLevel();
         } catch (NoSuchElementException e) {
             logger.warning("Cannot load the map file: " + e.getStackTrace());
         }
@@ -103,6 +103,12 @@ public class GameDocument implements Serializable {
         return nextLevel;
     }
 
+    public Level getFirstLevel() {
+        Level nextLevel = levels.get(0);
+        this.playerObject = (Player) nextLevel.getTargetObject(nextLevel.getPlayerPosition(), null);
+        return nextLevel;
+    }
+
     public Level getCurrentLevel() {
         return currentLevel;
     }
@@ -157,5 +163,12 @@ public class GameDocument implements Serializable {
 
     private void loadGameRecords() {
         records.readInRecords(this.mapSetName, this.initialMapHashCode);
+    }
+
+    public void saveRecord(String name, String time, String score) {
+    }
+
+    public GameRecord getRecords() {
+        return records;
     }
 }
