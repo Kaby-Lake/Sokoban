@@ -30,9 +30,6 @@ public class MenuViewController extends AbstractBarController {
 
     private HighScoreBarController highScoreBarController;
 
-    @FXML
-    private ImageView loadGameFileButton;
-
     public void initialize() throws IllegalStateException {
 
         super.disableButton("Debug");
@@ -54,7 +51,7 @@ public class MenuViewController extends AbstractBarController {
     }
 
 
-    public void clickStartGame(MouseEvent mouseEvent) throws Exception {
+    public void clickStartGame(MouseEvent mouseEvent) {
         MenuView.getInstance().setMusic(MediaState.STOP);
 
         this.gameDocument.restoreObject(GameStageSaver.getInitialState());
@@ -85,7 +82,7 @@ public class MenuViewController extends AbstractBarController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Game Save File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban save file", "*.skbsave"));
-        File file = fileChooser.showOpenDialog(loadGameFileButton.getScene().getWindow());
+        File file = fileChooser.showOpenDialog(Main.primaryStage.getScene().getWindow());
         if (file != null) {
             System.out.println(file.getAbsolutePath());
             // TODO:
@@ -96,10 +93,11 @@ public class MenuViewController extends AbstractBarController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Game Map File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban Map file", "*.skb"));
-        File file = fileChooser.showOpenDialog(loadGameFileButton.getScene().getWindow());
+        File file = fileChooser.showOpenDialog(Main.primaryStage.getScene().getWindow());
         if (file != null) {
             gameDocument.reloadMapFromFile(new FileInputStream(file));
             GameDebugger.logLoadMapFile(file);
+            clickStartGame(null);
         }
     }
 

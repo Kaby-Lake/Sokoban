@@ -116,6 +116,7 @@ public class GameViewController extends AbstractBarController {
         soundEffects.put("MOVE_AUDIO_CLIP_MEDIA", (AudioClip)ResourceFactory.getResource("MOVE_AUDIO_CLIP", ResourceType.AudioClip));
         soundEffects.put("MOVE_CRATE_AUDIO_CLIP_MEDIA", (AudioClip)ResourceFactory.getResource("MOVE_CRATE_AUDIO_CLIP", ResourceType.AudioClip));
         soundEffects.put("LEVEL_COMPLETE_AUDIO_CLIP", (AudioClip)ResourceFactory.getResource("LEVEL_COMPLETE_AUDIO_CLIP",ResourceType.AudioClip));
+        soundEffects.put("GAME_COMPLETE_AUDIO_CLIP", (AudioClip)ResourceFactory.getResource("GAME_COMPLETE_AUDIO_CLIP",ResourceType.AudioClip));
 
         This_Level_Index.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
 
@@ -153,6 +154,8 @@ public class GameViewController extends AbstractBarController {
         StringConverter<Number> converter = new NumberStringConverter();
         Score.textProperty().bindBidirectional(this.gameDocument.movesCount, converter);
 
+        loadBottomBar();
+
     }
 
     public void bindLevelGameCompleteController(LevelCompletePopUpController controller1, GameCompletePopUpController controller2, ExitPopUpController controller3) {
@@ -173,7 +176,14 @@ public class GameViewController extends AbstractBarController {
 
     private final BooleanProperty isAnimating = new SimpleBooleanProperty(false);
 
+    private final BooleanProperty isBlur = new SimpleBooleanProperty(false);
+
     public void handleKey(KeyEvent event) {
+
+        // simply ignore keys when animating
+        if (isAnimating.getValue() || isBlur.getValue()) {
+            return;
+        }
 
         switch (gameStatus) {
             case READY -> {
@@ -188,11 +198,6 @@ public class GameViewController extends AbstractBarController {
             case END -> {
                 return;
             }
-        }
-
-        // simply ignore keys when animating
-        if (isAnimating.getValue()) {
-            return;
         }
 
         // if is shortcuts
@@ -281,12 +286,9 @@ public class GameViewController extends AbstractBarController {
             levelCompletePopUpController.show();
             levelCompletePopUpController.Next_Level_Button.setOnMouseClicked((event) -> {
                 levelCompletePopUpController.hide();
-                Can_Blur_Group.setEffect(null);
+                exitGaussianBlur();
                 switchToNextLevel();
             });
-
-
-            gaussianBlur();
         }
     }
 
@@ -300,26 +302,26 @@ public class GameViewController extends AbstractBarController {
 
             gaussianBlur();
             gameCompletePopUpController.assignData(
-                    this.Time_Spend.getText(),
-                    this.Score.getText()
+                    timer.getTime(),
+                    this.gameDocument.movesCount.getValue()
             );
 
             gameCompletePopUpController.show();
             gameCompletePopUpController.Save_Record.setOnMouseClicked((event) -> {
-                String saveName = gameCompletePopUpController.name.toString();
+                String saveName = gameCompletePopUpController.inputPlayerName.toString();
 
                 gameDocument.saveRecord(saveName, this.Time_Spend.getText(), this.Score.getText());
             });
 
             gameCompletePopUpController.Level_Complete_High_Score_List.setOnMouseClicked((event) -> {
                 gameCompletePopUpController.hide();
-                Can_Blur_Group.setEffect(null);
+                exitGaussianBlur();
                 // TODO: high score list
             });
 
             gameCompletePopUpController.Level_Complete_Back_To_Menu.setOnMouseClicked((event) -> {
                 levelCompletePopUpController.hide();
-                Can_Blur_Group.setEffect(null);
+                exitGaussianBlur();
                 gameDocument.restoreObject(GameStageSaver.getInitialState());
                 GameStageSaver.clear();
 
@@ -332,6 +334,11 @@ public class GameViewController extends AbstractBarController {
     }
 
     private void switchToNextLevel() {
+        if (gameDocument.isGameComplete()) {
+            checkIsGameComplete();
+            return;
+        }
+
         gameDocument.changeToNextLevel();
         Background_Image.setImage(ResourceFactory.getRandomBackgroundImage());
 
@@ -369,13 +376,11 @@ public class GameViewController extends AbstractBarController {
         gaussianBlur();
         exitPopUpController.show();
 
-
-
         exitPopUpController.Confirm_Exit_Exit.setOnMouseClicked((event) -> {
             timer.stop();
 
             exitPopUpController.hide();
-            Can_Blur_Group.setEffect(null);
+            exitGaussianBlur();
             gameDocument.restoreObject(GameStageSaver.getInitialState());
             GameStageSaver.clear();
 
@@ -386,15 +391,26 @@ public class GameViewController extends AbstractBarController {
 
         exitPopUpController.Confirm_Exit_Back.setOnMouseClicked((event) -> {
             exitPopUpController.hide();
-            Can_Blur_Group.setEffect(null);
+            exitGaussianBlur();
         });
 
+    }
+
+    private void exitGaussianBlur() {
+        Can_Blur_Group.setEffect(null);
+        this.isBlur.setValue(false);
     }
 
     private void gaussianBlur() {
         GaussianBlur gaussianBlur = new GaussianBlur();
         gaussianBlur.setRadius(20);
         Can_Blur_Group.setEffect(gaussianBlur);
+        this.isBlur.setValue(true);
+    }
+
+    @FXML
+    private void clickHighScoreList(MouseEvent mouseEvent) {
+        menuBarClickToggleHighScoreList();
     }
 }
 

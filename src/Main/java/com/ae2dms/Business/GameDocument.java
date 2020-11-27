@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class GameDocument implements Serializable {
-    public transient IntegerProperty highestScore = new SimpleIntegerProperty(0);  // IntegerProperty cannot be Serialized
+    public transient IntegerProperty highestScore = new SimpleIntegerProperty(0);
     private int highestScoreSerializable;   // only used for backup of IntegerProperty highestScore
 
     public static final String GAME_NAME = "SokobanFX";
@@ -30,7 +30,7 @@ public class GameDocument implements Serializable {
     private boolean gameComplete = false;
     private int initialMapHashCode;
 
-    private transient GameRecord records = new GameRecord();
+    public static transient GameRecord records = new GameRecord();
 
     public GameDocument(InputStream input, boolean production) {
         init(input);
@@ -42,6 +42,8 @@ public class GameDocument implements Serializable {
             logger = new GameLogger();
             this.loadMapFile(input);
             currentLevel = getFirstLevel();
+            records.readInRecords(mapSetName, initialMapHashCode);
+            this.highestScore.bindBidirectional(records.highestScore);
         } catch (NoSuchElementException e) {
             logger.warning("Cannot load the map file: " + e.getStackTrace());
         }

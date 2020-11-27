@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@GlobalCSS.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ae2dms.UI.Menu.MenuViewController">
    <children>
 
@@ -14,10 +18,75 @@
          <Image url="@../Assets/Menu/Background_Image.png" />
       </ImageView>
 
+      <VBox alignment="CENTER" layoutX="117.0" layoutY="118.0" prefHeight="0.0" prefWidth="0.0" spacing="5.0">
+         <children>
+
+            <!--     Start Game    -->
+
+            <ImageView accessibleRole="BUTTON" onMouseClicked="#clickStartGame" styleClass="Button">
+               <Image url="@../Assets/Menu/Start_Game.png" />
+               <VBox.margin>
+                  <Insets bottom="16.0" />
+               </VBox.margin>
+            </ImageView>
+
+            <!--     Information    -->
+            <ImageView accessibleRole="BUTTON" onMouseClicked="#clickInformation" styleClass="Button">
+               <Image url="@../Assets/Menu/Information.png" />
+            </ImageView>
+            <Group>
+               <children>
+                  <ImageView>
+                     <Image url="@../Assets/Menu/Customized_Map_File.png"/>
+                  </ImageView>
+                  <ImageView layoutX="98.0" layoutY="-2.0" onMouseClicked="#clickLoadMapFile" styleClass="Button">
+                     <image>
+                        <Image url="@../Assets/Menu/Open_Map_Button.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Group>
+            <Group>
+               <children>
+                  <ImageView>
+                     <Image url="@../Assets/Menu/Resume_Game.png"/>
+                  </ImageView>
+                  <ImageView layoutX="98.0" layoutY="-2.0" onMouseClicked="#clickLoadGame" styleClass="Button">
+                     <Image url="@../Assets/Menu/Open_SaveFile_Button.png"/>
+                  </ImageView>
+               </children>
+            </Group>
+
+            <!--     Exit game    -->
+            <ImageView accessibleRole="BUTTON" onMouseClicked="#clickExit" styleClass="Button">
+               <Image url="@../Assets/Menu/Exit.png" />
+            </ImageView>
+         </children>
+      </VBox>
+
+
+      <!--     logo    -->
+      <ImageView fitHeight="112.0" fitWidth="414.0" layoutX="770.0" layoutY="69.0">
+         <Image url="@../Assets/Menu/Sokoban.png" />
+      </ImageView>
+
+      <!--     Info    -->
+      <Group fx:id="infoGroup" styleClass="Hide">
+         <ImageView fitHeight="366.0" fitWidth="588.0" layoutX="579.0" layoutY="205.0">
+            <Image url="@../Assets/Menu/InfoGrid.png" />
+         </ImageView>
+
+         <ImageView accessibleRole="BUTTON" layoutX="805.0" layoutY="518.0" onMouseClicked="#clickCloseInformation" styleClass="Button">
+            <Image url="@../Assets/Menu/Dismiss.png" />
+         </ImageView>
+      </Group>
+
+
       <!--     BottomBar Alias   -->
       <Pane fx:id="BottomBarAlias">
 
       </Pane>
+
 
       <!--     BottomBar   -->
       <ImageView fitWidth="1280.0" layoutY="665.0">
@@ -37,11 +106,6 @@
       <!--     Debug button    -->
       <ImageView fx:id="debugSwitch" accessibleRole="BUTTON" layoutX="662.0" layoutY="667.0" onMouseClicked="#clickToggleDebug" styleClass="Button">
          <Image url="@../Assets/BottomBar/Debug_off.png" />
-      </ImageView>
-
-      <!--     Load Game Map button -->
-      <ImageView accessibleRole="BUTTON" fitHeight="86.0" fitWidth="241.0" layoutX="121.0" layoutY="322.0" onMouseClicked="#clickLoadMapFile" styleClass="Button">
-         <Image url="@../Assets/Menu/Load_Map.png" />
       </ImageView>
 
       <!--     Save Game button    -->
@@ -70,47 +134,6 @@
          </center>
       </BorderPane>
 
-
-
-
-
-      <!--     Start Game    -->
-
-      <ImageView accessibleRole="BUTTON" fitHeight="90.0" fitWidth="246.0" layoutX="117.0" layoutY="127.0" onMouseClicked="#clickStartGame" styleClass="Button">
-         <Image url="@../Assets/Menu/Start_Game.png" />
-      </ImageView>
-
-      <!--     Information    -->
-      <ImageView accessibleRole="BUTTON" fitHeight="86.0" fitWidth="241.0" layoutX="122.0" layoutY="234.0" onMouseClicked="#clickInformation" styleClass="Button">
-         <Image url="@../Assets/Menu/Information.png" />
-      </ImageView>
-
-      <!--     Load Game from file    -->
-      <ImageView fx:id="loadGameFileButton" accessibleRole="BUTTON" fitHeight="86.0" fitWidth="241.0" layoutX="123.0" layoutY="410.0" onMouseClicked="#clickLoadGame" styleClass="Button">
-         <Image url="@../Assets/Menu/Load_Game.png" />
-      </ImageView>
-
-      <!--     Exit game    -->
-      <ImageView accessibleRole="BUTTON" fitHeight="86.0" fitWidth="241.0" layoutX="122.0" layoutY="497.0" onMouseClicked="#clickExit" styleClass="Button">
-         <Image url="@../Assets/Menu/Exit.png" />
-      </ImageView>
-
-      <!--     logo    -->
-      <ImageView fitHeight="112.0" fitWidth="414.0" layoutX="770.0" layoutY="69.0">
-         <Image url="@../Assets/Menu/Sokoban.png" />
-      </ImageView>
-
-      <!--     Info    -->
-      <Group fx:id="infoGroup" styleClass="Hide">
-         <ImageView fitHeight="366.0" fitWidth="588.0" layoutX="579.0" layoutY="205.0">
-            <Image url="@../Assets/Menu/InfoGrid.png"/>
-         </ImageView>
-
-         <ImageView accessibleRole="BUTTON" layoutX="805.0" layoutY="518.0" onMouseClicked="#clickCloseInformation"
-                    styleClass="Button">
-            <Image url="@../Assets/Menu/Dismiss.png"/>
-         </ImageView>
-      </Group>
 
    </children>
 </Pane>
