@@ -2,14 +2,19 @@ package com.ae2dms.UI.HighScoreBar;
 
 import com.ae2dms.Business.Data.GameRecord;
 import com.ae2dms.Business.Data.GameRecord.Record;
+import com.ae2dms.IO.ResourceFactory;
+import com.ae2dms.IO.ResourceType;
 import com.ae2dms.UI.Menu.MenuView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class HighScoreBarController {
@@ -30,6 +35,9 @@ public class HighScoreBarController {
 
     public void renderRecords(GameRecord records) {
 
+        HighScoreItemVBox.getChildren().clear();
+        HighTimeItemVBox.getChildren().clear();
+
         int scoreCount = 0;
         for (Record record : records.getRecords()) {
             if (scoreCount > 7) {
@@ -38,7 +46,7 @@ public class HighScoreBarController {
             Group itemView = null;
             FXMLLoader itemLoader = null;
             try {
-                itemLoader = new FXMLLoader(MenuView.class.getResource("/ui/FXML/ScoreItemTemplate.fxml"));
+                itemLoader = new FXMLLoader((URL)ResourceFactory.getResource("SCORE_ITEM_TEMPLATE_FXML", ResourceType.FXML));
                 itemView = itemLoader.load();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -57,6 +65,11 @@ public class HighScoreBarController {
 //            scoresController.add(itemLoader.getController());
         }
 
+        if (scoreCount == 0) {
+            //display
+            HighScoreItemVBox.getChildren().add( 0, new ImageView((Image)ResourceFactory.getResource("NO_RECORDS_INFO", ResourceType.Image)));
+        }
+
         int timeCount = 0;
         for (Record record : records.sortRecordsByTime()) {
             if (timeCount > 7) {
@@ -65,7 +78,7 @@ public class HighScoreBarController {
             Group itemView = null;
             FXMLLoader itemLoader = null;
             try {
-                itemLoader = new FXMLLoader(MenuView.class.getResource("/ui/FXML/ScoreItemTemplate.fxml"));
+                itemLoader = new FXMLLoader((URL)ResourceFactory.getResource("SCORE_ITEM_TEMPLATE_FXML", ResourceType.FXML));
                 itemView = itemLoader.load();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -82,6 +95,11 @@ public class HighScoreBarController {
 
 //            timesView.add(itemView);
 //            timesController.add(itemLoader.getController());
+        }
+
+        if (scoreCount == 0) {
+            //display
+            HighTimeItemVBox.getChildren().add( 0, new ImageView((Image)ResourceFactory.getResource("NO_RECORDS_INFO", ResourceType.Image)));
         }
 
     }

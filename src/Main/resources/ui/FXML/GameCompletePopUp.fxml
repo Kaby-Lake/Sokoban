@@ -10,7 +10,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane stylesheets="@GlobalCSS.css" xmlns="http://javafx.com/javafx"
+<BorderPane stylesheets="@GlobalCSS.css" fx:id="Game_Complete_Pop_Up" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.ae2dms.UI.Game.GameCompletePopUpController"
             prefHeight="720.0" prefWidth="1280.0">
@@ -27,7 +27,7 @@
                             <Image url="@../Assets/Game/GameCompletePopUp/Back_To_Menu_Grey.png"/>
                         </ImageView>
                         <ImageView fx:id="Level_Complete_High_Score_List" fitHeight="57.0" fitWidth="232.0"
-                                   layoutX="512.0" layoutY="280.0" styleClass="Button">
+                                   layoutX="512.0" layoutY="280.0" styleClass="Button" >
                             <Image url="@../Assets/BottomBar/High_Score_List_off.png"/>
                         </ImageView>
                         <BorderPane layoutX="280.0" layoutY="148.0" prefHeight="106.0" prefWidth="240.0">
@@ -35,7 +35,7 @@
                                 <TextField fx:id="Game_Complete_Name" alignment="CENTER" promptText="Type Your Name Here" BorderPane.alignment="CENTER" />
                             </center>
                             <bottom>
-                                <ImageView fx:id="Save_Record" BorderPane.alignment="CENTER">
+                                <ImageView fx:id="Save_Record" BorderPane.alignment="CENTER" styleClass="Button" onMouseClicked="#clickSaveRecord">
                                     <Image url="@../Assets/Game/GameCompletePopUp/Save_Record.png"/>
                                 </ImageView>
                             </bottom>

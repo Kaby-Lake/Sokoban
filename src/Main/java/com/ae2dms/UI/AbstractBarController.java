@@ -115,7 +115,7 @@ public class AbstractBarController {
         Pane barView = null;
         FXMLLoader menuBarLoader = null;
         try {
-            menuBarLoader = new FXMLLoader(MenuView.class.getResource("/ui/FXML/HighScoreBar.fxml"));
+            menuBarLoader = new FXMLLoader(getClass().getResource("/ui/FXML/HighScoreBar.fxml"));
             barView = menuBarLoader.load();
         } catch (IOException e) {
             e.printStackTrace();

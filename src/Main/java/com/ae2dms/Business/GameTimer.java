@@ -27,6 +27,10 @@ public class GameTimer {
         }
     }
 
+    public int getTime() {
+        return seconds;
+    }
+
     public void pause() {
         timer.pause();
     }
@@ -35,7 +39,7 @@ public class GameTimer {
         timer.play();
     }
 
-    private String parseToTimeFormat(int seconds) {
+    public static String parseToTimeFormat(int seconds) {
         Integer minute = seconds / 60;
         String minuteString = "0" + minute.toString();
         Integer second = seconds % 60;
