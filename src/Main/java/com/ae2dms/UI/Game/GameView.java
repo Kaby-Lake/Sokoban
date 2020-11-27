@@ -14,17 +14,9 @@ public class GameView {
     private BorderPane levelCompleteView;
     private BorderPane gameCompleteView;
     private BorderPane exitView;
-    public static MediaPlayer backgroundMusicPlayer;
     private GameViewController controller;
 
     public GameView() throws Exception {
-
-        backgroundMusicPlayer = new MediaPlayer(ResourceFactory.getRandomBackgroundMusic());
-        backgroundMusicPlayer.setOnEndOfMedia(() -> {
-            backgroundMusicPlayer = new MediaPlayer(ResourceFactory.getRandomBackgroundMusic());
-            backgroundMusicPlayer.play();
-        });
-        backgroundMusicPlayer.play();
 
         FXMLLoader levelCompleteViewLoader = new FXMLLoader(GameView.class.getResource("/ui/FXML/LevelCompletePopUp.fxml"));
         levelCompleteView = levelCompleteViewLoader.load();
