@@ -125,20 +125,5 @@ public class ResourceFactory {
         return (Image)getResource(name, ResourceType.Image);
     }
 
-    public static Media getRandomBackgroundMusic() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("PaperClip-Blip");
-        list.add("PaperClip-BOUNCE");
-        list.add("PaperClip-DEMONS");
-        list.add("PaperClip-Distant");
-        list.add("PaperClip-Heeyha");
-        list.add("PaperClip-Jumping");
-        list.add("PaperClip-KINGSTON");
-        list.add("PaperClip-Lust");
-        list.add("PaperClip-Heat Up");
-        list.add("PETO-Okay");
-        Random random = new Random();
-        String name = list.get(random.nextInt(list.size()));
-        return (Media)getResource(name, ResourceType.Media);
-    }
+
 }
