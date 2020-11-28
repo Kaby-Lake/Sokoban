@@ -15,6 +15,7 @@ public class GameRecord implements Serializable {
 
     public transient IntegerProperty highestScore = new SimpleIntegerProperty(0);
 
+    // only used when to serialize
     private int highestScoreSerializable;
 
     private final ArrayList<Record> records = new ArrayList<>();

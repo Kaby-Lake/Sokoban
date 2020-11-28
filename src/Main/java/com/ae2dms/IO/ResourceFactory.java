@@ -6,6 +6,7 @@ import javafx.scene.media.Media;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.*;
 
 public class ResourceFactory {
@@ -16,6 +17,7 @@ public class ResourceFactory {
     private static final HashMap<String, Media> mediaShelf = new HashMap<>();
     private static final HashMap<String, Image> imageShelf = new HashMap<>();
     private static final HashMap<String, AudioClip> audioClipShelf = new HashMap<>();
+    private static final HashMap<String, URL> FXMLShelf = new HashMap<>();
 
     static {
         urlMap.put("PaperClip-Blip","/music/Songs/PaperClip-Blip.mp3");
@@ -35,6 +37,7 @@ public class ResourceFactory {
 
         urlMap.put("SCORE_ITEM_BACKGROUND", "/ui/Assets/HighScore/Score_Item.png");
         urlMap.put("TIME_ITEM_BACKGROUND", "/ui/Assets/HighScore/Time_Item.png");
+        urlMap.put("NO_RECORDS_INFO", "/ui/Assets/HighScore/No_Records_Info.png");
 
         urlMap.put("STAGE_IMAGE", "/ui/Assets/Game/Stage.png");
         urlMap.put("DIAMOND_IMAGE", "/ui/Assets/Game/Diamond.png");
@@ -66,7 +69,10 @@ public class ResourceFactory {
         urlMap.put("MOVE_AUDIO_CLIP", "/music/SFX/Pop.mp3");
         urlMap.put("MOVE_CRATE_AUDIO_CLIP", "/music/SFX/Jeans_Drop.mp3");
 
-        urlMap.put("LEVEL_COMPLETE_AUDIO_CLIP", "/music/SFX/Funk.mp3");
+        urlMap.put("LEVEL_COMPLETE_AUDIO_CLIP", "/music/SFX/level_complete.mp3");
+        urlMap.put("GAME_COMPLETE_AUDIO_CLIP", "/music/SFX/game_complete.mp3");
+
+        urlMap.put("SCORE_ITEM_TEMPLATE_FXML", "/ui/FXML/ScoreItemTemplate.fxml");
     }
 
     private static String getResourceSystemPath(String url) {
@@ -109,6 +115,16 @@ public class ResourceFactory {
                     return object;
                 }
             }
+            case FXML -> {
+                if (FXMLShelf.containsKey(url)) {
+                    return FXMLShelf.get(url);
+                } else {
+                    URL object = ResourceFactory.class.getResource(url);
+                    FXMLShelf.put(url, object);
+                    return object;
+                }
+
+            }
             default -> {
                 return null;
             }
@@ -125,20 +141,5 @@ public class ResourceFactory {
         return (Image)getResource(name, ResourceType.Image);
     }
 
-    public static Media getRandomBackgroundMusic() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("PaperClip-Blip");
-        list.add("PaperClip-BOUNCE");
-        list.add("PaperClip-DEMONS");
-        list.add("PaperClip-Distant");
-        list.add("PaperClip-Heeyha");
-        list.add("PaperClip-Jumping");
-        list.add("PaperClip-KINGSTON");
-        list.add("PaperClip-Lust");
-        list.add("PaperClip-Heat Up");
-        list.add("PETO-Okay");
-        Random random = new Random();
-        String name = list.get(random.nextInt(list.size()));
-        return (Media)getResource(name, ResourceType.Media);
-    }
+
 }

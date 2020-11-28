@@ -159,7 +159,7 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
 
         @Override
         public boolean hasNext() {
-            return (x < Y && y < X);
+            return (x < X && y < Y);
         }
 
         @Override

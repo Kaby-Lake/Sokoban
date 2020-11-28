@@ -1,5 +1,6 @@
 package com.ae2dms.UI.Game;
 
+import com.ae2dms.Business.GameDebugger;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.UI.ViewUtilities;
 import javafx.fxml.FXMLLoader;
@@ -14,32 +15,28 @@ public class GameView {
     private BorderPane levelCompleteView;
     private BorderPane gameCompleteView;
     private BorderPane exitView;
-    public static MediaPlayer backgroundMusicPlayer;
     private GameViewController controller;
 
-    public GameView() throws Exception {
+    public GameView() {
 
-        backgroundMusicPlayer = new MediaPlayer(ResourceFactory.getRandomBackgroundMusic());
-        backgroundMusicPlayer.setOnEndOfMedia(() -> {
-            backgroundMusicPlayer = new MediaPlayer(ResourceFactory.getRandomBackgroundMusic());
-            backgroundMusicPlayer.play();
-        });
-        backgroundMusicPlayer.play();
+        try {
+            FXMLLoader levelCompleteViewLoader = new FXMLLoader(GameView.class.getResource("/ui/FXML/LevelCompletePopUp.fxml"));
+            levelCompleteView = levelCompleteViewLoader.load();
 
-        FXMLLoader levelCompleteViewLoader = new FXMLLoader(GameView.class.getResource("/ui/FXML/LevelCompletePopUp.fxml"));
-        levelCompleteView = levelCompleteViewLoader.load();
+            FXMLLoader gameCompleteViewLoader = new FXMLLoader(GameView.class.getResource("/ui/FXML/GameCompletePopUp.fxml"));
+            gameCompleteView = gameCompleteViewLoader.load();
 
-        FXMLLoader gameCompleteViewLoader = new FXMLLoader(GameView.class.getResource("/ui/FXML/GameCompletePopUp.fxml"));
-        gameCompleteView = gameCompleteViewLoader.load();
+            FXMLLoader exitViewLoader = new FXMLLoader(GameView.class.getResource("/ui/FXML/ExitPopUp.fxml"));
+            exitView = exitViewLoader.load();
 
-        FXMLLoader exitViewLoader = new FXMLLoader(GameView.class.getResource("/ui/FXML/ExitPopUp.fxml"));
-        exitView = exitViewLoader.load();
-
-        FXMLLoader gameLoader = new FXMLLoader(GameView.class.getResource("/ui/FXML/GameViewScene.fxml"));
-        gameView = gameLoader.load();
-        controller = gameLoader.getController();
-        controller.bindLevelGameCompleteController(levelCompleteViewLoader.getController(), gameCompleteViewLoader.getController(), exitViewLoader.getController());
-        controller.bindLevelGameCompleteView(this.getLevelCompleteView(), this.getGameCompleteView(), this.getExitView());
+            FXMLLoader gameLoader = new FXMLLoader(GameView.class.getResource("/ui/FXML/GameViewScene.fxml"));
+            gameView = gameLoader.load();
+            controller = gameLoader.getController();
+            controller.bindLevelGameCompleteController(levelCompleteViewLoader.getController(), gameCompleteViewLoader.getController(), exitViewLoader.getController());
+            controller.bindLevelGameCompleteView(this.getLevelCompleteView(), this.getGameCompleteView(), this.getExitView());
+        } catch (Exception e) {
+            GameDebugger.logErrorMessage(e.getMessage());
+        }
 
     }
 

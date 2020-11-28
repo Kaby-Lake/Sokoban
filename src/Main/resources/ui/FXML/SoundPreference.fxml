@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="MusicControl" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ae2dms.UI.SoundPreferenceController">
+   <children>
+      <ImageView layoutX="408.0" layoutY="68.0">
+         <Image url="@../Assets/MusicControl/Music_Control.png" />
+      </ImageView>
+      <Group layoutX="428.0" layoutY="108.0">
+         <children>
+            <ImageView fx:id="MuteImage" layoutX="37.0" layoutY="475.0" onMouseClicked="#clickMuteAll" styleClass="Button">
+               <Image url="@../Assets/MusicControl/Sound_off.png" />
+            </ImageView>
+            <Label fx:id="MuteLabel" layoutX="223.0" layoutY="491.0" text="Muted" textFill="#808080">
+               <font>
+                  <Font name="Smartisan Maquette Bold" size="17.0" />
+               </font>
+            </Label>
+            <Slider fx:id="MusicSlider" layoutX="3.0" layoutY="356.0" prefHeight="15.0" prefWidth="235.0" />
+            <Slider fx:id="SFXSlider" layoutX="3.0" layoutY="422.0" prefHeight="15.0" prefWidth="235.0" />
+            <BorderPane layoutX="270.0" layoutY="346.0" prefHeight="33.0" prefWidth="62.0">
+               <center>
+                  <Label fx:id="MusicSliderValue" text="30%" textFill="#808080" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Smartisan Maquette Bold" size="17.0" />
+                     </font>
+                  </Label>
+               </center>
+            </BorderPane>
+            <BorderPane layoutX="271.0" layoutY="412.0" prefHeight="33.0" prefWidth="62.0">
+               <center>
+                  <Label fx:id="SFXSliderValue" text="30%" textFill="#808080" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Smartisan Maquette Bold" size="17.0" />
+                     </font>
+                  </Label>
+               </center>
+            </BorderPane>
+            <ListView fx:id="MusicList" layoutX="2.0" layoutY="101.0" prefHeight="207.0" prefWidth="333.0" />
+            <BorderPane layoutX="51.0" prefHeight="33.0" prefWidth="235.0">
+               <center>
+                  <Label fx:id="MusicName" text="30%" textFill="#808080" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Smartisan Maquette Bold" size="17.0" />
+                     </font>
+                  </Label>
+               </center>
+            </BorderPane>
+            <Slider fx:id="MusicProgressSlider" layoutX="4.0" layoutY="41.0" prefHeight="15.0" prefWidth="333.0" />
+            <BorderPane layoutX="251.0" layoutY="51.0" prefHeight="33.0" prefWidth="80.0">
+               <center>
+                  <Label fx:id="MusicTime" text="03:20 / 04:30" textFill="#808080c3" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Smartisan Maquette Bold" size="11.0" />
+                     </font>
+                  </Label>
+               </center>
+            </BorderPane>
+         </children>
+      </Group>
+   </children>
+</Pane>

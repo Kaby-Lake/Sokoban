@@ -110,6 +110,12 @@ public class GameDebugger {
 
         logger.info(log.get());
     }
+
+    public static void logErrorMessage(String msg) {
+        LogMessage log = new LogMessage();
+        log.addSevere("Exception: " + msg);
+        logger.severe(log.get());
+    }
 }
 
 class LogMessage {

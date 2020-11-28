@@ -7,8 +7,10 @@ import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.Game.GameView;
 import com.ae2dms.UI.Game.GameViewController;
+import com.ae2dms.UI.GameMediaPlayer;
 import com.ae2dms.UI.HighScoreBar.HighScoreBarController;
 import com.ae2dms.UI.MediaState;
+import com.ae2dms.UI.SoundPreferenceController;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -25,13 +27,14 @@ public class MenuViewController extends AbstractBarController {
 
     private GameDocument gameDocument = Main.gameDocument;
 
+    private final GameMediaPlayer player = GameMediaPlayer.getInstance();
+
     @FXML
     private Group infoGroup;
 
     private HighScoreBarController highScoreBarController;
 
-    @FXML
-    private ImageView loadGameFileButton;
+    private SoundPreferenceController soundPreferenceController;
 
     public void initialize() throws IllegalStateException {
 
@@ -39,23 +42,18 @@ public class MenuViewController extends AbstractBarController {
         super.disableButton("Save Game");
         super.disableButton("Undo");
 
-        musicIsMute.addListener((observable, oldValue, newValue) -> {
-            if (observable != null ) {
-                if (observable.getValue() == true) {
-                    MenuView.getInstance().setMusic(MediaState.MUTE);
-                } else {
-                    MenuView.getInstance().setMusic(MediaState.NON_MUTE);
-                }
-            }
-        });
-
         this.highestScore.textProperty().bind(Main.gameDocument.highestScore.asString());
-        highScoreBarController = this.loadBottomBar();
+        highScoreBarController = loadBottomBar();
+        soundPreferenceController = loadMusicController();
+
+        musicControlIsShowing.bindBidirectional(soundPreferenceController.isShowing);
+        soundPreferenceController.isMute.bindBidirectional(Main.prefMusicIsMute);
     }
 
 
-    public void clickStartGame(MouseEvent mouseEvent) throws Exception {
-        MenuView.getInstance().setMusic(MediaState.STOP);
+    public void clickStartGame(MouseEvent mouseEvent) {
+        player.setMusic(MediaState.STOP);
+        player.play();
 
         this.gameDocument.restoreObject(GameStageSaver.getInitialState());
         GameView gameView = new GameView();
@@ -85,7 +83,7 @@ public class MenuViewController extends AbstractBarController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Game Save File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban save file", "*.skbsave"));
-        File file = fileChooser.showOpenDialog(loadGameFileButton.getScene().getWindow());
+        File file = fileChooser.showOpenDialog(Main.primaryStage.getScene().getWindow());
         if (file != null) {
             System.out.println(file.getAbsolutePath());
             // TODO:
@@ -96,10 +94,11 @@ public class MenuViewController extends AbstractBarController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Game Map File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban Map file", "*.skb"));
-        File file = fileChooser.showOpenDialog(loadGameFileButton.getScene().getWindow());
+        File file = fileChooser.showOpenDialog(Main.primaryStage.getScene().getWindow());
         if (file != null) {
             gameDocument.reloadMapFromFile(new FileInputStream(file));
             GameDebugger.logLoadMapFile(file);
+            clickStartGame(null);
         }
     }
 
@@ -110,8 +109,6 @@ public class MenuViewController extends AbstractBarController {
     public void clickHighScoreList() {
         menuBarClickToggleHighScoreList();
     }
-
-
 
 
     // Not used in MenuViewController

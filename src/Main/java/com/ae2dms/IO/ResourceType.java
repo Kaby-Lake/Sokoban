@@ -1,5 +1,5 @@
 package com.ae2dms.IO;
 
 public enum ResourceType {
-    Media, Image, AudioClip
+    Media, Image, AudioClip, FXML
 }
