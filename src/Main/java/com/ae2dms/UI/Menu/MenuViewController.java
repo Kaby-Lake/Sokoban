@@ -53,6 +53,7 @@ public class MenuViewController extends AbstractBarController {
 
     public void clickStartGame(MouseEvent mouseEvent) {
         player.setMusic(MediaState.STOP);
+        player.play();
 
         this.gameDocument.restoreObject(GameStageSaver.getInitialState());
         GameView gameView = new GameView();

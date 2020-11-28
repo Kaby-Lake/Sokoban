@@ -10,6 +10,7 @@ import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.GameMediaPlayer;
 import com.ae2dms.UI.MediaState;
 import com.ae2dms.UI.Menu.MenuView;
+import com.ae2dms.UI.SoundPreferenceController;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -84,6 +85,7 @@ public class GameViewController extends AbstractBarController {
     private LevelCompletePopUpController levelCompletePopUpController;
     private GameCompletePopUpController gameCompletePopUpController;
     private ExitPopUpController exitPopUpController;
+    private SoundPreferenceController soundPreferenceController;
 
 
     private GameMediaPlayer player = GameMediaPlayer.getInstance();
@@ -151,8 +153,10 @@ public class GameViewController extends AbstractBarController {
 
         loadBottomBar();
 
-        loadMusicController();
+        soundPreferenceController = loadMusicController();
 
+        musicControlIsShowing.bindBidirectional(soundPreferenceController.isShowing);
+        soundPreferenceController.isMute.bindBidirectional(Main.prefMusicIsMute);
     }
 
     public void bindLevelGameCompleteController(LevelCompletePopUpController controller1, GameCompletePopUpController controller2, ExitPopUpController controller3) {

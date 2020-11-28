@@ -1,7 +1,9 @@
 package com.ae2dms.UI;
 
+import com.ae2dms.Business.GameTimer;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -10,13 +12,18 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 
 public class SoundPreferenceController {
 
     private final GameMediaPlayer player = GameMediaPlayer.getInstance();
+
+    @FXML
+    private Label MusicTime;
 
     @FXML
     private Label MusicName;
@@ -79,21 +86,46 @@ public class SoundPreferenceController {
         StringConverter<Number> converter = new NumberStringConverter();
 
         MusicName.textProperty().bindBidirectional(player.nowPlaying);
-        MusicProgressSlider.valueProperty().bindBidirectional(player.MusicProgress);
+
         
         MusicSliderValue.textProperty().bindBidirectional(MusicSlider.valueProperty(), converter);
+        SFXSliderValue.textProperty().bindBidirectional(SFXSlider.valueProperty(), converter);
+
         MusicSlider.valueProperty().bindBidirectional(player.MusicVolume);
         SFXSlider.valueProperty().bindBidirectional(player.SFXVolume);
-        SFXSliderValue.textProperty().bindBidirectional(SFXSlider.valueProperty(), converter);
 
         MusicList.setItems(player.bgmList);
 
         MusicList.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) ->{
-                    String musicName = (String)observable.getValue();
-                    player.setMusic(MediaState.STOP);
-                    player.play(musicName);
-                });
+        (observable, oldValue, newValue) ->{
+            String musicName = (String)observable.getValue();
+            player.setMusic(MediaState.STOP);
+            player.play(musicName);
+        });
 
+        init();
+
+    }
+
+    private void init() {
+        MusicProgressSlider.setOnMouseClicked((event) ->{
+            player.backgroundMusicPlayer.seek(Duration.seconds(player.duration * MusicProgressSlider.getValue() / 100));
+        });
+
+        player.bindSoundPreferencesController(this);
+    }
+
+
+    public void updatesDurationSlider() {
+        if (!MusicProgressSlider.isPressed()) {
+            double value = player.backgroundMusicPlayer.getCurrentTime().toSeconds() / player.duration * 100;
+            MusicProgressSlider.valueProperty().setValue(value);
+            MusicTime.setText(GameTimer.parseToTimeFormat((int)player.backgroundMusicPlayer.getCurrentTime().toSeconds()) + " / " + GameTimer.parseToTimeFormat(player.duration));
+        }
+    }
+
+    @FXML
+    private void clickMuteAll(MouseEvent mouseEvent) {
+        isMute.setValue(!isMute.getValue());
     }
 }

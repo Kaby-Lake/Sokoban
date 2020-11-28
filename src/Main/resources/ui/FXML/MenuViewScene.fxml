@@ -100,7 +100,7 @@
 
       <!--     Music button    -->
       <ImageView fx:id="musicSwitch" accessibleRole="BUTTON" layoutX="533.0" layoutY="667.0" onMouseClicked="#clickToggleMusic" styleClass="Button">
-         <Image url="@../Assets/BottomBar/Music_on.png" />
+         <Image url="@../Assets/BottomBar/Music_off.png" />
       </ImageView>
 
       <!--     Debug button    -->

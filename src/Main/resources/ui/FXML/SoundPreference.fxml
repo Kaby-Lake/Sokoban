@@ -15,9 +15,9 @@
       <ImageView layoutX="408.0" layoutY="68.0">
          <Image url="@../Assets/MusicControl/Music_Control.png" />
       </ImageView>
-      <Group layoutX="428.0" layoutY="107.0">
+      <Group layoutX="428.0" layoutY="108.0">
          <children>
-            <ImageView fx:id="MuteImage" layoutX="37.0" layoutY="475.0">
+            <ImageView fx:id="MuteImage" layoutX="37.0" layoutY="475.0" onMouseClicked="#clickMuteAll" styleClass="Button">
                <Image url="@../Assets/MusicControl/Sound_off.png" />
             </ImageView>
             <Label fx:id="MuteLabel" layoutX="223.0" layoutY="491.0" text="Muted" textFill="#808080">
@@ -56,6 +56,15 @@
                </center>
             </BorderPane>
             <Slider fx:id="MusicProgressSlider" layoutX="4.0" layoutY="41.0" prefHeight="15.0" prefWidth="333.0" />
+            <BorderPane layoutX="251.0" layoutY="51.0" prefHeight="33.0" prefWidth="80.0">
+               <center>
+                  <Label fx:id="MusicTime" text="03:20 / 04:30" textFill="#808080c3" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Smartisan Maquette Bold" size="11.0" />
+                     </font>
+                  </Label>
+               </center>
+            </BorderPane>
          </children>
       </Group>
    </children>
