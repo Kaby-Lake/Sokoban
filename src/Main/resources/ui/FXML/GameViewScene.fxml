@@ -181,7 +181,7 @@
                        </GridPane>
 
                        <!--     playerGrid   -->
-                       <GridPane fx:id="playerGrid" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="960.0" StackPane.alignment="CENTER">
+                       <GridPane fx:id="playerGrid" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" prefHeight="600.0" prefWidth="960.0" StackPane.alignment="CENTER">
                            <columnConstraints>
                                <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
                                <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />

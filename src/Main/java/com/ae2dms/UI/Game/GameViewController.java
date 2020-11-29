@@ -1,6 +1,7 @@
 package com.ae2dms.UI.Game;
 
 import com.ae2dms.Business.*;
+import com.ae2dms.GameObject.Objects.CheatingCrate;
 import com.ae2dms.GameObject.Objects.IllegalMovementException;
 import com.ae2dms.GameObject.Objects.Player;
 import com.ae2dms.IO.ResourceFactory;
@@ -102,6 +103,8 @@ public class GameViewController extends AbstractBarController {
 
     private final BooleanProperty canUndo = new SimpleBooleanProperty(true);
 
+    public static BooleanProperty isCheating = new SimpleBooleanProperty(false);
+
     // undo
     private final KeyCombination keyCombCtrZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
 
@@ -113,6 +116,8 @@ public class GameViewController extends AbstractBarController {
 
 
     public void initialize() throws IllegalStateException {
+
+        isCheating.setValue(false);
 
         Background_Image.setImage(ResourceFactory.getRandomBackgroundImage());
 
@@ -238,14 +243,28 @@ public class GameViewController extends AbstractBarController {
             case LEFT -> {
                 direction = new Point(-1, 0);
             }
-
-            default -> {
-                // TODO: implement something funny.
-                return;
-            }
-
         }
         isAnimating.set(true);
+
+        if (isCheating.getValue()) {
+            CheatingCrate cheatingCrate = GraphicRender.cheatingCrate;
+            if (code == KeyCode.SPACE) {
+                cheatingCrate.settleDown();
+                isCheating.setValue(false);
+                return;
+            }
+            if (cheatingCrate.canMoveBy(direction)) {
+                try {
+                    cheatingCrate.moveBy(direction);
+                } catch (IllegalMovementException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                cheatingCrate.shakeAnimation(direction);
+            }
+            return;
+        }
+
         gameDocument.serializeCurrentState();
         GameDebugger.logMovement(this.gameDocument, direction);
 

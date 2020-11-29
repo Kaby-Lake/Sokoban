@@ -7,6 +7,8 @@ import com.ae2dms.GameObject.Movable;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import javafx.animation.TranslateTransition;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.image.*;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
@@ -97,7 +99,7 @@ public class Crate extends AbstractGameObject implements Movable {
         return objectOnDestination instanceof Floor;
     }
 
-    private void updatePosition(Point position) {
+    public void updatePosition(Point position) {
         this.xPosition = position.x;
         this.yPosition = position.y;
     }
