@@ -45,6 +45,7 @@ public class MenuViewController extends AbstractBarController {
         this.highestScore.textProperty().bind(Main.gameDocument.highestScore.asString());
         highScoreBarController = loadBottomBar();
         soundPreferenceController = loadMusicController();
+        colourPreferenceController = loadColourController();
 
         musicControlIsShowing.bindBidirectional(soundPreferenceController.isShowing);
         soundPreferenceController.isMute.bindBidirectional(Main.prefMusicIsMute);
@@ -118,6 +119,11 @@ public class MenuViewController extends AbstractBarController {
     public void clickUndo(MouseEvent mouseEvent) {
     }
     public void clickSaveGame(MouseEvent mouseEvent) {
+    }
+
+    @FXML
+    private void toggleColourPreferences() {
+        colourPreferenceController.show();
     }
 
 

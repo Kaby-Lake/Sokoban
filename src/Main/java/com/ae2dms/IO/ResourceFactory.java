@@ -4,7 +4,6 @@ import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 
-import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
@@ -40,9 +39,20 @@ public class ResourceFactory {
         urlMap.put("NO_RECORDS_INFO", "/ui/Assets/HighScore/No_Records_Info.png");
 
         urlMap.put("STAGE_IMAGE", "/ui/Assets/Game/Stage.png");
-        urlMap.put("DIAMOND_IMAGE", "/ui/Assets/Game/Diamond.png");
-        urlMap.put("CRATE_IMAGE", "/ui/Assets/Game/Crate.png");
-        urlMap.put("CRATE_ON_DIAMOND_IMAGE", "/ui/Assets/Game/Crate_On_Diamond.png");
+
+        urlMap.put("DIAMOND_IMAGE_Blue", "/ui/Assets/Game/Diamond/Diamond_Blue.png");
+        urlMap.put("DIAMOND_IMAGE_Brown", "/ui/Assets/Game/Diamond/Diamond_Brown.png");
+        urlMap.put("DIAMOND_IMAGE_Green", "/ui/Assets/Game/Diamond/Diamond_Green.png");
+        urlMap.put("DIAMOND_IMAGE_Red", "/ui/Assets/Game/Diamond/Diamond_Red.png");
+        urlMap.put("DIAMOND_IMAGE_Silver", "/ui/Assets/Game/Diamond/Diamond_Silver.png");
+
+        urlMap.put("CRATE_IMAGE_Blue", "/ui/Assets/Game/Crate/Crate_Blue.png");
+        urlMap.put("CRATE_IMAGE_Brown", "/ui/Assets/Game/Crate/Crate_Brown.png");
+        urlMap.put("CRATE_IMAGE_Green", "/ui/Assets/Game/Crate/Crate_Green.png");
+        urlMap.put("CRATE_IMAGE_Red", "/ui/Assets/Game/Crate/Crate_Red.png");
+        urlMap.put("CRATE_IMAGE_Silver", "/ui/Assets/Game/Crate/Crate_Silver.png");
+
+        urlMap.put("CRATE_ON_DIAMOND_IMAGE", "/ui/Assets/Game/Crate/Crate_Brown.png");
         urlMap.put("PLAYER_FRONT_IMAGE", "/ui/Assets/Game/Front.png");
         urlMap.put("PLAYER_BACK_IMAGE", "/ui/Assets/Game/Back.png");
         urlMap.put("PLAYER_LEFT_IMAGE", "/ui/Assets/Game/Left.png");
@@ -140,6 +150,5 @@ public class ResourceFactory {
         String name = list.get(random.nextInt(list.size()));
         return (Image)getResource(name, ResourceType.Image);
     }
-
 
 }

@@ -6,6 +6,7 @@ import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.GameObject.Movable;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
+import com.ae2dms.UI.Menu.ColourPreferenceController;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.*;
 import javafx.scene.image.Image;
@@ -16,6 +17,9 @@ import java.util.UUID;
 
 public class Crate extends AbstractGameObject implements Movable {
 
+    private static Image CRATE_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_Silver", ResourceType.Image);
+    private static Image CRATE_ON_DIAMOND_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_Red", ResourceType.Image);
+
     private final UUID uuid = UUID.randomUUID();
 
     private GameGrid diamondsGrid;
@@ -23,11 +27,17 @@ public class Crate extends AbstractGameObject implements Movable {
     public Crate(GameGrid linksTo, int atX, int atY, GameGrid diamondsGrid) {
         super(linksTo, atX, atY);
         this.diamondsGrid = diamondsGrid;
-    }
+        ColourPreferenceController.selectedCrateColour.addListener((observable, oldValue, newValue) -> {
+            if (observable != null) {
+                CRATE_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_" + newValue, ResourceType.Image);
+            }
+        });
 
-    public Crate(GameGrid linksTo, Point at, GameGrid diamondsGrid) {
-        super(linksTo, at);
-        this.diamondsGrid = diamondsGrid;
+        ColourPreferenceController.selectedDiamondColour.addListener((observable, oldValue, newValue) -> {
+            if (observable != null) {
+                CRATE_ON_DIAMOND_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_" + newValue, ResourceType.Image);
+            }
+        });
     }
 
     @Override
@@ -44,12 +54,12 @@ public class Crate extends AbstractGameObject implements Movable {
     public ImageView render() {
         if (this.view != null) {
             if (isOnDiamond()) {
-                this.view.setImage((Image)ResourceFactory.getResource("CRATE_ON_DIAMOND_IMAGE", ResourceType.Image));
+                this.view.setImage(CRATE_ON_DIAMOND_IMAGE);
             } else {
-                this.view.setImage((Image)ResourceFactory.getResource("CRATE_IMAGE", ResourceType.Image));
+                this.view.setImage(CRATE_IMAGE);
             }
         } else {
-            this.view = new ImageView((Image)ResourceFactory.getResource("CRATE_IMAGE", ResourceType.Image));
+            this.view = new ImageView(CRATE_IMAGE);
             this.view.setFitHeight(38);
             this.view.setFitWidth(35);
             this.view.setTranslateX(7);

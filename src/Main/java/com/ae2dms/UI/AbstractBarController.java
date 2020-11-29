@@ -6,6 +6,7 @@ import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.HighScoreBar.HighScoreBarController;
+import com.ae2dms.UI.Menu.ColourPreferenceController;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -15,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
@@ -35,6 +37,13 @@ public class AbstractBarController {
     private Pane BottomBarAlias;
 
     Pane BottomBar;
+
+    @FXML
+    private Pane ColourPreferenceAlias;
+
+    BorderPane colourPreference;
+
+    public ColourPreferenceController colourPreferenceController;
 
     private HighScoreBarController highScoreBarController;
 
@@ -159,6 +168,33 @@ public class AbstractBarController {
         soundPreferenceController = musicLoader.getController();
 
         return soundPreferenceController;
+    }
+
+    public ColourPreferenceController loadColourController() {
+        // load real pane
+        BorderPane colourView = null;
+        FXMLLoader colourLoader = null;
+        try {
+            colourLoader = new FXMLLoader(getClass().getResource("/ui/FXML/ColourPreference.fxml"));
+            colourView = colourLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        colourView.setVisible(false);
+
+        // get children of parent of secPane (the VBox)
+        List<Node> parentChildren = ((Pane) ColourPreferenceAlias.getParent()).getChildren();
+
+        // replace the child that contained the old secPane
+        parentChildren.set(parentChildren.indexOf(ColourPreferenceAlias), colourView);
+
+        // store the new pane in the secPane field to allow replacing it the same way later
+        colourPreference = colourView;
+
+        colourPreferenceController = colourLoader.getController();
+
+        return colourPreferenceController;
     }
 
 
