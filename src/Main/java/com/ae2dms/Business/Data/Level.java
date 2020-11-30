@@ -12,8 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public final class Level implements Iterable<AbstractGameObject>, Serializable {
-    public final GameGrid objectsGrid;
-    public final GameGrid diamondsGrid;
+    public volatile GameGrid objectsGrid;
+    public volatile GameGrid diamondsGrid;
     private final String name;
     private final int index;
     private Point playerPosition = new Point(0, 0);

@@ -12,7 +12,7 @@ public abstract class AbstractGameObject implements Serializable {
     protected volatile GameGrid grid;
     public int xPosition;
     public int yPosition;
-    protected transient ImageView view;
+    public transient ImageView view;
 
     public Point at() {
         return new Point(xPosition, yPosition);

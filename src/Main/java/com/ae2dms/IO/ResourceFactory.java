@@ -48,6 +48,8 @@ public class ResourceFactory {
         urlMap.put("PLAYER_LEFT_IMAGE", "/ui/Assets/Game/Left.png");
         urlMap.put("PLAYER_RIGHT_IMAGE", "/ui/Assets/Game/Right.png");
 
+        urlMap.put("CHOICE_GRID_IMAGE", "/ui/Assets/Game/Choice_Grid.png");
+
         urlMap.put("DEBUG_ON_ICON", "/ui/Assets/BottomBar/Debug_on.png");
         urlMap.put("DEBUG_OFF_ICON", "/ui/Assets/BottomBar/Debug_off.png");
         urlMap.put("DEBUG_NULL_ICON", "/ui/Assets/BottomBar/Debug_null.png");

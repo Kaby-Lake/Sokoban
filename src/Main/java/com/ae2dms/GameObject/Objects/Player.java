@@ -43,6 +43,9 @@ public class Player extends AbstractGameObject implements Movable {
     @Override
     public ImageView render() {
         if (this.view != null) {
+            this.view.setTranslateX(7);
+            this.view.setTranslateY(-20);
+
             return this.view;
         } else {
             return headTo(new Point(0, 0));
@@ -141,6 +144,7 @@ public class Player extends AbstractGameObject implements Movable {
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), this.view);
 
         translateTransition.setOnFinished((event) -> {
+            render.renderItemAndPLayer(grid);
             isAnimating.set(false);
         });
 
