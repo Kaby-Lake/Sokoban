@@ -12,14 +12,12 @@ import com.ae2dms.UI.MediaState;
 import com.ae2dms.UI.SoundPreferenceController;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.media.AudioClip;
@@ -29,27 +27,16 @@ import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class GameViewController extends AbstractBarController {
 
     @FXML
+    private Pane Content;
+
+    @FXML
     private GridPane previewGrid;
-
-    // Draggable Object on the top right
-    @FXML
-    private ImageView DragStage1;
-
-    @FXML
-    private StackPane DragStack1;
-
-    @FXML
-    private StackPane DragStack2;
-
-    @FXML
-    private ImageView DragStage2;
-
 
     @FXML
     private Pane MusicControllerAlias;
@@ -181,8 +168,6 @@ public class GameViewController extends AbstractBarController {
 
         musicControlIsShowing.bindBidirectional(soundPreferenceController.isShowing);
         soundPreferenceController.isMute.bindBidirectional(Main.prefMusicIsMute);
-
-        addDraggableItem();
     }
 
     public void bindLevelGameCompleteController(LevelCompletePopUpController controller1, GameCompletePopUpController controller2, ExitPopUpController controller3) {
@@ -454,68 +439,108 @@ public class GameViewController extends AbstractBarController {
     }
 
 
-    private void detectDragging(MouseEvent mouseEvent) {
-        Double x = mouseEvent.getSceneX() + 20 - 195;
-        Double y = mouseEvent.getSceneY() + 15 - 55;
-        Integer xIndex = (int) (x / 48);
-        Integer yIndex = (int) (y / 30);
+
+
+    // Dragging Stage
+
+    // Draggable Object on the top right
+
+
+    private final ArrayList<ImageView> DragList = new ArrayList<>();
+
+    @FXML
+    private void addDraggableItem() {
+
+        ImageView stage_Drag = new ImageView((Image)ResourceFactory.getResource("STAGE_DRAG_IMAGE", ResourceType.Image));
+
+        stage_Drag.setLayoutX(1234);
+        stage_Drag.setLayoutY(70 + DragList.size() * 70);
+
+        stage_Drag.setOnMouseReleased(this::draggingOnMouseReleased);
+        stage_Drag.setOnMouseDragged(this::previewDragging);
+        stage_Drag.setOnMousePressed(this::selectDragging);
+
+        DragList.add(stage_Drag);
+        Content.getChildren().add(stage_Drag);
+    }
+
+    private void draggingOnMouseReleased(MouseEvent mouseEvent) {
+        double x = mouseEvent.getSceneX() + 20 - 195;
+        double y = mouseEvent.getSceneY() + 15 - 55;
+        int xIndex = (int) (x / 48);
+        int yIndex = (int) (y / 30);
         int XBound = gameDocument.getCurrentLevel().objectsGrid.getX();
         int YBound = gameDocument.getCurrentLevel().objectsGrid.getY();
 
         if (xIndex < 0 || xIndex >= XBound || yIndex < 0 || yIndex >= YBound) {
-            restoreDraggingPosition();
+            addDraggableItem();
+            rePositionDraggings();
+            chosenView.setVisible(false);
             return;
         }
         AbstractGameObject clickedObject = gameDocument.getCurrentLevel().objectsGrid.getGameObjectAt(xIndex, yIndex);
-        if (clickedObject instanceof Wall){
-            System.out.println("at Wall" + clickedObject.xPosition + clickedObject.yPosition);
+        if (clickedObject instanceof Wall) {    // put the Floor at this position
             gameDocument.getCurrentLevel().objectsGrid.putGameObjectAt(new Floor(gameDocument.getCurrentLevel().objectsGrid, xIndex, yIndex), new Point(xIndex, yIndex));
             render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
+            chosenView.setVisible(false);
+            previewGrid.getChildren().clear();
+            rePositionDraggings();
         } else {
-            restoreDraggingPosition();
+            addDraggableItem();
+            rePositionDraggings();
+            chosenView.setVisible(false);
             return;
         }
     }
 
-    private void restoreDraggingPosition() {
-        this.DragStack1.setLayoutX(1234);
-        this.DragStack1.setLayoutY(78);
-        this.DragStack2.setLayoutX(1234);
-        this.DragStack2.setLayoutY(144);
+    private void rePositionDraggings() {
+        for (ImageView view : DragList) {
+            view.setLayoutX(1234);
+            view.setLayoutY(70 + DragList.indexOf(view) * 70);
+        }
     }
 
-    private void addDraggableItem() {
-        DragStack1.setOnMouseReleased(this::detectDragging);
-        DragStack1.setOnMouseDragged(this::previewDragging);
+    private static final ImageView preview = new ImageView((Image)ResourceFactory.getResource("STAGE_IMAGE", ResourceType.Image));
+
+    static {
+        preview.setFitWidth(48);
+        preview.setFitHeight(48);
+        preview.setOpacity(0.6);
     }
 
-    private final Rectangle rectangle = new Rectangle(48, 30, Color.gray(0.4));
+    ImageView chosenView;
+
+
+    private void selectDragging(MouseEvent mouseEvent) {
+        chosenView = DragList.remove(DragList.size() - 1);
+        rePositionDraggings();
+    }
 
     private void previewDragging(MouseEvent mouseEvent) {
 
-        Double x = mouseEvent.getSceneX() + 20 - 195;
-        Double y = mouseEvent.getSceneY() + 15 - 55;
-        Integer xIndex = (int) (x / 48);
-        Integer yIndex = (int) (y / 30);
+        double x = mouseEvent.getSceneX() + 20 - 195;
+        double y = mouseEvent.getSceneY() + 15 - 55;
+        int xIndex = (int) (x / 48);
+        int yIndex = (int) (y / 30);
         int XBound = gameDocument.getCurrentLevel().objectsGrid.getX();
         int YBound = gameDocument.getCurrentLevel().objectsGrid.getY();
 
         previewGrid.getChildren().clear();
 
         if (xIndex < 0 || xIndex >= XBound || yIndex < 0 || yIndex >= YBound) {
-            DragStack1.setLayoutX(mouseEvent.getSceneX());
-            DragStack1.setLayoutY(mouseEvent.getSceneY());
+            chosenView.setLayoutX(mouseEvent.getSceneX());
+            chosenView.setLayoutY(mouseEvent.getSceneY() - 15);
             return;
         }
         AbstractGameObject clickedObject = gameDocument.getCurrentLevel().objectsGrid.getGameObjectAt(xIndex, yIndex);
         if (clickedObject instanceof Wall){
-            DragStack1.setOpacity(0.3);
-            DragStack1.setLayoutX(mouseEvent.getSceneX());
-            DragStack1.setLayoutY(mouseEvent.getSceneY());
-            previewGrid.add(rectangle, xIndex, yIndex);
+            chosenView.setOpacity(0.3);
+            chosenView.setLayoutX(mouseEvent.getSceneX());
+            chosenView.setLayoutY(mouseEvent.getSceneY());
+            previewGrid.add(preview, xIndex, yIndex);
         } else {
-            DragStack1.setLayoutX(mouseEvent.getSceneX());
-            DragStack1.setLayoutY(mouseEvent.getSceneY());
+            chosenView.setLayoutX(mouseEvent.getSceneX());
+            chosenView.setLayoutY(mouseEvent.getSceneY());
             return;
         }
     }

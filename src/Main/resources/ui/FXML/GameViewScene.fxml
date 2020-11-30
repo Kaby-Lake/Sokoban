@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -21,7 +22,7 @@
             <ImageView fx:id="Background_Image" fitHeight="720.0" fitWidth="1673.0">
                   <Image url="@../Assets/Game/GameBackground1.jpg" />
             </ImageView>
-            <Pane>
+            <Pane fx:id="Content">
                <children>
 
                    <GridPane fx:id="stageGrid" layoutX="195.0" layoutY="55.0">
@@ -344,30 +345,9 @@
                            </Group>
                        </children>
                    </Group>
-                  <StackPane fx:id="DragStack1" layoutX="1234.0" layoutY="78.0" prefHeight="0.0" prefWidth="0.0">
-                     <children>
-                         <ImageView>
-                             <Image url="@../Assets/Game/Stage_Pallet.png" />
-                         </ImageView>
-                         <ImageView fx:id="DragStage1">
-                             <Image url="@../Assets/Game/Stage_Shadow.png" />
-                         </ImageView>
-                     </children>
-                  </StackPane>
-                  <StackPane fx:id="DragStack2" layoutX="1234.0" layoutY="144.0" prefHeight="0.0" prefWidth="0.0">
-                     <children>
-                         <ImageView>
-                             <Image url="@../Assets/Game/Stage_Pallet.png" />
-                         </ImageView>
-                         <ImageView fx:id="DragStage2">
-                             <Image url="@../Assets/Game/Stage_Shadow.png" />
-                         </ImageView>
-                     </children>
-                  </StackPane>
+                  <Button layoutX="1248.0" layoutY="408.0" mnemonicParsing="false" text="Button" onMouseClicked="#addDraggableItem" />
                </children>
             </Pane>
-      
-             <!--   Stage Grid    -->
 
          </children>
       </Group>
