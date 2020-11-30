@@ -9,6 +9,14 @@ import java.util.Iterator;
 
 public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
 
+    public int getX() {
+        return X;
+    }
+
+    public int getY() {
+        return Y;
+    }
+
     final int X;
     final int Y;
 

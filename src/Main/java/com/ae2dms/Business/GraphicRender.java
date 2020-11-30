@@ -75,8 +75,11 @@ public class GraphicRender {
                 return;
             }
             Node clickedNode = event.getPickResult().getIntersectedNode();
-            int x = GridPane.getColumnIndex(clickedNode);
-            int y = GridPane.getRowIndex(clickedNode);
+            Integer x = GridPane.getColumnIndex(clickedNode);
+            Integer y = GridPane.getRowIndex(clickedNode);
+            if (x == null || y == null) {
+                return;
+            }
             AbstractGameObject clickedObject = objectsGridDocument.getGameObjectAt(x, y);
             if (clickedObject instanceof Crate) {
                 Crate thisObject = (Crate)clickedObject;

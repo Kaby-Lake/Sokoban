@@ -1,9 +1,8 @@
 package com.ae2dms.UI.Game;
 
 import com.ae2dms.Business.*;
-import com.ae2dms.GameObject.Objects.Crate;
-import com.ae2dms.GameObject.Objects.IllegalMovementException;
-import com.ae2dms.GameObject.Objects.Player;
+import com.ae2dms.GameObject.AbstractGameObject;
+import com.ae2dms.GameObject.Objects.*;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
@@ -13,23 +12,44 @@ import com.ae2dms.UI.MediaState;
 import com.ae2dms.UI.SoundPreferenceController;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.input.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.media.AudioClip;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class GameViewController extends AbstractBarController {
+
+    @FXML
+    private GridPane previewGrid;
+
+    // Draggable Object on the top right
+    @FXML
+    private ImageView DragStage1;
+
+    @FXML
+    private StackPane DragStack1;
+
+    @FXML
+    private StackPane DragStack2;
+
+    @FXML
+    private ImageView DragStage2;
+
 
     @FXML
     private Pane MusicControllerAlias;
@@ -161,6 +181,8 @@ public class GameViewController extends AbstractBarController {
 
         musicControlIsShowing.bindBidirectional(soundPreferenceController.isShowing);
         soundPreferenceController.isMute.bindBidirectional(Main.prefMusicIsMute);
+
+        addDraggableItem();
     }
 
     public void bindLevelGameCompleteController(LevelCompletePopUpController controller1, GameCompletePopUpController controller2, ExitPopUpController controller3) {
@@ -429,6 +451,73 @@ public class GameViewController extends AbstractBarController {
     @FXML
     private void clickHighScoreList(MouseEvent mouseEvent) {
         menuBarClickToggleHighScoreList();
+    }
+
+
+    private void detectDragging(MouseEvent mouseEvent) {
+        Double x = mouseEvent.getSceneX() + 20 - 195;
+        Double y = mouseEvent.getSceneY() + 15 - 55;
+        Integer xIndex = (int) (x / 48);
+        Integer yIndex = (int) (y / 30);
+        int XBound = gameDocument.getCurrentLevel().objectsGrid.getX();
+        int YBound = gameDocument.getCurrentLevel().objectsGrid.getY();
+
+        if (xIndex < 0 || xIndex >= XBound || yIndex < 0 || yIndex >= YBound) {
+            restoreDraggingPosition();
+            return;
+        }
+        AbstractGameObject clickedObject = gameDocument.getCurrentLevel().objectsGrid.getGameObjectAt(xIndex, yIndex);
+        if (clickedObject instanceof Wall){
+            System.out.println("at Wall" + clickedObject.xPosition + clickedObject.yPosition);
+            gameDocument.getCurrentLevel().objectsGrid.putGameObjectAt(new Floor(gameDocument.getCurrentLevel().objectsGrid, xIndex, yIndex), new Point(xIndex, yIndex));
+            render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
+        } else {
+            restoreDraggingPosition();
+            return;
+        }
+    }
+
+    private void restoreDraggingPosition() {
+        this.DragStack1.setLayoutX(1234);
+        this.DragStack1.setLayoutY(78);
+        this.DragStack2.setLayoutX(1234);
+        this.DragStack2.setLayoutY(144);
+    }
+
+    private void addDraggableItem() {
+        DragStack1.setOnMouseReleased(this::detectDragging);
+        DragStack1.setOnMouseDragged(this::previewDragging);
+    }
+
+    private final Rectangle rectangle = new Rectangle(48, 30, Color.gray(0.4));
+
+    private void previewDragging(MouseEvent mouseEvent) {
+
+        Double x = mouseEvent.getSceneX() + 20 - 195;
+        Double y = mouseEvent.getSceneY() + 15 - 55;
+        Integer xIndex = (int) (x / 48);
+        Integer yIndex = (int) (y / 30);
+        int XBound = gameDocument.getCurrentLevel().objectsGrid.getX();
+        int YBound = gameDocument.getCurrentLevel().objectsGrid.getY();
+
+        previewGrid.getChildren().clear();
+
+        if (xIndex < 0 || xIndex >= XBound || yIndex < 0 || yIndex >= YBound) {
+            DragStack1.setLayoutX(mouseEvent.getSceneX());
+            DragStack1.setLayoutY(mouseEvent.getSceneY());
+            return;
+        }
+        AbstractGameObject clickedObject = gameDocument.getCurrentLevel().objectsGrid.getGameObjectAt(xIndex, yIndex);
+        if (clickedObject instanceof Wall){
+            DragStack1.setOpacity(0.3);
+            DragStack1.setLayoutX(mouseEvent.getSceneX());
+            DragStack1.setLayoutY(mouseEvent.getSceneY());
+            previewGrid.add(rectangle, xIndex, yIndex);
+        } else {
+            DragStack1.setLayoutX(mouseEvent.getSceneX());
+            DragStack1.setLayoutY(mouseEvent.getSceneY());
+            return;
+        }
     }
 }
 
