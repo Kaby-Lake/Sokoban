@@ -8,8 +8,8 @@ import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.UI.Game.GameViewController;
 import javafx.animation.*;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import com.ae2dms.UI.Menu.ColourPreferenceController;
+import javafx.animation.TranslateTransition;
 import javafx.scene.image.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
@@ -22,6 +22,9 @@ public class Crate extends AbstractGameObject implements Movable {
 
     public boolean isCheating = false;
 
+    private static Image CRATE_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_Silver", ResourceType.Image);
+    private static Image CRATE_ON_DIAMOND_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_Red", ResourceType.Image);
+
     private final UUID uuid = UUID.randomUUID();
 
     public transient StackPane cheatingView;
@@ -31,11 +34,17 @@ public class Crate extends AbstractGameObject implements Movable {
     public Crate(GameGrid linksTo, int atX, int atY, GameGrid diamondsGrid) {
         super(linksTo, atX, atY);
         this.diamondsGrid = diamondsGrid;
-    }
+        ColourPreferenceController.selectedCrateColour.addListener((observable, oldValue, newValue) -> {
+            if (observable != null) {
+                CRATE_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_" + newValue, ResourceType.Image);
+            }
+        });
 
-    public Crate(GameGrid linksTo, Point at, GameGrid diamondsGrid) {
-        super(linksTo, at);
-        this.diamondsGrid = diamondsGrid;
+        ColourPreferenceController.selectedDiamondColour.addListener((observable, oldValue, newValue) -> {
+            if (observable != null) {
+                CRATE_ON_DIAMOND_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_" + newValue, ResourceType.Image);
+            }
+        });
     }
 
     @Override
@@ -54,12 +63,12 @@ public class Crate extends AbstractGameObject implements Movable {
             this.view.setTranslateX(7);
             this.view.setTranslateY(-20);
             if (isOnDiamond()) {
-                this.view.setImage((Image)ResourceFactory.getResource("CRATE_ON_DIAMOND_IMAGE", ResourceType.Image));
+                this.view.setImage(CRATE_ON_DIAMOND_IMAGE);
             } else {
-                this.view.setImage((Image)ResourceFactory.getResource("CRATE_IMAGE", ResourceType.Image));
+                this.view.setImage(CRATE_IMAGE);
             }
         } else {
-            this.view = new ImageView((Image)ResourceFactory.getResource("CRATE_IMAGE", ResourceType.Image));
+            this.view = new ImageView(CRATE_IMAGE);
             this.view.setFitHeight(38);
             this.view.setFitWidth(35);
             this.view.setTranslateX(7);
@@ -69,7 +78,7 @@ public class Crate extends AbstractGameObject implements Movable {
     }
 
     public StackPane renderCheating() {
-        ImageView crateImage = new ImageView((Image)ResourceFactory.getResource("CRATE_IMAGE", ResourceType.Image));
+        ImageView crateImage = new ImageView(CRATE_IMAGE);
         crateImage.setFitHeight(38);
         crateImage.setFitWidth(35);
         crateImage.setTranslateX(0);

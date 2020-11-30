@@ -4,20 +4,23 @@ import com.ae2dms.Business.Data.GameGrid;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
+import com.ae2dms.UI.Menu.ColourPreferenceController;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.awt.*;
-
 public class Diamond extends AbstractGameObject {
+
+    private static Image DIAMOND_IMAGE = (Image)ResourceFactory.getResource("DIAMOND_IMAGE_Red", ResourceType.Image);
+
 
 
     public Diamond(GameGrid linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
-    }
-
-    public Diamond(GameGrid linksTo, Point at) {
-        super(linksTo, at);
+        ColourPreferenceController.selectedDiamondColour.addListener((observable, oldValue, newValue) -> {
+            if (observable != null) {
+                DIAMOND_IMAGE = (Image)ResourceFactory.getResource("DIAMOND_IMAGE_" + newValue, ResourceType.Image);
+            }
+        });
     }
 
     @Override
@@ -33,7 +36,7 @@ public class Diamond extends AbstractGameObject {
     @Override
     public ImageView render() {
         if (this.view == null) {
-            this.view = new ImageView((Image) ResourceFactory.getResource("DIAMOND_IMAGE", ResourceType.Image));
+            this.view = new ImageView(DIAMOND_IMAGE);
             this.view.setFitHeight(16);
             this.view.setFitWidth(16);
             this.view.setTranslateX(16);

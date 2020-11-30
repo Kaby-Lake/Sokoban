@@ -227,19 +227,19 @@ public class GameViewController extends AbstractBarController {
 
         KeyCode code = event.getCode();
         switch (code) {
-            case UP -> {
+            case UP, W, K -> {
                 direction = new Point(0, -1);
             }
 
-            case RIGHT -> {
+            case RIGHT, D, L -> {
                 direction = new Point(1, 0);
             }
 
-            case DOWN -> {
+            case DOWN, S, J -> {
                 direction = new Point(0, 1);
             }
 
-            case LEFT -> {
+            case LEFT, A, H -> {
                 direction = new Point(-1, 0);
             }
         }

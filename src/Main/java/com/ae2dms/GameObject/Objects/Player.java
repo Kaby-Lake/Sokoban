@@ -24,10 +24,6 @@ public class Player extends AbstractGameObject implements Movable {
         super(linksTo, atX, atY);
     }
 
-    public Player(GameGrid linksTo, Point at) {
-        super(linksTo, at);
-    }
-
     @Override
     public char getCharSymbol() {
         return 'S';

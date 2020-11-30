@@ -13,10 +13,6 @@ public class Wall extends AbstractGameObject {
         super(linksTo, atX, atY);
     }
 
-    public Wall(GameGrid linksTo, Point at) {
-        super(linksTo, at);
-    }
-
     @Override
     public char getCharSymbol() {
         return 'W';
