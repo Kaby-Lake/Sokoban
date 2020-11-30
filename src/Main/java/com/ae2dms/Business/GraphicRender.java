@@ -3,19 +3,12 @@ package com.ae2dms.Business;
 import com.ae2dms.Business.Data.GameGrid;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.GameObject.Objects.*;
-import com.ae2dms.IO.ResourceFactory;
-import com.ae2dms.IO.ResourceType;
 import com.ae2dms.UI.Game.GameViewController;
-import javafx.animation.TranslateTransition;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
 
 import java.awt.*;
 
@@ -86,31 +79,41 @@ public class GraphicRender {
             int y = GridPane.getRowIndex(clickedNode);
             AbstractGameObject clickedObject = objectsGridDocument.getGameObjectAt(x, y);
             if (clickedObject instanceof Crate) {
+                Crate thisObject = (Crate)clickedObject;
                 GameViewController.isCheating.setValue(true);
-                renderCheatingObject((Crate)clickedObject, objectsGridDocument);
+                thisObject.isCheating = true;
+                renderCheatingObject(thisObject);
             }
         });
 
         GameViewController.isCheating.addListener((observable, oldValue, newValue) -> {
             if (observable != null && observable.getValue()==false){
-                if (originalCrate != null) {
-                    originalCrate.updatePosition(new Point(cheatingCrate.xPosition, cheatingCrate.yPosition));
-                    this.crateGrid.getChildren().remove(cheatingCrate.render());
-                    this.crateGrid.add(originalCrate.render(), originalCrate.xPosition, originalCrate.yPosition);
+                if (selectedCrate != null) {
+                    this.crateGrid.getChildren().remove(selectedCrate.cheatingView);
+                    this.removeNodeByRowColumnIndex(selectedCrate.yPosition, selectedCrate.xPosition, this.crateGrid);
+                    this.crateGrid.add(selectedCrate.render(), selectedCrate.xPosition, selectedCrate.yPosition);
                 }
             }
         });
     }
 
-    public static CheatingCrate cheatingCrate;
+    private void removeNodeByRowColumnIndex(int row, int column, GridPane gridPane) {
+        ObservableList<Node> children = gridPane.getChildren();
+        for (Node node : children) {
+            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                ImageView imageView = (ImageView) node;
+                gridPane.getChildren().remove(imageView);
+                break;
+            }
+        }
+    }
 
-    public static Crate originalCrate;
+    public static Crate selectedCrate;
 
-    private void renderCheatingObject(Crate crate, GameGrid objectsGridDocument) {
-        originalCrate = crate;
-        cheatingCrate = new CheatingCrate(crate, objectsGridDocument);
+    private void renderCheatingObject(Crate crate) {
+        selectedCrate = crate;
         this.crateGrid.getChildren().remove(crate.render());
-        this.crateGrid.add(cheatingCrate.renderCheating(), crate.xPosition, crate.yPosition);
+        this.crateGrid.add(crate.renderCheating(), crate.xPosition, crate.yPosition);
     }
 
     private void renderPlayerCrateHierarchy(boolean isPlayerOnFirstStage) {

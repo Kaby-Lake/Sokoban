@@ -1,7 +1,7 @@
 package com.ae2dms.UI.Game;
 
 import com.ae2dms.Business.*;
-import com.ae2dms.GameObject.Objects.CheatingCrate;
+import com.ae2dms.GameObject.Objects.Crate;
 import com.ae2dms.GameObject.Objects.IllegalMovementException;
 import com.ae2dms.GameObject.Objects.Player;
 import com.ae2dms.IO.ResourceFactory;
@@ -10,7 +10,6 @@ import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.GameMediaPlayer;
 import com.ae2dms.UI.MediaState;
-import com.ae2dms.UI.Menu.MenuView;
 import com.ae2dms.UI.SoundPreferenceController;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -247,10 +246,9 @@ public class GameViewController extends AbstractBarController {
         isAnimating.set(true);
 
         if (isCheating.getValue()) {
-            CheatingCrate cheatingCrate = GraphicRender.cheatingCrate;
+            Crate cheatingCrate = GraphicRender.selectedCrate;
             if (code == KeyCode.SPACE) {
                 cheatingCrate.settleDown();
-                isCheating.setValue(false);
                 return;
             }
             if (cheatingCrate.canMoveBy(direction)) {
