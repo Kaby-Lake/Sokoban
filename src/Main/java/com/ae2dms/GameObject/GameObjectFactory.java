@@ -1,13 +1,14 @@
 package com.ae2dms.GameObject;
 
 import com.ae2dms.Business.Data.GameGrid;
+import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.Objects.*;
 
 public class GameObjectFactory {
 
 
     // diamonds Object is only for Crate object to detect whether on diamond
-    public AbstractGameObject getGameObject(Character type, GameGrid linkTo, int xPosition, int yPosition, GameGrid diamondsGrid) {
+    public AbstractGameObject getGameObject(Character type, Level linkTo, int xPosition, int yPosition) {
 
         if (type == null) {
             System.err.println("GameObject Type Missing");
@@ -16,7 +17,7 @@ public class GameObjectFactory {
 
         switch (Character.toUpperCase(type)) {
             case 'C' -> {
-                return new Crate(linkTo, xPosition, yPosition, diamondsGrid);
+                return new Crate(linkTo, xPosition, yPosition);
             }
             case 'D' -> {
                 return new Diamond(linkTo, xPosition, yPosition);
@@ -29,6 +30,9 @@ public class GameObjectFactory {
             }
             case 'W' -> {
                 return new Wall(linkTo, xPosition, yPosition);
+            }
+            case 'Y' -> {
+                return new Candy(linkTo, xPosition, yPosition);
             }
             default -> {
                 System.err.println("Unrecognizable GameObject Type");

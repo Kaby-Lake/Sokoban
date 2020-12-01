@@ -1,6 +1,7 @@
 package com.ae2dms.GameObject.Objects;
 
 import com.ae2dms.Business.Data.GameGrid;
+import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.GameObject.Movable;
 import com.ae2dms.IO.ResourceFactory;
@@ -19,9 +20,12 @@ import static com.ae2dms.UI.Game.GameViewController.render;
 
 public class Player extends AbstractGameObject implements Movable {
 
+    GameGrid floorGrid;
 
-    public Player(GameGrid linksTo, int atX, int atY) {
+    public Player(Level linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
+        this.grid = linksTo.objectsGrid;
+        floorGrid = linksTo.floorGrid;
     }
 
     @Override
@@ -84,14 +88,14 @@ public class Player extends AbstractGameObject implements Movable {
         if (grid.isPointOutOfBounds(targetPosition)) {
             return false;
         }
-        AbstractGameObject objectOnDestination = grid.getGameObjectAt(targetPosition);
-        if (objectOnDestination instanceof Floor) {
-            return true;
-        } else if (objectOnDestination instanceof Crate) {
-            return ((Crate) objectOnDestination).canMoveBy(delta);
-        } else {
-            return false;
+        AbstractGameObject objectOnDestinationInObjectsGrid = grid.getGameObjectAt(targetPosition);
+        if (objectOnDestinationInObjectsGrid instanceof Crate) {
+            return ((Crate) objectOnDestinationInObjectsGrid).canMoveBy(delta);
         }
+
+        AbstractGameObject objectOnDestinationInStageGrid = floorGrid.getGameObjectAt(targetPosition);
+        return objectOnDestinationInStageGrid instanceof Floor;
+
     }
 
     @Override
@@ -101,22 +105,26 @@ public class Player extends AbstractGameObject implements Movable {
         headTo(delta);
 
         Point targetPosition = GameGrid.translatePoint(this.at(), delta);
-        AbstractGameObject objectOnDestination = grid.getGameObjectAt(targetPosition);
-        if (objectOnDestination instanceof Floor) {
-            moveToFloor(targetPosition);
-            render.renderPlayerCrateHierarchyBeforeAnimation(this);
-            animatePlayer(delta, 0);
-        } else if (objectOnDestination instanceof Crate) {
-            ((Crate) objectOnDestination).moveBy(delta);
+
+        AbstractGameObject objectOnDestinationInObjectsGrid = grid.getGameObjectAt(targetPosition);
+        if (objectOnDestinationInObjectsGrid instanceof Crate) {
+            ((Crate) objectOnDestinationInObjectsGrid).moveBy(delta);
             moveToFloor(targetPosition);
             animatePlayer(delta, 1);
+        }
+
+        AbstractGameObject objectOnDestinationInStageGrid = floorGrid.getGameObjectAt(targetPosition);
+        if (objectOnDestinationInStageGrid instanceof Floor) {
+            moveToFloor(targetPosition);
+            animatePlayer(delta, 0);
         } else {
             throw new IllegalMovementException();
         }
     }
 
     private void moveToFloor(Point targetPosition) {
-        grid.putGameObjectAt(new Floor(grid, at()), at());
+        floorGrid.putGameObjectAt(new Floor(level, at()), at());
+        grid.putGameObjectAt(null, at());
         grid.putGameObjectAt(this, targetPosition);
         this.updatePosition(targetPosition);
     }
@@ -140,7 +148,7 @@ public class Player extends AbstractGameObject implements Movable {
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), this.view);
 
         translateTransition.setOnFinished((event) -> {
-            render.renderItemAndPLayer(grid);
+            render.renderItemAndPlayer(level);
             isAnimating.set(false);
         });
 
@@ -149,13 +157,13 @@ public class Player extends AbstractGameObject implements Movable {
         translateTransition.play();
     }
 
-
-    public boolean isOnNorthOfCrate() {
-        return (grid.getGameObjectAt(GameGrid.translatePoint(at(), new Point(0, 1)))) instanceof Crate;
-    }
-
-    public boolean isOnSouthOfCrate() {
-        return (grid.getGameObjectAt(GameGrid.translatePoint(at(), new Point(0, -1)))) instanceof Crate;
+    public boolean eatingCrate(GameGrid candyGrid) {
+        AbstractGameObject object = candyGrid.getGameObjectAt(this.xPosition, this.yPosition);
+        if (object instanceof Candy) {
+            ((Candy)object).eat();
+            return true;
+        }
+        return false;
     }
 
     public void shakeAnimation(Point direction) {

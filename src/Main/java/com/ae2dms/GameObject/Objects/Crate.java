@@ -2,6 +2,7 @@ package com.ae2dms.GameObject.Objects;
 
 
 import com.ae2dms.Business.Data.GameGrid;
+import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.GameObject.Movable;
 import com.ae2dms.IO.ResourceFactory;
@@ -20,6 +21,8 @@ import java.util.UUID;
 
 public class Crate extends AbstractGameObject implements Movable {
 
+    GameGrid floorGrid;
+
     public boolean isCheating = false;
 
     private static Image CRATE_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_Silver", ResourceType.Image);
@@ -31,9 +34,11 @@ public class Crate extends AbstractGameObject implements Movable {
 
     private GameGrid diamondsGrid;
 
-    public Crate(GameGrid linksTo, int atX, int atY, GameGrid diamondsGrid) {
+    public Crate(Level linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
-        this.diamondsGrid = diamondsGrid;
+        this.grid = linksTo.objectsGrid;
+        this.diamondsGrid = linksTo.diamondsGrid;
+        this.floorGrid = linksTo.floorGrid;
         ColourPreferenceController.selectedCrateColour.addListener((observable, oldValue, newValue) -> {
             if (observable != null) {
                 CRATE_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_" + newValue, ResourceType.Image);
@@ -131,7 +136,7 @@ public class Crate extends AbstractGameObject implements Movable {
     @Override
     public void moveBy(Point delta) throws IllegalMovementException {
         Point targetPosition = GameGrid.translatePoint(this.at(), delta);
-        AbstractGameObject objectOnDestination = grid.getGameObjectAt(targetPosition);
+        AbstractGameObject objectOnDestination = floorGrid.getGameObjectAt(targetPosition);
         if (objectOnDestination instanceof Floor) {
             moveToFloor(targetPosition);
             animateCrate(delta);
@@ -167,7 +172,8 @@ public class Crate extends AbstractGameObject implements Movable {
     }
 
     private void moveToFloor(Point targetPosition) {
-        grid.putGameObjectAt(new Floor(grid, at()), at());
+        floorGrid.putGameObjectAt(new Floor(level, at()), at());
+        grid.putGameObjectAt(null, at());
         grid.putGameObjectAt(this, targetPosition);
         this.updatePosition(targetPosition);
     }
@@ -177,7 +183,7 @@ public class Crate extends AbstractGameObject implements Movable {
     }
 
     private Boolean canMoveTo(Point destination) {
-        AbstractGameObject objectOnDestination = grid.getGameObjectAt(destination);
+        AbstractGameObject objectOnDestination = floorGrid.getGameObjectAt(destination);
         return objectOnDestination instanceof Floor;
     }
 

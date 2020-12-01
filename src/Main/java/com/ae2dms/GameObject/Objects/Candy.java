@@ -5,44 +5,48 @@ import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
-import com.ae2dms.UI.Menu.ColourPreferenceController;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Diamond extends AbstractGameObject {
+/**
+ * @Description: $
+ * @Param: $
+ * @return: $
+ * @Author: Zichen XU
+ */
+public class Candy extends AbstractGameObject {
 
-    private static Image DIAMOND_IMAGE = (Image)ResourceFactory.getResource("DIAMOND_IMAGE_Red", ResourceType.Image);
+    GameGrid candyGrid;
 
-
-
-    public Diamond(Level linksTo, int atX, int atY) {
+    public Candy(Level linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
-        ColourPreferenceController.selectedDiamondColour.addListener((observable, oldValue, newValue) -> {
-            if (observable != null) {
-                DIAMOND_IMAGE = (Image)ResourceFactory.getResource("DIAMOND_IMAGE_" + newValue, ResourceType.Image);
-            }
-        });
+        this.candyGrid = linksTo.candyGrid;
     }
 
     @Override
     public char getCharSymbol() {
-        return 'D';
+        return 'Y';
     }
 
     @Override
     public String getStringSymbol() {
-        return "DIAMOND";
+        return "CANDY";
     }
 
     @Override
     public ImageView render() {
         if (this.view == null) {
-            this.view = new ImageView(DIAMOND_IMAGE);
+            this.view = new ImageView((Image)ResourceFactory.getResource("CANDY_IMAGE", ResourceType.Image));
             this.view.setFitHeight(16);
             this.view.setFitWidth(16);
             this.view.setTranslateX(16);
             this.view.setTranslateY(-10);
         }
         return this.view;
+    }
+
+    public void eat() {
+        this.view.setVisible(false);
+        this.candyGrid.putGameObjectAt(null, this.xPosition, this.yPosition);
     }
 }

@@ -1,9 +1,8 @@
 package com.ae2dms.UI.Game;
 
 import com.ae2dms.Business.*;
-import com.ae2dms.GameObject.Objects.Crate;
-import com.ae2dms.GameObject.Objects.IllegalMovementException;
-import com.ae2dms.GameObject.Objects.Player;
+import com.ae2dms.GameObject.AbstractGameObject;
+import com.ae2dms.GameObject.Objects.*;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
@@ -17,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
@@ -27,9 +27,16 @@ import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GameViewController extends AbstractBarController {
+
+    @FXML
+    private Pane Content;
+
+    @FXML
+    private GridPane previewGrid;
 
     @FXML
     private Pane MusicControllerAlias;
@@ -71,13 +78,13 @@ public class GameViewController extends AbstractBarController {
     private volatile GridPane stageGrid;
 
     @FXML
-    private volatile GridPane crateGrid;
-
-    @FXML
-    private volatile GridPane playerGrid;
+    private volatile GridPane objectsGrid;
 
     @FXML
     private volatile GridPane diamondsGrid;
+
+    @FXML
+    private volatile GridPane candyGrid;
 
 
     // Controllers to control LevelCompleteView and GameCompleteView
@@ -147,8 +154,8 @@ public class GameViewController extends AbstractBarController {
 
         Time_Spend.textProperty().bind(timer.timeToDisplay);
 
-        render = new GraphicRender(stageGrid, crateGrid, playerGrid, diamondsGrid);
-        render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
+        render = new GraphicRender(stageGrid, objectsGrid, diamondsGrid, candyGrid);
+        render.renderMap(gameDocument.getCurrentLevel());
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
 
         this.highestScore.textProperty().bind(this.gameDocument.highestScore.asString());
@@ -270,6 +277,10 @@ public class GameViewController extends AbstractBarController {
             try {
                 this.gameDocument.getPlayer().moveBy(direction);
                 this.gameDocument.movesCount.set(this.gameDocument.movesCount.getValue() + 1);
+                if (player.eatingCrate(gameDocument.getCurrentLevel().candyGrid)) {
+                    addDraggableItem();
+                }
+
             } catch (IllegalMovementException e) {
                 e.printStackTrace();
             }
@@ -277,6 +288,8 @@ public class GameViewController extends AbstractBarController {
             player.headTo(direction);
             player.shakeAnimation(direction);
         }
+
+
 
         checkIsLevelComplete();
     }
@@ -362,7 +375,7 @@ public class GameViewController extends AbstractBarController {
 
         This_Level_Index.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
 
-        render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
+        render.renderMap(gameDocument.getCurrentLevel());
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
     }
 
@@ -378,7 +391,7 @@ public class GameViewController extends AbstractBarController {
         GameDocument restoreObject = GameStageSaver.pop();
         if (restoreObject != null) {
             Main.gameDocument.restoreObject(restoreObject);
-            render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
+            render.renderMap(gameDocument.getCurrentLevel());
             GameDebugger.logUndo(this.gameDocument);
         }
     }
@@ -429,6 +442,113 @@ public class GameViewController extends AbstractBarController {
     @FXML
     private void clickHighScoreList(MouseEvent mouseEvent) {
         menuBarClickToggleHighScoreList();
+    }
+
+
+
+
+    // Dragging Stage
+
+    // Draggable Object on the top right
+
+
+    private final ArrayList<ImageView> DragList = new ArrayList<>();
+
+    @FXML
+    private void addDraggableItem() {
+
+        ImageView stageDrag = new ImageView((Image)ResourceFactory.getResource("STAGE_DRAG_IMAGE", ResourceType.Image));
+
+        stageDrag.setLayoutX(1234);
+        stageDrag.setLayoutY(70 + DragList.size() * 70);
+
+        stageDrag.setOnMouseReleased(this::draggingOnMouseReleased);
+        stageDrag.setOnMouseDragged(this::previewDragging);
+        stageDrag.setOnMousePressed(this::selectDragging);
+
+        DragList.add(stageDrag);
+        Content.getChildren().add(stageDrag);
+    }
+
+    private void draggingOnMouseReleased(MouseEvent mouseEvent) {
+        double x = mouseEvent.getSceneX() + 20 - 195;
+        double y = mouseEvent.getSceneY() + 15 - 55;
+        int xIndex = (int) (x / 48);
+        int yIndex = (int) (y / 30);
+        int XBound = gameDocument.getCurrentLevel().floorGrid.getX();
+        int YBound = gameDocument.getCurrentLevel().floorGrid.getY();
+
+        if (xIndex < 0 || xIndex >= XBound || yIndex < 0 || yIndex >= YBound) {
+            addDraggableItem();
+            rePositionDraggings();
+            chosenView.setVisible(false);
+            return;
+        }
+        AbstractGameObject clickedObject = gameDocument.getCurrentLevel().floorGrid.getGameObjectAt(xIndex, yIndex);
+        if (clickedObject instanceof Wall) {    // put the Floor at this position
+            gameDocument.getCurrentLevel().floorGrid.putGameObjectAt(new Floor(gameDocument.getCurrentLevel(), xIndex, yIndex), new Point(xIndex, yIndex));
+            render.renderMap(gameDocument.getCurrentLevel());
+            chosenView.setVisible(false);
+            previewGrid.getChildren().clear();
+            rePositionDraggings();
+        } else {
+            addDraggableItem();
+            rePositionDraggings();
+            chosenView.setVisible(false);
+            return;
+        }
+    }
+
+    private void rePositionDraggings() {
+        for (ImageView view : DragList) {
+            view.setLayoutX(1234);
+            view.setLayoutY(70 + DragList.indexOf(view) * 70);
+        }
+    }
+
+    private static final ImageView preview = new ImageView((Image)ResourceFactory.getResource("STAGE_IMAGE", ResourceType.Image));
+
+    static {
+        preview.setFitWidth(48);
+        preview.setFitHeight(48);
+        preview.setOpacity(0.6);
+    }
+
+    ImageView chosenView;
+
+
+    private void selectDragging(MouseEvent mouseEvent) {
+        chosenView = DragList.remove(DragList.size() - 1);
+        rePositionDraggings();
+    }
+
+    private void previewDragging(MouseEvent mouseEvent) {
+
+        double x = mouseEvent.getSceneX() + 20 - 195;
+        double y = mouseEvent.getSceneY() + 15 - 55;
+        int xIndex = (int) (x / 48);
+        int yIndex = (int) (y / 30);
+        int XBound = gameDocument.getCurrentLevel().floorGrid.getX();
+        int YBound = gameDocument.getCurrentLevel().floorGrid.getY();
+
+        previewGrid.getChildren().clear();
+
+        if (xIndex < 0 || xIndex >= XBound || yIndex < 0 || yIndex >= YBound) {
+            chosenView.setLayoutX(mouseEvent.getSceneX());
+            chosenView.setLayoutY(mouseEvent.getSceneY() - 15);
+            return;
+        }
+        AbstractGameObject clickedObject = gameDocument.getCurrentLevel().floorGrid.getGameObjectAt(xIndex, yIndex);
+        if (clickedObject instanceof Wall){
+            chosenView.setOpacity(0.3);
+            chosenView.setLayoutX(mouseEvent.getSceneX());
+            chosenView.setLayoutY(mouseEvent.getSceneY());
+            previewGrid.add(preview, xIndex, yIndex);
+        } else {
+            chosenView.setLayoutX(mouseEvent.getSceneX());
+            chosenView.setLayoutY(mouseEvent.getSceneY());
+            return;
+        }
     }
 }
 

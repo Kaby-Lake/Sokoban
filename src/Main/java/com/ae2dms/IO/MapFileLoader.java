@@ -115,7 +115,7 @@ public class MapFileLoader {
                             break outer;
                         };
                         if ("".equals(mapLine)) break;
-                        if (!mapLine.matches("^[Ww][WwCcDdSs ]{18}([Ww] ?)$")) {
+                        if (!mapLine.matches("^[Ww][WwCcDdSsYy ]{18}([Ww] ?)$")) {
                             GameDebugger.logLoadMapFailureWithReason(reader.getPointer(), "This line does not match the format of Map");
                             return false;
                         }

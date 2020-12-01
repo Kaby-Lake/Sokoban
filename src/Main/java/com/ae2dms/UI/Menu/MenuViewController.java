@@ -78,8 +78,6 @@ public class MenuViewController extends AbstractBarController {
         infoGroup.getStyleClass().add("Hide");
     }
 
-
-
     public void clickLoadGame(MouseEvent mouseEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Game Save File");

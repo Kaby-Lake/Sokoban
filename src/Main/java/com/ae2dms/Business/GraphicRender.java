@@ -1,6 +1,7 @@
 package com.ae2dms.Business;
 
 import com.ae2dms.Business.Data.GameGrid;
+import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.GameObject.Objects.*;
 import com.ae2dms.UI.Game.GameViewController;
@@ -10,74 +11,79 @@ import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
-import java.awt.*;
-
 public class GraphicRender {
 
     @FXML
     private volatile GridPane stageGrid;
 
     @FXML
-    private volatile GridPane crateGrid;
-
-    @FXML
-    private volatile GridPane playerGrid;
+    private volatile GridPane objectsGrid;
 
     @FXML
     private volatile GridPane diamondsGrid;
 
-    public GraphicRender(GridPane stageGrid, GridPane crateGrid, GridPane playerGrid, GridPane diamondsGrid) {
+    @FXML
+    private volatile GridPane candyGrid;
+
+    public GraphicRender(GridPane stageGrid, GridPane objectsGrid, GridPane diamondsGrid, GridPane candyGrid) {
         this.stageGrid = stageGrid;
-        this.crateGrid = crateGrid;
-        this.playerGrid = playerGrid;
+        this.objectsGrid = objectsGrid;
         this.diamondsGrid = diamondsGrid;
+        this.candyGrid = candyGrid;
     }
 
-    public void renderMap(GameGrid objectsGridDocument, GameGrid diamondsGridDocument) {
+    public void renderMap(Level level) {
 
         this.stageGrid.getChildren().clear();
         this.diamondsGrid.getChildren().clear();
 
-        for (AbstractGameObject object : objectsGridDocument) {
+        for (AbstractGameObject object : level.floorGrid) {
             if (!(object instanceof Wall)) {
                 stageGrid.add((Floor.staticRender()), object.xPosition, object.yPosition);
             }
         }
-        for (AbstractGameObject object : diamondsGridDocument) {
+        for (AbstractGameObject object : level.diamondsGrid) {
             if (object instanceof Diamond) {
                 diamondsGrid.add(object.render(), object.xPosition, object.yPosition);
             }
         }
-        renderItemAndPLayer(objectsGridDocument);
+        renderItemAndPlayer(level);
     }
 
-    public void renderItemAndPLayer(GameGrid objectsGridDocument) {
+    public void renderItemAndPlayer(Level level) {
 
-        this.crateGrid.getChildren().clear();
-        this.playerGrid.getChildren().clear();
+        this.objectsGrid.getChildren().clear();
 
-        for (AbstractGameObject object : objectsGridDocument) {
+        for (AbstractGameObject object : level.objectsGrid) {
             if (object instanceof Crate) {
                 Crate crate = (Crate) object;
-                this.crateGrid.add(crate.render(), crate.xPosition, crate.yPosition);
-            }
-        }
-
-        for (AbstractGameObject object : objectsGridDocument) {
-            if (object instanceof Player) {
+                this.objectsGrid.add(crate.render(), crate.xPosition, crate.yPosition);
+            } else if (object instanceof Player) {
                 Player player = (Player) object;
-                this.playerGrid.add(player.render(), player.xPosition, player.yPosition);
+                this.objectsGrid.add(player.render(), player.xPosition, player.yPosition);
             }
         }
 
-        this.crateGrid.setOnMouseClicked((event) -> {
+        this.candyGrid.getChildren().clear();
+
+        for (AbstractGameObject object : level.candyGrid) {
+            if (object instanceof Candy) {
+                Candy candy = (Candy) object;
+                candyGrid.add(candy.render(), candy.xPosition, candy.yPosition);
+            }
+        }
+
+        this.objectsGrid.setOnMouseClicked((event) -> {
             if (GameViewController.isCheating.getValue()) {
                 return;
             }
             Node clickedNode = event.getPickResult().getIntersectedNode();
-            int x = GridPane.getColumnIndex(clickedNode);
-            int y = GridPane.getRowIndex(clickedNode);
-            AbstractGameObject clickedObject = objectsGridDocument.getGameObjectAt(x, y);
+            Integer x = GridPane.getColumnIndex(clickedNode);
+            Integer y = GridPane.getRowIndex(clickedNode);
+            if (x == null || y == null) {
+                return;
+            }
+            AbstractGameObject clickedObject = level.objectsGrid.getGameObjectAt(x, y);
             if (clickedObject instanceof Crate) {
                 Crate thisObject = (Crate)clickedObject;
                 GameViewController.isCheating.setValue(true);
@@ -88,47 +94,16 @@ public class GraphicRender {
 
         GameViewController.isCheating.addListener((observable, oldValue, newValue) -> {
             if (observable != null && observable.getValue()==false){
-                if (selectedCrate != null) {
-                    this.crateGrid.getChildren().remove(selectedCrate.cheatingView);
-                    this.removeNodeByRowColumnIndex(selectedCrate.yPosition, selectedCrate.xPosition, this.crateGrid);
-                    this.crateGrid.add(selectedCrate.render(), selectedCrate.xPosition, selectedCrate.yPosition);
-                }
+                renderItemAndPlayer(level);
             }
         });
-    }
-
-    private void removeNodeByRowColumnIndex(int row, int column, GridPane gridPane) {
-        ObservableList<Node> children = gridPane.getChildren();
-        for (Node node : children) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                ImageView imageView = (ImageView) node;
-                gridPane.getChildren().remove(imageView);
-                break;
-            }
-        }
     }
 
     public static Crate selectedCrate;
 
     private void renderCheatingObject(Crate crate) {
         selectedCrate = crate;
-        this.crateGrid.getChildren().remove(crate.render());
-        this.crateGrid.add(crate.renderCheating(), crate.xPosition, crate.yPosition);
-    }
-
-    private void renderPlayerCrateHierarchy(boolean isPlayerOnFirstStage) {
-        if (isPlayerOnFirstStage) {
-            playerGrid.toFront();
-        } else {
-            crateGrid.toFront();
-        }
-    }
-
-    public void renderPlayerCrateHierarchyBeforeAnimation(Player afterMovement) {
-        if (afterMovement.isOnNorthOfCrate()) {
-            renderPlayerCrateHierarchy(false);
-        } else if (afterMovement.isOnSouthOfCrate()) {
-            renderPlayerCrateHierarchy(true);
-        }
+        this.objectsGrid.getChildren().remove(crate.render());
+        this.objectsGrid.add(crate.renderCheating(), crate.xPosition, crate.yPosition);
     }
 }

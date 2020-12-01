@@ -1,6 +1,7 @@
 package com.ae2dms.GameObject;
 
 import com.ae2dms.Business.Data.GameGrid;
+import com.ae2dms.Business.Data.Level;
 import javafx.scene.image.ImageView;
 
 import java.awt.*;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 public abstract class AbstractGameObject implements Serializable {
 
     // this grid does not contain Diamond
+    protected volatile Level level;
     protected volatile GameGrid grid;
     public int xPosition;
     public int yPosition;
@@ -18,14 +20,14 @@ public abstract class AbstractGameObject implements Serializable {
         return new Point(xPosition, yPosition);
     }
 
-    public AbstractGameObject(GameGrid linksTo, int atX, int atY) {
-        grid = linksTo;
+    public AbstractGameObject(Level linksTo, int atX, int atY) {
+        level = linksTo;
         xPosition = atX;
         yPosition = atY;
     }
 
-    public AbstractGameObject(GameGrid linksTo, Point at) {
-        grid = linksTo;
+    public AbstractGameObject(Level linksTo, Point at) {
+        level = linksTo;
         xPosition = at.x;
         yPosition = at.y;
     }
