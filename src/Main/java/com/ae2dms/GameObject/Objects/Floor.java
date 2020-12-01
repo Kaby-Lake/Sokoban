@@ -1,6 +1,7 @@
 package com.ae2dms.GameObject.Objects;
 
 import com.ae2dms.Business.Data.GameGrid;
+import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
@@ -12,11 +13,11 @@ import java.awt.*;
 public class Floor extends AbstractGameObject {
 
 
-    public Floor(GameGrid linksTo, int atX, int atY) {
+    public Floor(Level linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
     }
 
-    public Floor(GameGrid linksTo, Point at) {
+    public Floor(Level linksTo, Point at) {
         super(linksTo, at);
     }
 

@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public final class Level implements Iterable<AbstractGameObject>, Serializable {
+    public volatile GameGrid floorGrid;
     public volatile GameGrid objectsGrid;
     public volatile GameGrid diamondsGrid;
     public volatile GameGrid candyGrid;
@@ -21,9 +22,6 @@ public final class Level implements Iterable<AbstractGameObject>, Serializable {
 
     public Level(String levelName, int levelIndex, List<String> rawLevel) {
         GameDebugger.logReadLevel(levelIndex, levelName);
-//        if (GameDocument.isDebugActive()) {
-//            System.out.printf("[ADDING LEVEL] LEVEL [%d]: %s\n", levelIndex, levelName);
-//        }
 
         name = levelName;
         index = levelIndex;
@@ -31,6 +29,7 @@ public final class Level implements Iterable<AbstractGameObject>, Serializable {
         int Y = rawLevel.size();
         int X = rawLevel.get(0).trim().length();
 
+        floorGrid = new GameGrid(X, Y);
         objectsGrid = new GameGrid(X, Y);
         diamondsGrid = new GameGrid(X, Y);
         candyGrid = new GameGrid(X, Y);
@@ -44,24 +43,58 @@ public final class Level implements Iterable<AbstractGameObject>, Serializable {
                 char curChar = rawLevel.get(y).charAt(x);
                 AbstractGameObject curTile;
 
-                if (Character.toUpperCase(curChar) == 'D') {
-                    curTile = factory.getGameObject(curChar, objectsGrid, x, y, diamondsGrid, candyGrid);
-                    diamondsGrid.putGameObjectAt(curTile, x, y);
-                    // then put Floor Object in objectsGrid
-                    curTile = factory.getGameObject(' ', objectsGrid, x, y, diamondsGrid, candyGrid);
-                } else if (Character.toUpperCase(curChar) == 'S') {
-                    playerPosition = new Point(x, y);
-                    curTile = factory.getGameObject(curChar, objectsGrid, x, y, diamondsGrid, candyGrid);
-                } else if (Character.toUpperCase(curChar) == 'Y') {
-                    curTile = factory.getGameObject(curChar, objectsGrid, x, y, diamondsGrid, candyGrid);
-                    candyGrid.putGameObjectAt(curTile, x, y);
-                    // then put Floor Object in objectsGrid
-                    curTile = factory.getGameObject(' ', objectsGrid, x, y, diamondsGrid, candyGrid);
-                } else {
-                    curTile = factory.getGameObject(curChar, objectsGrid, x, y, diamondsGrid, candyGrid);
-                }
+                switch (Character.toUpperCase(curChar)) {
+                    case 'D' -> {
+                        curTile = factory.getGameObject('D', this, x, y);
+                        diamondsGrid.putGameObjectAt(curTile, x, y);
 
-                objectsGrid.putGameObjectAt(curTile, x, y);}
+                        curTile = factory.getGameObject(' ', this, x, y);
+                        floorGrid.putGameObjectAt(curTile, x, y);
+                    }
+
+                    // player
+                    case 'S' -> {
+                        playerPosition = new Point(x, y);
+                        curTile = factory.getGameObject('S', this, x, y);
+                        objectsGrid.putGameObjectAt(curTile, x, y);
+
+                        curTile = factory.getGameObject(' ', this, x, y);
+                        floorGrid.putGameObjectAt(curTile, x, y);
+                    }
+
+                    // Candy
+                    case 'Y' -> {
+                        curTile = factory.getGameObject('Y', this, x, y);
+                        candyGrid.putGameObjectAt(curTile, x, y);
+
+                        curTile = factory.getGameObject(' ', this, x, y);
+                        floorGrid.putGameObjectAt(curTile, x, y);
+                    }
+
+                    // Crate
+                    case 'C' -> {
+                        curTile = factory.getGameObject('C', this, x, y);
+                        objectsGrid.putGameObjectAt(curTile, x, y);
+
+                        curTile = factory.getGameObject(' ', this, x, y);
+                        floorGrid.putGameObjectAt(curTile, x, y);
+                    }
+
+                    // Space
+                    case ' ' -> {
+                        curTile = factory.getGameObject(' ', this, x, y);
+                        floorGrid.putGameObjectAt(curTile, x, y);
+
+                    }
+
+                    // Space
+                    case 'W' -> {
+                        curTile = factory.getGameObject('W', this, x, y);
+                        floorGrid.putGameObjectAt(curTile, x, y);
+
+                    }
+                }
+            }
         }
     }
 

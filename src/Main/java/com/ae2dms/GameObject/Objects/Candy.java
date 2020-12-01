@@ -1,6 +1,7 @@
 package com.ae2dms.GameObject.Objects;
 
 import com.ae2dms.Business.Data.GameGrid;
+import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
@@ -17,9 +18,9 @@ public class Candy extends AbstractGameObject {
 
     GameGrid candyGrid;
 
-    public Candy(GameGrid linksTo, int atX, int atY, GameGrid candyGrid) {
+    public Candy(Level linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
-        this.candyGrid = candyGrid;
+        this.candyGrid = linksTo.candyGrid;
     }
 
     @Override

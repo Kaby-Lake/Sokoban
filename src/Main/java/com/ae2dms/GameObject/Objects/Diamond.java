@@ -1,6 +1,7 @@
 package com.ae2dms.GameObject.Objects;
 
 import com.ae2dms.Business.Data.GameGrid;
+import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
@@ -14,7 +15,7 @@ public class Diamond extends AbstractGameObject {
 
 
 
-    public Diamond(GameGrid linksTo, int atX, int atY) {
+    public Diamond(Level linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
         ColourPreferenceController.selectedDiamondColour.addListener((observable, oldValue, newValue) -> {
             if (observable != null) {
