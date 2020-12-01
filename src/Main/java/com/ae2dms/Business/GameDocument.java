@@ -42,7 +42,7 @@ public class GameDocument implements Serializable {
             logger = new GameLogger();
             this.loadMapFile(input);
             currentLevel = getFirstLevel();
-            records.readInRecords(mapSetName, initialMapHashCode);
+            records.restoreRecords(mapSetName, initialMapHashCode);
             this.highestScore.bindBidirectional(records.highestScore);
         } catch (NoSuchElementException e) {
             logger.warning("Cannot load the map file: " + e.getStackTrace());
@@ -164,10 +164,12 @@ public class GameDocument implements Serializable {
     }
 
     private void loadGameRecords() {
-        records.readInRecords(this.mapSetName, this.initialMapHashCode);
+        records.restoreRecords(this.mapSetName, this.initialMapHashCode);
     }
 
-    public void saveRecord(String name, String time, String score) {
+    public void saveRecord(String name, int time, int score) {
+        records.pushRecord(score, name, time);
+
     }
 
     public GameRecord getRecords() {

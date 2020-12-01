@@ -2,13 +2,12 @@ package com.ae2dms.IO;
 
 import com.ae2dms.Business.Data.Level;
 import com.ae2dms.Business.GameDebugger;
-import com.ae2dms.Business.GameLogger;
-import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MapFileLoader {
     private final ArrayList<Level> levels;
@@ -30,7 +29,8 @@ public class MapFileLoader {
 
     public boolean loadMapFile(InputStream input) throws IOException, NullPointerException {
 
-        rawMapFile = IOUtils.toString(input, "utf-8");
+
+        rawMapFile = new BufferedReader(new InputStreamReader(input)).lines().collect(Collectors.joining(System.lineSeparator()));
 
         if (!validMap(rawMapFile)) {
             return false;

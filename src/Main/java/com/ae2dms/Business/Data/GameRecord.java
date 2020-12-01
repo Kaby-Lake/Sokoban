@@ -3,27 +3,24 @@ package com.ae2dms.Business.Data;
 import com.ae2dms.Business.GameStageSaver;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import org.apache.commons.io.FileUtils;
 
-import java.io.EOFException;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 public class GameRecord implements Serializable {
 
+    private String mapName;
+    private Integer mapHashCode;
+
     public transient IntegerProperty highestScore = new SimpleIntegerProperty(0);
 
-    // only used when to serialize
-    private int highestScoreSerializable;
-
-    private final ArrayList<Record> records = new ArrayList<>();
+    private ArrayList<Record> records = new ArrayList<>();
 
     // this will set the date to be now
     public void pushRecord(int score, String playerName, int durationSeconds) {
         records.add(new Record(score, playerName, durationSeconds));
         sortRecords();
+        writeChangesToFile();
         if (score > highestScore.getValue()) {
             highestScore.set(score);
         }
@@ -32,10 +29,25 @@ public class GameRecord implements Serializable {
     public void pushRecord(int score, Date date, String playerName, int durationSeconds) {
         records.add(new Record(score, date, playerName, durationSeconds));
         sortRecords();
+        writeChangesToFile();
         if (score > highestScore.getValue()) {
             highestScore.set(score);
         }
     }
+
+    private void writeChangesToFile() {
+        File directory = new File(System.getProperty("user.dir") + "/" + "records");
+        String fileName = directory + "/" + mapName + mapHashCode.toString() + ".rec";
+        try {
+            File file = new File(fileName);
+            PrintWriter out = new PrintWriter(file);
+            out.print(GameStageSaver.encode(this));
+            out.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 
     private void sortRecords() {
         Collections.sort(records);
@@ -62,7 +74,12 @@ public class GameRecord implements Serializable {
         return records;
     }
 
-    public void readInRecords(String mapName, Integer mapHashCode) {
+    public void restoreRecords(String mapName, Integer mapHashCode) {
+        this.mapName = mapName;
+        this.mapHashCode = mapHashCode;
+
+        this.highestScore.set(0);
+        records = new ArrayList<>();
 
         File directory = new File(System.getProperty("user.dir") + "/" + "records");
         if (!directory.exists()) {
@@ -75,18 +92,25 @@ public class GameRecord implements Serializable {
                 file.createNewFile();
                 return;
             }
-            String recordsObjectEncode = FileUtils.readFileToString(file);
+
+            Scanner in = new Scanner(file);
+            if (!in.hasNextLine()) {
+                return;
+            }
+            String recordsObjectEncode = in.nextLine();
+            in.close();
             GameRecord object = (GameRecord)GameStageSaver.decode(recordsObjectEncode);
-            this.records.clear();
             for (Record record : object.getRecords()) {
-                this.pushRecord(record.score, record.date, record.playerName, record.durationSeconds);
+                records.add(new Record(record.score, record.date, record.playerName, record.durationSeconds));
+                sortRecords();
+                if (record.score > highestScore.getValue()) {
+                    highestScore.set(record.score);
+                }
             }
         } catch (EOFException e) {
-            return;
         } catch (IOException | ClassNotFoundException e){
             e.printStackTrace();
         }
-
     }
 
 

@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.util.Random;
+
 public class ScoreItemTemplateController {
     
     @FXML
@@ -21,8 +23,10 @@ public class ScoreItemTemplateController {
     @FXML
     private Label DataField;
 
-    public void setImage() {
-
+    public void setRandomImage() {
+        Random random = new Random();
+        Image randomImage = (Image)ResourceFactory.getResource("AVATARS_" + (random.nextInt(10) + 1), ResourceType.Image);
+        AvatarImage.setImage(randomImage);
     }
 
     public void setType(String type) {

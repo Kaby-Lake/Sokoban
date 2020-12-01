@@ -338,17 +338,14 @@ public class GameViewController extends AbstractBarController {
             );
 
             gameCompletePopUpController.show();
-            gameCompletePopUpController.Save_Record.setOnMouseClicked((event) -> {
-                String saveName = gameCompletePopUpController.inputPlayerName.toString();
-
-                gameDocument.saveRecord(saveName, this.Time_Spend.getText(), this.Score.getText());
-            });
 
             gameCompletePopUpController.Level_Complete_High_Score_List.setOnMouseClicked((event) -> {
                 gameCompletePopUpController.hide();
                 exitGaussianBlur();
-                // TODO: high score list
+                menuBarClickToggleHighScoreList();
             });
+
+            // the save code is in GameViewController
 
             gameCompletePopUpController.Level_Complete_Back_To_Menu.setOnMouseClicked((event) -> {
                 levelCompletePopUpController.hide();

@@ -53,6 +53,7 @@ public class HighScoreBarController {
             }
 
             ScoreItemTemplateController timeController = itemLoader.getController();
+            timeController.setRandomImage();
             timeController.setType("Score");
             timeController.setName(record.getName());
             timeController.setData(record.getScore());
@@ -85,6 +86,7 @@ public class HighScoreBarController {
             }
 
             ScoreItemTemplateController timeController = itemLoader.getController();
+            timeController.setRandomImage();
             timeController.setType("Time");
             timeController.setName(record.getName());
             timeController.setData(record.getDurationSeconds());

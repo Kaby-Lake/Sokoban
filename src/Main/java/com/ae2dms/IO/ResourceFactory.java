@@ -80,6 +80,19 @@ public class ResourceFactory {
         urlMap.put("SAVE_GAME_ICON", "/ui/Assets/BottomBar/Save_Game.png");
         urlMap.put("SAVE_GAME_NULL_ICON", "/ui/Assets/BottomBar/Save_Game_null.png");
 
+
+        urlMap.put("AVATARS_1", "/ui/Assets/HighScore/avatars-01.png");
+        urlMap.put("AVATARS_2", "/ui/Assets/HighScore/avatars-02.png");
+        urlMap.put("AVATARS_3", "/ui/Assets/HighScore/avatars-03.png");
+        urlMap.put("AVATARS_4", "/ui/Assets/HighScore/avatars-04.png");
+        urlMap.put("AVATARS_5", "/ui/Assets/HighScore/avatars-05.png");
+        urlMap.put("AVATARS_6", "/ui/Assets/HighScore/avatars-06.png");
+        urlMap.put("AVATARS_7", "/ui/Assets/HighScore/avatars-07.png");
+        urlMap.put("AVATARS_8", "/ui/Assets/HighScore/avatars-08.png");
+        urlMap.put("AVATARS_9", "/ui/Assets/HighScore/avatars-09.png");
+        urlMap.put("AVATARS_10", "/ui/Assets/HighScore/avatars-10.png");
+
+
         urlMap.put("UNMOVABLE_AUDIO_CLIP", "/music/SFX/Basso.mp3");
         urlMap.put("MOVE_AUDIO_CLIP", "/music/SFX/Pop.mp3");
         urlMap.put("MOVE_CRATE_AUDIO_CLIP", "/music/SFX/Jeans_Drop.mp3");
