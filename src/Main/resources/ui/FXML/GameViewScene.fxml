@@ -236,56 +236,108 @@
                        </GridPane>
 
                        <!--     playerGrid   -->
-                       <GridPane fx:id="playerGrid" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" prefHeight="600.0" prefWidth="960.0" StackPane.alignment="CENTER">
+                       <GridPane fx:id="playerGrid" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+                                 minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" prefHeight="600.0"
+                                 prefWidth="960.0" StackPane.alignment="CENTER">
                            <columnConstraints>
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
+                               <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0"/>
                            </columnConstraints>
                            <rowConstraints>
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
                            </rowConstraints>
-                           <children>
-
-                           </children>
                        </GridPane>
                    </StackPane>
+
+                   <!--     candyGrid  -->
+                   <GridPane fx:id="candyGrid" layoutX="195.0" layoutY="55.0" mouseTransparent="true">
+                       <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
+                       </columnConstraints>
+                       <rowConstraints>
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                       </rowConstraints>
+                       <children>
+
+
+                       </children>
+                   </GridPane>
+
                    <Group layoutX="45.0">
                        <children>
                            <ImageView layoutX="1020.0" layoutY="15.0">
@@ -345,7 +397,6 @@
                            </Group>
                        </children>
                    </Group>
-                  <Button layoutX="1248.0" layoutY="408.0" mnemonicParsing="false" text="Button" onMouseClicked="#addDraggableItem" />
                </children>
             </Pane>
 

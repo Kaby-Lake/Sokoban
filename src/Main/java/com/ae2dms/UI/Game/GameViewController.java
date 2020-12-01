@@ -10,6 +10,10 @@ import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.GameMediaPlayer;
 import com.ae2dms.UI.MediaState;
 import com.ae2dms.UI.SoundPreferenceController;
+import javafx.animation.Interpolator;
+import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -23,6 +27,8 @@ import javafx.scene.layout.*;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 
@@ -85,6 +91,9 @@ public class GameViewController extends AbstractBarController {
 
     @FXML
     private volatile GridPane diamondsGrid;
+
+    @FXML
+    private volatile GridPane candyGrid;
 
 
     // Controllers to control LevelCompleteView and GameCompleteView
@@ -154,8 +163,8 @@ public class GameViewController extends AbstractBarController {
 
         Time_Spend.textProperty().bind(timer.timeToDisplay);
 
-        render = new GraphicRender(stageGrid, crateGrid, playerGrid, diamondsGrid);
-        render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
+        render = new GraphicRender(stageGrid, crateGrid, playerGrid, diamondsGrid, candyGrid);
+        render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid, gameDocument.getCurrentLevel().candyGrid);
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
 
         this.highestScore.textProperty().bind(this.gameDocument.highestScore.asString());
@@ -277,6 +286,10 @@ public class GameViewController extends AbstractBarController {
             try {
                 this.gameDocument.getPlayer().moveBy(direction);
                 this.gameDocument.movesCount.set(this.gameDocument.movesCount.getValue() + 1);
+                if (player.eatingCrate(gameDocument.getCurrentLevel().candyGrid)) {
+                    addDraggableItem();
+                }
+
             } catch (IllegalMovementException e) {
                 e.printStackTrace();
             }
@@ -284,6 +297,8 @@ public class GameViewController extends AbstractBarController {
             player.headTo(direction);
             player.shakeAnimation(direction);
         }
+
+
 
         checkIsLevelComplete();
     }
@@ -369,7 +384,7 @@ public class GameViewController extends AbstractBarController {
 
         This_Level_Index.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
 
-        render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
+        render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid, gameDocument.getCurrentLevel().candyGrid);
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
     }
 
@@ -385,7 +400,7 @@ public class GameViewController extends AbstractBarController {
         GameDocument restoreObject = GameStageSaver.pop();
         if (restoreObject != null) {
             Main.gameDocument.restoreObject(restoreObject);
-            render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
+            render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid, gameDocument.getCurrentLevel().candyGrid);
             GameDebugger.logUndo(this.gameDocument);
         }
     }
@@ -451,17 +466,17 @@ public class GameViewController extends AbstractBarController {
     @FXML
     private void addDraggableItem() {
 
-        ImageView stage_Drag = new ImageView((Image)ResourceFactory.getResource("STAGE_DRAG_IMAGE", ResourceType.Image));
+        ImageView stageDrag = new ImageView((Image)ResourceFactory.getResource("STAGE_DRAG_IMAGE", ResourceType.Image));
 
-        stage_Drag.setLayoutX(1234);
-        stage_Drag.setLayoutY(70 + DragList.size() * 70);
+        stageDrag.setLayoutX(1234);
+        stageDrag.setLayoutY(70 + DragList.size() * 70);
 
-        stage_Drag.setOnMouseReleased(this::draggingOnMouseReleased);
-        stage_Drag.setOnMouseDragged(this::previewDragging);
-        stage_Drag.setOnMousePressed(this::selectDragging);
+        stageDrag.setOnMouseReleased(this::draggingOnMouseReleased);
+        stageDrag.setOnMouseDragged(this::previewDragging);
+        stageDrag.setOnMousePressed(this::selectDragging);
 
-        DragList.add(stage_Drag);
-        Content.getChildren().add(stage_Drag);
+        DragList.add(stageDrag);
+        Content.getChildren().add(stageDrag);
     }
 
     private void draggingOnMouseReleased(MouseEvent mouseEvent) {
@@ -481,7 +496,7 @@ public class GameViewController extends AbstractBarController {
         AbstractGameObject clickedObject = gameDocument.getCurrentLevel().objectsGrid.getGameObjectAt(xIndex, yIndex);
         if (clickedObject instanceof Wall) {    // put the Floor at this position
             gameDocument.getCurrentLevel().objectsGrid.putGameObjectAt(new Floor(gameDocument.getCurrentLevel().objectsGrid, xIndex, yIndex), new Point(xIndex, yIndex));
-            render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid);
+            render.renderMap(gameDocument.getCurrentLevel().objectsGrid, gameDocument.getCurrentLevel().diamondsGrid, gameDocument.getCurrentLevel().candyGrid);
             chosenView.setVisible(false);
             previewGrid.getChildren().clear();
             rePositionDraggings();

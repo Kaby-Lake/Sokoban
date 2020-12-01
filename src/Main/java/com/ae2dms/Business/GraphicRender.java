@@ -10,8 +10,6 @@ import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
-import java.awt.*;
-
 public class GraphicRender {
 
     @FXML
@@ -26,14 +24,18 @@ public class GraphicRender {
     @FXML
     private volatile GridPane diamondsGrid;
 
-    public GraphicRender(GridPane stageGrid, GridPane crateGrid, GridPane playerGrid, GridPane diamondsGrid) {
+    @FXML
+    private volatile GridPane candyGrid;
+
+    public GraphicRender(GridPane stageGrid, GridPane crateGrid, GridPane playerGrid, GridPane diamondsGrid, GridPane candyGrid) {
         this.stageGrid = stageGrid;
         this.crateGrid = crateGrid;
         this.playerGrid = playerGrid;
         this.diamondsGrid = diamondsGrid;
+        this.candyGrid = candyGrid;
     }
 
-    public void renderMap(GameGrid objectsGridDocument, GameGrid diamondsGridDocument) {
+    public void renderMap(GameGrid objectsGridDocument, GameGrid diamondsGridDocument, GameGrid candyGridDocument) {
 
         this.stageGrid.getChildren().clear();
         this.diamondsGrid.getChildren().clear();
@@ -48,10 +50,22 @@ public class GraphicRender {
                 diamondsGrid.add(object.render(), object.xPosition, object.yPosition);
             }
         }
-        renderItemAndPLayer(objectsGridDocument);
+        renderItemAndPlayer(objectsGridDocument);
+        renderCandy(candyGridDocument);
     }
 
-    public void renderItemAndPLayer(GameGrid objectsGridDocument) {
+    private void renderCandy(GameGrid candyGridDocument) {
+
+        this.candyGrid.getChildren().clear();
+        for (AbstractGameObject object : candyGridDocument) {
+            if (object instanceof Candy) {
+                Candy candy = (Candy) object;
+                candyGrid.add(candy.render(), candy.xPosition, candy.yPosition);
+            }
+        }
+    }
+
+    public void renderItemAndPlayer(GameGrid objectsGridDocument) {
 
         this.crateGrid.getChildren().clear();
         this.playerGrid.getChildren().clear();

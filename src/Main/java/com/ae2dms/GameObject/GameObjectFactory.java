@@ -7,7 +7,7 @@ public class GameObjectFactory {
 
 
     // diamonds Object is only for Crate object to detect whether on diamond
-    public AbstractGameObject getGameObject(Character type, GameGrid linkTo, int xPosition, int yPosition, GameGrid diamondsGrid) {
+    public AbstractGameObject getGameObject(Character type, GameGrid linkTo, int xPosition, int yPosition, GameGrid diamondsGrid, GameGrid candyGrid) {
 
         if (type == null) {
             System.err.println("GameObject Type Missing");
@@ -29,6 +29,9 @@ public class GameObjectFactory {
             }
             case 'W' -> {
                 return new Wall(linkTo, xPosition, yPosition);
+            }
+            case 'Y' -> {
+                return new Candy(linkTo, xPosition, yPosition, candyGrid);
             }
             default -> {
                 System.err.println("Unrecognizable GameObject Type");

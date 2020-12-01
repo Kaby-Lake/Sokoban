@@ -140,13 +140,22 @@ public class Player extends AbstractGameObject implements Movable {
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), this.view);
 
         translateTransition.setOnFinished((event) -> {
-            render.renderItemAndPLayer(grid);
+            render.renderItemAndPlayer(grid);
             isAnimating.set(false);
         });
 
         translateTransition.setByX(48*direction.x);
         translateTransition.setByY(30*direction.y);
         translateTransition.play();
+    }
+
+    public boolean eatingCrate(GameGrid candyGrid) {
+        AbstractGameObject object = candyGrid.getGameObjectAt(this.xPosition, this.yPosition);
+        if (object instanceof Candy) {
+            ((Candy)object).eat();
+            return true;
+        }
+        return false;
     }
 
 

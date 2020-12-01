@@ -14,6 +14,7 @@ import java.util.List;
 public final class Level implements Iterable<AbstractGameObject>, Serializable {
     public volatile GameGrid objectsGrid;
     public volatile GameGrid diamondsGrid;
+    public volatile GameGrid candyGrid;
     private final String name;
     private final int index;
     private Point playerPosition = new Point(0, 0);
@@ -32,6 +33,7 @@ public final class Level implements Iterable<AbstractGameObject>, Serializable {
 
         objectsGrid = new GameGrid(X, Y);
         diamondsGrid = new GameGrid(X, Y);
+        candyGrid = new GameGrid(X, Y);
 
         GameObjectFactory factory = new GameObjectFactory();
 
@@ -43,15 +45,20 @@ public final class Level implements Iterable<AbstractGameObject>, Serializable {
                 AbstractGameObject curTile;
 
                 if (Character.toUpperCase(curChar) == 'D') {
-                    curTile = factory.getGameObject(curChar, objectsGrid, x, y, diamondsGrid);
+                    curTile = factory.getGameObject(curChar, objectsGrid, x, y, diamondsGrid, candyGrid);
                     diamondsGrid.putGameObjectAt(curTile, x, y);
                     // then put Floor Object in objectsGrid
-                    curTile = factory.getGameObject(' ', objectsGrid, x, y, diamondsGrid);
+                    curTile = factory.getGameObject(' ', objectsGrid, x, y, diamondsGrid, candyGrid);
                 } else if (Character.toUpperCase(curChar) == 'S') {
                     playerPosition = new Point(x, y);
-                    curTile = factory.getGameObject(curChar, objectsGrid, x, y, diamondsGrid);
+                    curTile = factory.getGameObject(curChar, objectsGrid, x, y, diamondsGrid, candyGrid);
+                } else if (Character.toUpperCase(curChar) == 'Y') {
+                    curTile = factory.getGameObject(curChar, objectsGrid, x, y, diamondsGrid, candyGrid);
+                    candyGrid.putGameObjectAt(curTile, x, y);
+                    // then put Floor Object in objectsGrid
+                    curTile = factory.getGameObject(' ', objectsGrid, x, y, diamondsGrid, candyGrid);
                 } else {
-                    curTile = factory.getGameObject(curChar, objectsGrid, x, y, diamondsGrid);
+                    curTile = factory.getGameObject(curChar, objectsGrid, x, y, diamondsGrid, candyGrid);
                 }
 
                 objectsGrid.putGameObjectAt(curTile, x, y);}
