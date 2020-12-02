@@ -93,7 +93,7 @@ public class AbstractBarController {
             }
         });
 
-        // set the animation
+        // set the animation and render
         highScoreIsShown.addListener((observable, oldValue, newValue) -> {
             if (observable != null && observable.getValue()==true) {
                 TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), BottomBar);
@@ -111,9 +111,7 @@ public class AbstractBarController {
     }
 
     private void renderHighScoreList() {
-        GameRecord records = Main.gameDocument.getRecords();
-        highScoreBarController.renderRecords(records);
-
+        highScoreBarController.renderRecords();
     }
 
     public HighScoreBarController loadBottomBar() {

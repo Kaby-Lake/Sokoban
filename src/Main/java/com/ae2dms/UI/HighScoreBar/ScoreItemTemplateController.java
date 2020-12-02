@@ -48,4 +48,14 @@ public class ScoreItemTemplateController {
         this.DataField.setText(String.valueOf(data));
     }
 
+    public void setFirst(String type) {
+        switch (type) {
+            case "Score" -> {
+                this.HighScoreItemImage.setImage((Image)ResourceFactory.getResource("SCORE_ITEM_FIRST_BACKGROUND", ResourceType.Image));
+            }
+            case "Time" -> {
+                this.HighScoreItemImage.setImage((Image)ResourceFactory.getResource("TIME_ITEM_FIRST_BACKGROUND", ResourceType.Image));
+            }
+        }
+    }
 }

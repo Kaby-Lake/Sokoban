@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static com.ae2dms.Business.GameDocument.records;
+
 public class HighScoreBarController {
 
     @FXML
@@ -25,21 +27,18 @@ public class HighScoreBarController {
     @FXML
     private VBox HighTimeItemVBox;
 
-    private ArrayList<Group> scoresView;
+    public void renderRecords() {
+        renderScoreRecords();
+        renderTimeRecords();
+    }
 
-    private ArrayList<ScoreItemTemplateController> scoresController;
-
-    private ArrayList<Group> timesView;
-
-    private ArrayList<ScoreItemTemplateController> timesController;
-
-    public void renderRecords(GameRecord records) {
-
+    private void renderScoreRecords() {
         HighScoreItemVBox.getChildren().clear();
-        HighTimeItemVBox.getChildren().clear();
 
         int scoreCount = 0;
         for (Record record : records.getRecords()) {
+            scoreCount++;
+
             if (scoreCount > 7) {
                 break;
             }
@@ -52,28 +51,30 @@ public class HighScoreBarController {
                 e.printStackTrace();
             }
 
-            ScoreItemTemplateController timeController = itemLoader.getController();
-            timeController.setRandomImage();
-            timeController.setType("Score");
-            timeController.setName(record.getName());
-            timeController.setData(record.getScore());
-
-            HighScoreItemVBox.getChildren().add( 0, itemView); // add on top
-
-            scoreCount++;
-
-//            scoresView.add(itemView);
-//            scoresController.add(itemLoader.getController());
+            ScoreItemTemplateController scoreController = itemLoader.getController();
+            scoreController.setRandomImage();
+            scoreController.setType("Score");
+            scoreController.setName(record.getName());
+            scoreController.setData(record.getScore());
+            if (scoreCount == 1) {
+                scoreController.setFirst("Score");
+            }
+            HighScoreItemVBox.getChildren().add(itemView);
         }
 
         if (scoreCount == 0) {
-            //display
             HighScoreItemVBox.getChildren().add( 0, new ImageView((Image)ResourceFactory.getResource("NO_RECORDS_INFO", ResourceType.Image)));
         }
+    }
 
-        int timeCount = 0;
+    private void renderTimeRecords() {
+        HighTimeItemVBox.getChildren().clear();
+
+        int scoreCount = 0;
         for (Record record : records.sortRecordsByTime()) {
-            if (timeCount > 7) {
+            scoreCount++;
+
+            if (scoreCount > 7) {
                 break;
             }
             Group itemView = null;
@@ -90,19 +91,14 @@ public class HighScoreBarController {
             timeController.setType("Time");
             timeController.setName(record.getName());
             timeController.setData(record.getDurationSeconds());
-
-            HighTimeItemVBox.getChildren().add( 0, itemView); // add on top
-
-            timeCount++;
-
-//            timesView.add(itemView);
-//            timesController.add(itemLoader.getController());
+            if (scoreCount == 1) {
+                timeController.setFirst("Time");
+            }
+            HighTimeItemVBox.getChildren().add(itemView);
         }
 
         if (scoreCount == 0) {
-            //display
             HighTimeItemVBox.getChildren().add( 0, new ImageView((Image)ResourceFactory.getResource("NO_RECORDS_INFO", ResourceType.Image)));
         }
-
     }
 }
