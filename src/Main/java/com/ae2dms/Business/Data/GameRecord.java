@@ -91,11 +91,10 @@ public class GameRecord implements Serializable {
         ArrayList<Record> recordsSortedByTime = new ArrayList<>(this.records);
 
         recordsSortedByTime.sort((record1, record2) -> {
-            // TODO Auto-generated method stub
             if (record1.getDurationSeconds() >= record2.getDurationSeconds()) {
-                return -1;
-            } else {
                 return 1;
+            } else {
+                return -1;
             }
         });
 
@@ -120,7 +119,7 @@ public class GameRecord implements Serializable {
         this.mapName = mapName;
         this.mapHashCode = mapHashCode;
 
-        this.bestRecord.set(0);
+        this.bestRecord.set(Integer.MAX_VALUE);
         records = new ArrayList<>();
 
         File directory = new File(System.getProperty("user.dir") + "/" + "records");
@@ -143,11 +142,7 @@ public class GameRecord implements Serializable {
             in.close();
             GameRecord object = (GameRecord)GameStageSaver.decode(recordsObjectEncode);
             for (Record record : object.getRecords()) {
-                records.add(new Record(record.score, record.date, record.playerName, record.durationSeconds));
-                sortRecords();
-                if (record.score > bestRecord.getValue()) {
-                    bestRecord.set(record.score);
-                }
+                this.pushRecord(record.steps, record.date, record.playerName, record.durationSeconds);
             }
         } catch (EOFException e) {
         } catch (IOException | ClassNotFoundException e){
@@ -163,13 +158,13 @@ public class GameRecord implements Serializable {
 
         private final UUID uuid = UUID.randomUUID();
 
-        Integer score;
+        Integer steps;
         Date date;
         String playerName;
         Integer durationSeconds;
 
         public Record(int score, Date date, String playerName, int durationSeconds) {
-            this.score = score;
+            this.steps = score;
             this.date = date;
             this.playerName = playerName;
             this.durationSeconds = durationSeconds;
@@ -192,13 +187,13 @@ public class GameRecord implements Serializable {
         /**
          * @return getter of score
          */
-        public int getScore() {
-            return score;
+        public int getSteps() {
+            return steps;
         }
 
         @Override
         public int compareTo(Record o) {
-            return -(this.score.compareTo(o.score));
+            return (this.steps.compareTo(o.steps));
         }
     }
 }

@@ -69,6 +69,10 @@ public class GameCompletePopUpController {
 
     @FXML
     private void clickSaveRecord(MouseEvent mouseEvent) {
+        if ("".equals(this.Game_Complete_Name.getText())) {
+            this.Game_Complete_Name.setText("Default Name");
+            return;
+        }
         GameDocument.records.pushRecord(this.score, this.Game_Complete_Name.getText(), this.timeDuration);
         Save_Record.setImage((Image)ResourceFactory.getResource("SAVE_RECORD_DONE", ResourceType.Image));
         Save_Record.setDisable(true);

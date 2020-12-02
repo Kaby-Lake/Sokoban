@@ -1,21 +1,17 @@
 package com.ae2dms.UI.HighScoreBar;
 
-import com.ae2dms.Business.Data.GameRecord;
 import com.ae2dms.Business.Data.GameRecord.Record;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
-import com.ae2dms.UI.Menu.MenuView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 
 import static com.ae2dms.Business.GameDocument.records;
 
@@ -55,7 +51,7 @@ public class HighScoreBarController {
             scoreController.setRandomImage();
             scoreController.setType("Score");
             scoreController.setName(record.getName());
-            scoreController.setData(record.getScore());
+            scoreController.setData(record.getSteps());
             if (scoreCount == 1) {
                 scoreController.setFirst("Score");
             }
