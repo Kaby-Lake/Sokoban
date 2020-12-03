@@ -63,19 +63,6 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
     }
 
     /**
-     * @param source
-     * @param delta
-     * @return corresponding GameObject in which position
-     * @throws ArrayIndexOutOfBoundsException
-     */
-    public AbstractGameObject getTargetFromSource(Point source, Point delta) throws ArrayIndexOutOfBoundsException {
-        if (delta == null) {
-            delta = new Point(0, 0);
-        }
-        return getGameObjectAt(translatePoint(source, delta));
-    }
-
-    /**
      * @param x x axis
      * @param y y axis
      *            Coordinates: system
@@ -110,10 +97,6 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
         return getGameObjectAt((int) p.getX(), (int) p.getY());
     }
 
-    public Dimension getDimension() {
-        return new Dimension(X, Y);
-    }
-
 
     /**
      * @param gameObject the object to be put in
@@ -139,16 +122,6 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
         return p != null && putGameObjectAt(gameObject, (int) p.getX(), (int) p.getY());
     }
 
-    /**
-     * @param position the position of object to be deleted
-     * @return false if PointOutOfBounds, true otherwise
-     */
-    public boolean removeGameObjectAt(Point position) {
-        return putGameObjectAt(null, position);
-    }
-
-
-
     public boolean isPointOutOfBounds(int x, int y) {
         return (x < 0 || y < 0 || x >= X || y >= Y);
     }
@@ -165,11 +138,11 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
         for (AbstractGameObject[] gameObject : gameObjects) {
             for (AbstractGameObject aGameObject : gameObject) {
                 if (aGameObject == null) {
-                    // aGameObject = GameObject1.DEBUG_OBJECT;
+                    sb.append(' ');
+                    continue;
                 }
                 sb.append(aGameObject.getCharSymbol());
             }
-
             sb.append('\n');
         }
 

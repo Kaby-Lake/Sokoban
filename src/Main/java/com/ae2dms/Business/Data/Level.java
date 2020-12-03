@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
-public final class Level implements Iterable<AbstractGameObject>, Serializable {
+public final class Level implements Serializable {
 
     /**
      * the GameGrid which only contains Floor Object, null at other positions
@@ -195,34 +195,5 @@ public final class Level implements Iterable<AbstractGameObject>, Serializable {
             %s
     """;
         return string.formatted(floorGrid.toString(), objectsGrid.toString(), diamondsGrid.toString(), candyGrid.toString());
-    }
-
-    /**
-     * @return a iterator of the ObjectsGrid
-     */
-    @Override
-    public Iterator<AbstractGameObject> iterator() {
-        return new LevelIterator();
-    }
-
-    public class LevelIterator implements Iterator<AbstractGameObject> {
-
-        int column = 0;
-        int row = 0;
-
-        @Override
-        public boolean hasNext() {
-            return !(row == objectsGrid.Y - 1 && column == objectsGrid.X);
-        }
-
-        @Override
-        public AbstractGameObject next() {
-            if (column >= objectsGrid.X) {
-                column = 0;
-                row++;
-            }
-
-            return objectsGrid.getGameObjectAt(column, row);
-        }
     }
 }

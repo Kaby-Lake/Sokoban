@@ -44,7 +44,6 @@ public class Candy extends AbstractGameObject {
     }
 
     public void eat() {
-        this.view.setVisible(false);
         this.grid.putGameObjectAt(null, this.xPosition, this.yPosition);
     }
 }

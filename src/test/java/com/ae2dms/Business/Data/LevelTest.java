@@ -2,13 +2,9 @@ package com.ae2dms.Business.Data;
 
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.GameObject.Objects.*;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.embed.swing.JFXPanel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.powermock.reflect.Whitebox;
 import org.testfx.framework.junit.ApplicationTest;
 
@@ -55,6 +51,7 @@ class LevelTest extends ApplicationTest {
             helperTestWallVerificationOnObjectsGrid(testLevel1, new Point(i, 4));
         }
         helperTestDiamondVerificationOnDiamondsGrid(testLevel1, new Point(7, 2));
+        System.out.println(testLevel1.toString());
     }
 
     @Test
@@ -76,6 +73,7 @@ class LevelTest extends ApplicationTest {
         for (int i = 0; i < 19; i++) {
             helperTestWallVerificationOnObjectsGrid(testLevel1, new Point(i, 2));
         }
+        System.out.println(testLevel1.toString());
     }
 
     @Test
@@ -92,6 +90,7 @@ class LevelTest extends ApplicationTest {
         helperTestDiamondVerificationOnDiamondsGrid(testLevel1, new Point(7, 1));
         helperTestCrateVerificationOnObjectsGrid(testLevel1, new Point(10, 1));
         helperTestPlayerVerificationOnDiamondsGrid(testLevel1, new Point(13, 2));
+        System.out.println(testLevel1.toString());
     }
 
     @Test
@@ -114,6 +113,34 @@ class LevelTest extends ApplicationTest {
             player.moveBy(new Point(-1, 0));
         }
         assertTrue(testLevel1.isComplete());
+        System.out.println(testLevel1.toString());
+    }
+
+    @Test
+    // first false, then modified Player to test whether it is on Candy
+    // modify toString() to use iterator
+    void testMovement2() throws IllegalMovementException {
+        List<String> level1Raw = LevelTest.lineParser(
+                """
+                        WWWWWWWWWWWWW WWWWWW
+                        W    W   D  CY     W
+                        W    W D C   S     W
+                        w    w   Y  WWWWWWWW
+                        wwwwwwwwWwwwwwwwwwww""");
+        Level testLevel1 = new Level("testLevelName", 1, level1Raw);
+        Player player = testLevel1.getPlayerObject();
+        player.moveBy(new Point(0, -1));
+        assertNull(testLevel1.candyGrid.getGameObjectAt(13, 1));
+        for (int i = 0; i < 3; i++) {
+            player.moveBy(new Point(-1, 0));
+        }
+        assertFalse(testLevel1.isComplete());
+        player.moveBy(new Point(0, 1));
+        player.moveBy(new Point(-1, 0));
+        player.moveBy(new Point(-1, 0));
+        assertTrue(testLevel1.isComplete());
+        System.out.println(testLevel1.toString());
+
     }
 
 
