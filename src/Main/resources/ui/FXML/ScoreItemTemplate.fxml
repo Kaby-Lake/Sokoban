@@ -10,7 +10,7 @@
             <Image url="@../Assets/HighScore/Score_Item.png"/>
         </ImageView>
         <ImageView layoutX="8.0" layoutY="6.0" fx:id="AvatarImage">
-            <Image url="@../Assets/HighScore/avatars-02_Nemo.png"/>
+            <Image url="@../Assets/HighScore/avatars-01.png"/>
         </ImageView>
         <BorderPane layoutX="54.0" layoutY="3.0" prefHeight="40.0" prefWidth="132.0">
             <center>

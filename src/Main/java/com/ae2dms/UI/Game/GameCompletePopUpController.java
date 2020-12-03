@@ -24,8 +24,6 @@ public class GameCompletePopUpController {
 
     int score;
 
-    StringProperty inputPlayerName = new SimpleStringProperty();
-
     @FXML
     private BorderPane Game_Complete_Pop_Up;
 
@@ -48,11 +46,12 @@ public class GameCompletePopUpController {
     private Label Game_Complete_Score;
 
     public void initialize() {
-        inputPlayerName.bind(Game_Complete_Name.textProperty());
 
     }
 
     void assignData(int time, int score) {
+        this.timeDuration = time;
+        this.score = score;
 
         Game_Complete_Time.setText(GameTimer.parseToTimeFormat(time));
         Game_Complete_Score.setText(String.valueOf(score));
@@ -70,7 +69,13 @@ public class GameCompletePopUpController {
 
     @FXML
     private void clickSaveRecord(MouseEvent mouseEvent) {
-        GameDocument.records.pushRecord(this.score, this.inputPlayerName.getValue(), this.timeDuration);
+        if ("".equals(this.Game_Complete_Name.getText())) {
+            this.Game_Complete_Name.setText("Default Name");
+            return;
+        }
+        GameDocument.records.pushRecord(this.score, this.Game_Complete_Name.getText(), this.timeDuration);
         Save_Record.setImage((Image)ResourceFactory.getResource("SAVE_RECORD_DONE", ResourceType.Image));
+        Save_Record.setDisable(true);
+        Save_Record.getStyleClass().clear();
     }
 }

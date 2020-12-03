@@ -54,7 +54,7 @@ public class Main extends Application {
     }
 
     void loadDefaultGameMapAndInitDocument() {
-        InputStream in = getClass().getClassLoader().getResourceAsStream("level/SampleGame.skb");
+        InputStream in = getClass().getClassLoader().getResourceAsStream("level/debugLevel.skb");
         Main.gameDocument = new GameDocument(in, true);
     }
 
