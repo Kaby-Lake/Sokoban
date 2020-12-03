@@ -11,8 +11,7 @@ import javafx.scene.image.ImageView;
 
 public class Diamond extends AbstractGameObject {
 
-    private static Image DIAMOND_IMAGE = (Image)ResourceFactory.getResource("DIAMOND_IMAGE_Red", ResourceType.Image);
-
+    private Image DIAMOND_IMAGE = (Image)ResourceFactory.getResource("DIAMOND_IMAGE_Red", ResourceType.Image);
 
 
     public Diamond(Level linksTo, int atX, int atY) {

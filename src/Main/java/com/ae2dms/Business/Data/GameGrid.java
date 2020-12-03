@@ -7,19 +7,39 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.Iterator;
 
+/**
+ *
+ */
 public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
 
+    /**
+     * @return get the X bounds of the GameGrid map
+     */
     public int getX() {
         return X;
     }
 
+    /**
+     * @return get the Y bounds of the GameGrid map
+     */
     public int getY() {
         return Y;
     }
 
+    /**
+     * the X bounds of the GameGrid map
+     */
     final int X;
+
+
+    /**
+     * the Y bounds of the GameGrid map
+     */
     final int Y;
 
+    /**
+     * the 2d list to store all AbstractGameObject
+     */
     private final AbstractGameObject[][] gameObjects;
 
     public GameGrid(int X, int Y) {

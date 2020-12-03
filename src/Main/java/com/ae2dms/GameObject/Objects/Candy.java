@@ -16,11 +16,9 @@ import javafx.scene.image.ImageView;
  */
 public class Candy extends AbstractGameObject {
 
-    GameGrid candyGrid;
-
     public Candy(Level linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
-        this.candyGrid = linksTo.candyGrid;
+        this.grid = linksTo.candyGrid;
     }
 
     @Override
@@ -47,6 +45,6 @@ public class Candy extends AbstractGameObject {
 
     public void eat() {
         this.view.setVisible(false);
-        this.candyGrid.putGameObjectAt(null, this.xPosition, this.yPosition);
+        this.grid.putGameObjectAt(null, this.xPosition, this.yPosition);
     }
 }

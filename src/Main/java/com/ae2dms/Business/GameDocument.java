@@ -101,13 +101,13 @@ public class GameDocument implements Serializable {
         }
 
         Level nextLevel = levels.get(nextLevelIndex);
-        this.playerObject = (Player) nextLevel.getTargetObject(nextLevel.getPlayerPosition(), null);
+        this.playerObject = (Player) nextLevel.getPlayerObject();
         return nextLevel;
     }
 
     public Level getFirstLevel() {
         Level nextLevel = levels.get(0);
-        this.playerObject = (Player) nextLevel.getTargetObject(nextLevel.getPlayerPosition(), null);
+        this.playerObject = (Player) nextLevel.getPlayerObject();
         return nextLevel;
     }
 
