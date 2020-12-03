@@ -120,6 +120,14 @@ public class Player extends AbstractGameObject implements Movable {
         } else {
             throw new IllegalMovementException();
         }
+
+        if (this.isOnCandy()) {
+            ((Candy)level.candyGrid.getGameObjectAt(at())).eat();
+        }
+    }
+
+    private boolean isOnCandy() {
+        return level.candyGrid.getGameObjectAt(at()) instanceof Candy;
     }
 
     private void moveToFloor(Point targetPosition) {
