@@ -17,17 +17,36 @@ import static com.ae2dms.Business.GameDocument.records;
 
 public class HighScoreBarController {
 
+    /**
+     * The Vertical Box to display all sorted Records of Best Step Records, every individual is ScoreItemTemplate
+     * see ScoreItemTemplate.fxml
+     */
     @FXML
     private VBox HighScoreItemVBox;
+
+    /**
+     * The Vertical Box to display all sorted Records of Best Time Records, every individual is ScoreItemTemplate
+     * see ScoreItemTemplate.fxml
+     */
 
     @FXML
     private VBox HighTimeItemVBox;
 
+    /**
+     * called every time when the HighScoreList is displayed
+     * the listView won't update in time tp save system resource until called to
+     */
     public void renderRecords() {
         renderScoreRecords();
         renderTimeRecords();
     }
 
+    /**
+     * Render the Best Step Records in Vertical Box, with data from @records
+     * will only display seven of it due to the limited length of ScoreBoard
+     * with each time a different avatar
+     * @see com.ae2dms.Business.Data.GameRecord
+     */
     private void renderScoreRecords() {
         HighScoreItemVBox.getChildren().clear();
 
@@ -63,6 +82,12 @@ public class HighScoreBarController {
         }
     }
 
+    /**
+     * Render the Best Time Records in Vertical Box, with data from @records
+     * will only display seven of it due to the limited length of ScoreBoard
+     * with each time a different avatar
+     * @see com.ae2dms.Business.Data.GameRecord
+     */
     private void renderTimeRecords() {
         HighTimeItemVBox.getChildren().clear();
 

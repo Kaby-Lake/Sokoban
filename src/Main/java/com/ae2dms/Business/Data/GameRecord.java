@@ -90,13 +90,7 @@ public class GameRecord implements Serializable {
 
         ArrayList<Record> recordsSortedByTime = new ArrayList<>(this.records);
 
-        recordsSortedByTime.sort((record1, record2) -> {
-            if (record1.getDurationSeconds() >= record2.getDurationSeconds()) {
-                return 1;
-            } else {
-                return -1;
-            }
-        });
+        recordsSortedByTime.sort(Comparator.comparingInt(Record::getDurationSeconds));
 
         return Collections.unmodifiableList(recordsSortedByTime);
     }
