@@ -73,7 +73,7 @@ public class GameCompletePopUpController {
             this.Game_Complete_Name.setText("Default Name");
             return;
         }
-        GameDocument.records.pushRecord(this.score, this.Game_Complete_Name.getText(), this.timeDuration);
+        Main.gameDocument.saveRecord(this.score, this.Game_Complete_Name.getText(), this.timeDuration);
         Save_Record.setImage((Image)ResourceFactory.getResource("SAVE_RECORD_DONE", ResourceType.Image));
         Save_Record.setDisable(true);
         Save_Record.getStyleClass().clear();

@@ -158,7 +158,7 @@ public class GameViewController extends AbstractBarController {
         render.renderMap(gameDocument.getCurrentLevel());
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
 
-        this.highestScore.textProperty().bind(this.gameDocument.highestScore.asString());
+        this.highestScore.textProperty().bind(this.gameDocument.bestRecord.asString());
         StringConverter<Number> converter = new NumberStringConverter();
         Score.textProperty().bindBidirectional(this.gameDocument.movesCount, converter);
 
@@ -383,13 +383,8 @@ public class GameViewController extends AbstractBarController {
 
     @FXML
     private void clickUndo(MouseEvent mouseEvent) {
-        GameDebugger.logLevelComplete(this.gameDocument.getCurrentLevel(), this.Time_Spend.getText(), this.Score.getText());
-
-        GameDocument restoreObject = GameStageSaver.pop();
-        if (restoreObject != null) {
-            Main.gameDocument.restoreObject(restoreObject);
+        if (gameDocument.undo()) {
             render.renderMap(gameDocument.getCurrentLevel());
-            GameDebugger.logUndo(this.gameDocument);
         }
     }
 
