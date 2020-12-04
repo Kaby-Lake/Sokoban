@@ -72,6 +72,9 @@ public class ResourceFactory {
         urlMap.put("MUSIC_ON_ICON", "/ui/Assets/BottomBar/Music_on.png");
         urlMap.put("MUSIC_OFF_ICON", "/ui/Assets/BottomBar/Music_off.png");
 
+        urlMap.put("ALL_SOUND_ON_ICON", "/ui/Assets/MusicControl/Sound_on.png");
+        urlMap.put("ALL_SOUND_OFF_ICON", "/ui/Assets/MusicControl/Sound_off.png");
+
         urlMap.put("UNDO_ICON", "/ui/Assets/BottomBar/Undo.png");
         urlMap.put("UNDO_NULL_ICON", "/ui/Assets/BottomBar/Undo_null.png");
         urlMap.put("HIGH_SCORE_LIST_ON_ICON", "/ui/Assets/BottomBar/High_Score_List_on.png");

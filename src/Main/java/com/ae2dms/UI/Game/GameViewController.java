@@ -167,7 +167,6 @@ public class GameViewController extends AbstractBarController {
         soundPreferenceController = loadMusicController();
 
         musicControlIsShowing.bindBidirectional(soundPreferenceController.isShowing);
-        soundPreferenceController.isMute.bindBidirectional(Main.prefMusicIsMute);
     }
 
     public void bindLevelGameCompleteController(LevelCompletePopUpController controller1, GameCompletePopUpController controller2, ExitPopUpController controller3) {

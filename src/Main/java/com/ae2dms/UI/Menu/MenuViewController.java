@@ -15,6 +15,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,13 +41,13 @@ public class MenuViewController extends AbstractBarController {
         super.disableButton("Save Game");
         super.disableButton("Undo");
 
-        this.highestScore.textProperty().bind(Main.gameDocument.bestRecord.asString());
+        StringConverter<Number> converter = new NumberStringConverter();
+        this.highestScore.textProperty().bindBidirectional(Main.gameDocument.bestRecord, converter);
         highScoreBarController = loadBottomBar();
         soundPreferenceController = loadMusicController();
         colourPreferenceController = loadColourController();
 
         musicControlIsShowing.bindBidirectional(soundPreferenceController.isShowing);
-        soundPreferenceController.isMute.bindBidirectional(Main.prefMusicIsMute);
     }
 
 

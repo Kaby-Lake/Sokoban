@@ -2,6 +2,7 @@ package com.ae2dms.UI;
 
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
+import com.ae2dms.Main.Main;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -69,7 +70,6 @@ public class GameMediaPlayer {
         bgmDuration.put("PaperClip-Heat Up", 171);
         bgmDuration.put("PETO-Okay", 345);
 
-
         MusicVolume.addListener((observable, oldValue, newValue) -> {
             if (observable != null) {
                 this.backgroundMusicPlayer.setVolume((double) observable.getValue() / 100);
@@ -97,6 +97,7 @@ public class GameMediaPlayer {
 
         Media mediaPlaying = (Media)ResourceFactory.getResource(musicName, ResourceType.Media);
         backgroundMusicPlayer = new MediaPlayer(mediaPlaying);
+        backgroundMusicPlayer.setVolume(Main.prefMusicVolume.getValue() / 100);
         this.nowPlaying.setValue(musicName);
         this.setMusic(MediaState.PLAY);
 
@@ -107,10 +108,12 @@ public class GameMediaPlayer {
     }
 
     public void play() {
+
         String songName = getRandomBackgroundMusicName();
         duration = bgmDuration.get(songName);
         Media mediaPlaying = (Media)ResourceFactory.getResource(songName, ResourceType.Media);
         backgroundMusicPlayer = new MediaPlayer(mediaPlaying);
+        backgroundMusicPlayer.setVolume(Main.prefMusicVolume.getValue() / 100);
         this.nowPlaying.setValue(songName);
         this.setMusic(MediaState.PLAY);
 
@@ -137,8 +140,9 @@ public class GameMediaPlayer {
                 String songName = getRandomBackgroundMusicName();
                 Media mediaPlaying = (Media)ResourceFactory.getResource(songName, ResourceType.Media);
                 backgroundMusicPlayer = new MediaPlayer(mediaPlaying);
+                backgroundMusicPlayer.setVolume(Main.prefMusicVolume.getValue() / 100);
                 backgroundMusicPlayer.currentTimeProperty().removeListener(listener);
-                this.nowPlaying.setValue(songName);duration = bgmDuration.get(songName);
+                this.nowPlaying.setValue(songName);
                 duration = bgmDuration.get(songName);
             }
         }
