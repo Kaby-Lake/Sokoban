@@ -6,7 +6,6 @@ import com.ae2dms.Business.GameStageSaver;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.Game.GameView;
-import com.ae2dms.UI.Game.GameViewController;
 import com.ae2dms.UI.GameMediaPlayer;
 import com.ae2dms.UI.HighScoreBar.HighScoreBarController;
 import com.ae2dms.UI.MediaState;
@@ -14,9 +13,7 @@ import com.ae2dms.UI.SoundPreferenceController;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -42,7 +39,7 @@ public class MenuViewController extends AbstractBarController {
         super.disableButton("Save Game");
         super.disableButton("Undo");
 
-        this.highestScore.textProperty().bind(Main.gameDocument.highestScore.asString());
+        this.highestScore.textProperty().bind(Main.gameDocument.bestRecord.asString());
         highScoreBarController = loadBottomBar();
         soundPreferenceController = loadMusicController();
         colourPreferenceController = loadColourController();

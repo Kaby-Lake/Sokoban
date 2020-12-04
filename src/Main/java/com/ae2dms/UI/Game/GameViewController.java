@@ -158,7 +158,7 @@ public class GameViewController extends AbstractBarController {
         render.renderMap(gameDocument.getCurrentLevel());
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
 
-        this.highestScore.textProperty().bind(this.gameDocument.highestScore.asString());
+        this.highestScore.textProperty().bind(this.gameDocument.bestRecord.asString());
         StringConverter<Number> converter = new NumberStringConverter();
         Score.textProperty().bindBidirectional(this.gameDocument.movesCount, converter);
 
