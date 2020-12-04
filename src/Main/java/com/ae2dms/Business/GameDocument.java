@@ -4,14 +4,17 @@ import com.ae2dms.Business.Data.GameRecord;
 import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.Objects.Player;
 import com.ae2dms.IO.MapFileLoader;
+import com.ae2dms.Main.Main;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.media.AudioClip;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class GameDocument implements Serializable {
 
@@ -89,9 +92,13 @@ public class GameDocument implements Serializable {
         } catch (NoSuchElementException e) {
             logger.warning("Cannot load the map file: " + e.getStackTrace());
         }
-        currentLevel = getNextLevel();
+        changeToNextLevel();
         records.restoreRecords(mapSetName, initialMapHashCode);
-        this.bestRecord.bindBidirectional(records.bestRecord);
+        records.bestRecord.addListener((observable, oldValue, newValue) -> {
+            if (observable != null && observable.getValue().intValue() != Integer.MAX_VALUE ) {
+                this.bestRecord.set(observable.getValue().intValue());
+            }
+        });
         serializeInitialState();
     }
 
@@ -195,7 +202,18 @@ public class GameDocument implements Serializable {
      * @param input the InputStream of the save file
      */
     public void reloadStateFromFile(InputStream input) {
-        // TODO: flush the whole Object with new Data
+        Scanner s = new Scanner(input);
+        String result = s.hasNext() ? s.next() : "";
+        GameDocument restoreObject = null;
+        try {
+            restoreObject = (GameDocument)GameStageSaver.decode(result);
+        } catch (IOException | ClassNotFoundException ignored) {
+        }
+        if (restoreObject == null) {
+            GameDebugger.logErrorMessage("not a valid skbsave file");
+            return;
+        }
+        this.restoreObject(restoreObject);
     }
 
     /**
@@ -255,6 +273,20 @@ public class GameDocument implements Serializable {
      */
     public void saveRecord(int steps, String name, int time) {
         records.pushRecord(steps, name, time);
+    }
+
+    /**
+     * Undo to the last state
+     * @return true if restored, false if no stage available
+     */
+    public boolean undo() {
+        GameDocument restoreObject = GameStageSaver.pop();
+        if (restoreObject != null) {
+            Main.gameDocument.restoreObject(restoreObject);
+            GameDebugger.logUndo(this);
+            return true;
+        }
+        return false;
     }
 
 }

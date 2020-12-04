@@ -383,13 +383,8 @@ public class GameViewController extends AbstractBarController {
 
     @FXML
     private void clickUndo(MouseEvent mouseEvent) {
-        GameDebugger.logLevelComplete(this.gameDocument.getCurrentLevel(), this.Time_Spend.getText(), this.Score.getText());
-
-        GameDocument restoreObject = GameStageSaver.pop();
-        if (restoreObject != null) {
-            Main.gameDocument.restoreObject(restoreObject);
+        if (gameDocument.undo()) {
             render.renderMap(gameDocument.getCurrentLevel());
-            GameDebugger.logUndo(this.gameDocument);
         }
     }
 
