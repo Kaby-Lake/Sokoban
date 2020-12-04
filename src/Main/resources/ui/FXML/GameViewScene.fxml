@@ -349,7 +349,12 @@
 
          </children>
       </Group>
-      <Pane fx:id="BottomBarAlias" mouseTransparent="true" />
+
+       <!--     MusicController Alias   -->
+       <Pane fx:id="BottomBarAlias">
+
+       </Pane>
+
       <Group layoutY="665.0">
          <children>
 
@@ -402,7 +407,7 @@
          </children>
       </Group>
 
-       <!--     BottomBar Alias   -->
+       <!--     MusicController Alias   -->
        <Pane fx:id="MusicControllerAlias">
 
        </Pane>

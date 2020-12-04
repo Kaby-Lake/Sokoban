@@ -57,6 +57,9 @@ public class GameMediaPlayer {
                 "PaperClip-KINGSTON",
                 "PaperClip-Lust",
                 "PaperClip-Heat Up",
+                "PaperClip-Bricks",
+                "PaperClip-GOOD SHOW",
+                "PaperClip-Last Time",
                 "PETO-Okay");
 
         bgmDuration.put("PaperClip-Blip", 235);
@@ -68,6 +71,9 @@ public class GameMediaPlayer {
         bgmDuration.put("PaperClip-KINGSTON", 240);
         bgmDuration.put("PaperClip-Lust", 199);
         bgmDuration.put("PaperClip-Heat Up", 171);
+        bgmDuration.put("PaperClip-Bricks", 184);
+        bgmDuration.put("PaperClip-GOOD SHOW", 339);
+        bgmDuration.put("PaperClip-Last Time", 250);
         bgmDuration.put("PETO-Okay", 345);
 
         MusicVolume.addListener((observable, oldValue, newValue) -> {
@@ -95,6 +101,7 @@ public class GameMediaPlayer {
 
     public void play(String musicName) {
 
+        duration = bgmDuration.get(musicName);
         Media mediaPlaying = (Media)ResourceFactory.getResource(musicName, ResourceType.Media);
         backgroundMusicPlayer = new MediaPlayer(mediaPlaying);
         backgroundMusicPlayer.setVolume(Main.prefMusicVolume.getValue() / 100);
@@ -137,13 +144,18 @@ public class GameMediaPlayer {
             case PAUSE -> backgroundMusicPlayer.pause();
             case STOP -> {
                 backgroundMusicPlayer.stop();
+                backgroundMusicPlayer.currentTimeProperty().removeListener(listener);
                 String songName = getRandomBackgroundMusicName();
                 Media mediaPlaying = (Media)ResourceFactory.getResource(songName, ResourceType.Media);
+                duration = bgmDuration.get(songName);
                 backgroundMusicPlayer = new MediaPlayer(mediaPlaying);
                 backgroundMusicPlayer.setVolume(Main.prefMusicVolume.getValue() / 100);
-                backgroundMusicPlayer.currentTimeProperty().removeListener(listener);
+                backgroundMusicPlayer.setOnEndOfMedia(() -> {
+                    this.setMusic(MediaState.STOP);
+                    this.setMusic(MediaState.PLAY);
+                });
+
                 this.nowPlaying.setValue(songName);
-                duration = bgmDuration.get(songName);
             }
         }
     }

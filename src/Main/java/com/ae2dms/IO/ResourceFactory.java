@@ -28,6 +28,9 @@ public class ResourceFactory {
         urlMap.put("PaperClip-KINGSTON","/music/Songs/PaperClip-KINGSTON.mp3");
         urlMap.put("PaperClip-Lust","/music/Songs/PaperClip-Lust.mp3");
         urlMap.put("PaperClip-Heat Up","/music/Songs/PaperClip-Heat Up.mp3");
+        urlMap.put("PaperClip-Bricks","/music/Songs/PaperClip-Bricks.mp3");
+        urlMap.put("PaperClip-GOOD SHOW","/music/Songs/PaperClip-GOOD SHOW.mp3");
+        urlMap.put("PaperClip-Last Time","/music/Songs/PaperClip-Last Time.mp3");
         urlMap.put("PETO-Okay","/music/Songs/PETO-Okay.mp3");
 
         urlMap.put("GameBackground_1", "/ui/Assets/Game/GameBackground1.jpg");

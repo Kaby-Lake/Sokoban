@@ -55,7 +55,7 @@
                   </Label>
                </center>
             </BorderPane>
-            <Slider fx:id="MusicProgressSlider" layoutX="4.0" layoutY="41.0" prefHeight="15.0" prefWidth="333.0" />
+            <Slider fx:id="MusicProgressSlider" layoutX="4.0" layoutY="38.0" prefHeight="15.0" prefWidth="333.0" showTickMarks="true" value="50.0" />
             <BorderPane layoutX="251.0" layoutY="51.0" prefHeight="33.0" prefWidth="80.0">
                <center>
                   <Label fx:id="MusicTime" text="03:20 / 04:30" textFill="#808080c3" BorderPane.alignment="CENTER">

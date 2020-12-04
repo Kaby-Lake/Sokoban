@@ -12,13 +12,14 @@ import java.awt.*;
 
 public class Floor extends AbstractGameObject {
 
-
     public Floor(Level linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
+        grid = linksTo.floorGrid;
     }
 
     public Floor(Level linksTo, Point at) {
         super(linksTo, at);
+        grid = linksTo.floorGrid;
     }
 
     @Override
@@ -39,12 +40,5 @@ public class Floor extends AbstractGameObject {
             this.view.setFitWidth(48);
         }
         return this.view;
-    }
-
-    public static ImageView staticRender() {
-        ImageView floor = new ImageView((Image)ResourceFactory.getResource("STAGE_IMAGE", ResourceType.Image));
-        floor.setFitHeight(48);
-        floor.setFitWidth(48);
-        return floor;
     }
 }

@@ -38,8 +38,8 @@ public class GraphicRender {
         this.diamondsGrid.getChildren().clear();
 
         for (AbstractGameObject object : level.floorGrid) {
-            if (!(object instanceof Wall)) {
-                stageGrid.add((Floor.staticRender()), object.xPosition, object.yPosition);
+            if (object instanceof Floor) {
+                stageGrid.add((object.render()), object.xPosition, object.yPosition);
             }
         }
         for (AbstractGameObject object : level.diamondsGrid) {
