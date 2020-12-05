@@ -4,6 +4,7 @@ import com.ae2dms.Business.GameTimer;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
+import com.ae2dms.UI.ViewUtilities;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -53,11 +54,11 @@ public class GameCompletePopUpController {
     }
 
     public void show() {
-        Game_Complete_Pop_Up.setVisible(true);
+        ViewUtilities.popUp(Game_Complete_Pop_Up);
     }
 
     public void hide() {
-        Game_Complete_Pop_Up.setVisible(false);
+        ViewUtilities.fadeOut(Game_Complete_Pop_Up);
     }
 
 

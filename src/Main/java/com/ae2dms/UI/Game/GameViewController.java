@@ -12,7 +12,6 @@ import com.ae2dms.UI.Game.PopUps.GameCompletePopUpController;
 import com.ae2dms.UI.Game.PopUps.LevelCompletePopUpController;
 import com.ae2dms.UI.GameMediaPlayer;
 import com.ae2dms.UI.MediaState;
-import com.ae2dms.UI.SoundPreferenceController;
 import javafx.animation.ScaleTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -37,6 +36,24 @@ import java.util.HashMap;
 
 public class GameViewController extends AbstractBarController {
 
+    @FXML
+    protected BorderPane LevelCompletePopUp;
+
+    @FXML
+    protected LevelCompletePopUpController LevelCompletePopUpController;
+
+    @FXML
+    protected BorderPane GameCompletePopUp;
+
+    @FXML
+    protected GameCompletePopUpController GameCompletePopUpController;
+
+    @FXML
+    protected BorderPane ExitPopUp;
+
+    @FXML
+    protected ExitPopUpController ExitPopUpController;
+
     /**
      * The Content Pane reserved for add draggable object into
      */
@@ -48,9 +65,6 @@ public class GameViewController extends AbstractBarController {
      */
     @FXML
     private GridPane previewGrid;
-
-    @FXML
-    private Pane root;
 
     //TextBinding: Score of current game, top_right
     @FXML
@@ -94,11 +108,6 @@ public class GameViewController extends AbstractBarController {
 
 
     // Controllers to control LevelCompleteView and GameCompleteView
-
-    private LevelCompletePopUpController levelCompletePopUpController;
-    private GameCompletePopUpController gameCompletePopUpController;
-    private ExitPopUpController exitPopUpController;
-    private SoundPreferenceController soundPreferenceController;
 
 
     private GameMediaPlayer player = GameMediaPlayer.getInstance();
@@ -156,30 +165,9 @@ public class GameViewController extends AbstractBarController {
         render = new GraphicRender(stageGrid, objectsGrid, diamondsGrid, candyGrid);
         render.renderMap(gameDocument.getCurrentLevel());
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
-
         bestRecord.textProperty().bind(this.gameDocument.bestRecord.asString());
         StringConverter<Number> converter = new NumberStringConverter();
         Score.textProperty().bindBidirectional(this.gameDocument.movesCount, converter);
-
-        loadHighScoreBottomBar();
-
-        soundPreferenceController = loadMusicController();
-    }
-
-    public void bindLevelGameCompleteController(LevelCompletePopUpController controller1, GameCompletePopUpController controller2, ExitPopUpController controller3) {
-        this.levelCompletePopUpController = controller1;
-        this.gameCompletePopUpController = controller2;
-        this.exitPopUpController = controller3;
-    }
-
-    public void addLevelGameCompleteView(BorderPane level, BorderPane game, BorderPane exit) {
-        level.setVisible(false);
-        game.setVisible(false);
-        exit.setVisible(false);
-
-        this.root.getChildren().add(level);
-        this.root.getChildren().add(game);
-        this.root.getChildren().add(exit);
     }
 
     private final BooleanProperty isAnimating = new SimpleBooleanProperty(false);
@@ -302,15 +290,15 @@ public class GameViewController extends AbstractBarController {
             GameDebugger.logLevelComplete(this.gameDocument.getCurrentLevel(), this.Time_Spend.getText(), this.Score.getText());
 
             gaussianBlur();
-            levelCompletePopUpController.assignData(
+            LevelCompletePopUpController.assignData(
                     Integer.toString(this.gameDocument.getCurrentLevel().getIndex()),
                     this.Time_Spend.getText(),
                     this.Score.getText()
             );
 
-            levelCompletePopUpController.show();
-            levelCompletePopUpController.Next_Level_Button.setOnMouseClicked((event) -> {
-                levelCompletePopUpController.hide();
+            LevelCompletePopUpController.show();
+            LevelCompletePopUpController.Next_Level_Button.setOnMouseClicked((event) -> {
+                LevelCompletePopUpController.hide();
                 exitGaussianBlur();
                 switchToNextLevel();
             });
@@ -326,23 +314,23 @@ public class GameViewController extends AbstractBarController {
             GameDebugger.logGameComplete(gameDocument.getLevelsCount(), this.Time_Spend.getText(), this.Score.getText());
 
             gaussianBlur();
-            gameCompletePopUpController.assignData(
+            GameCompletePopUpController.assignData(
                     timer.getTime(),
                     this.gameDocument.movesCount.getValue()
             );
 
-            gameCompletePopUpController.show();
+            GameCompletePopUpController.show();
 
-            gameCompletePopUpController.Level_Complete_High_Score_List.setOnMouseClicked((event) -> {
-                gameCompletePopUpController.hide();
+            GameCompletePopUpController.Level_Complete_High_Score_List.setOnMouseClicked((event) -> {
+                GameCompletePopUpController.hide();
                 exitGaussianBlur();
                 menuBarClickHighScoreList();
             });
 
             // the save code is in GameViewController
 
-            gameCompletePopUpController.Level_Complete_Back_To_Menu.setOnMouseClicked((event) -> {
-                levelCompletePopUpController.hide();
+            GameCompletePopUpController.Level_Complete_Back_To_Menu.setOnMouseClicked((event) -> {
+                LevelCompletePopUpController.hide();
                 exitGaussianBlur();
                 gameDocument.restoreObject(GameStageSaver.getInitialState());
                 GameStageSaver.clear();
@@ -391,12 +379,12 @@ public class GameViewController extends AbstractBarController {
     private void clickToMenu(MouseEvent mouseEvent) {
 
         gaussianBlur();
-        exitPopUpController.show();
+        ExitPopUpController.show();
 
-        exitPopUpController.Confirm_Exit_Exit.setOnMouseClicked((event) -> {
+        ExitPopUpController.Confirm_Exit_Exit.setOnMouseClicked((event) -> {
             timer.stop();
 
-            exitPopUpController.hide();
+            ExitPopUpController.hide();
             exitGaussianBlur();
             gameDocument.restoreObject(GameStageSaver.getInitialState());
             GameStageSaver.clear();
@@ -406,8 +394,8 @@ public class GameViewController extends AbstractBarController {
             player.setMusic(MediaState.PLAY);
         });
 
-        exitPopUpController.Confirm_Exit_Back.setOnMouseClicked((event) -> {
-            exitPopUpController.hide();
+        ExitPopUpController.Confirm_Exit_Back.setOnMouseClicked((event) -> {
+            ExitPopUpController.hide();
             exitGaussianBlur();
         });
 
