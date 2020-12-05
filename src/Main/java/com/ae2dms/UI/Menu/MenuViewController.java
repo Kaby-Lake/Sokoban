@@ -9,11 +9,11 @@ import com.ae2dms.UI.Game.GameView;
 import com.ae2dms.UI.GameMediaPlayer;
 import com.ae2dms.UI.HighScoreBar.HighScoreBarController;
 import com.ae2dms.UI.MediaState;
-import com.ae2dms.UI.SoundPreferenceController;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
@@ -31,11 +31,12 @@ public class MenuViewController extends AbstractBarController {
     @FXML
     private Group infoGroup;
 
-    private HighScoreBarController highScoreBarController;
+    private HighScoreBarController HighScoreBarController;
 
-    private SoundPreferenceController soundPreferenceController;
 
     public void initialize() throws IllegalStateException {
+        musicControlIsShowing.bindBidirectional(SoundPreferenceController.isShowing);
+
 
         super.disableButton("Debug");
         super.disableButton("Save Game");
@@ -43,9 +44,6 @@ public class MenuViewController extends AbstractBarController {
 
         StringConverter<Number> converter = new NumberStringConverter();
         this.bestRecord.textProperty().bindBidirectional(Main.gameDocument.bestRecord, converter);
-        highScoreBarController = loadHighScoreBottomBar();
-        soundPreferenceController = loadMusicController();
-        colourPreferenceController = loadColourController();
 
     }
 
@@ -120,7 +118,7 @@ public class MenuViewController extends AbstractBarController {
 
     @FXML
     private void toggleColourPreferences() {
-        colourPreferenceController.show();
+        ColourPreferenceController.show();
     }
 
 

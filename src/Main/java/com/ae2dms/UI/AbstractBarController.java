@@ -26,64 +26,49 @@ import java.util.List;
  * so the control login inside the bar items will be manages here,
  * GameView and MenuView shall all extend this Controller and get the identical controller for Bar
  *
- * the fx:id ending with Alias means that this is just the Pane reserved for substituting with the real item on the fly
- * and the real Pane will not have this ending.
+ * Nested FXML are used here to improve maintainability and structure controller code
  */
 public class AbstractBarController {
 
+
     /**
-     * Pane reserved for substituting with the real Music Controller on the fly
-     * should only be used with loadMusicController()
+     * The Pane for SoundPreference
      */
     @FXML
-    private Pane MusicControllerAlias;
+    protected Pane SoundPreference;
 
     /**
-     * The real Pane of MusicController, as long as loadMusicController() is called before
-     */
-    Pane MusicController;
-
-    /**
-     * The controller for SoundPreference view, will be provided by calling loadMusicController()
+     * The Controller for SoundPreference
      * @see SoundPreferenceController
      */
-    private SoundPreferenceController soundPreferenceController;
+    @FXML
+    protected SoundPreferenceController SoundPreferenceController;
 
     /**
-     * Pane reserved for substituting with the real BottomBar on the fly
-     * should only be used with loadMusicController()
+     * The Pane for HighScoreBar
      */
     @FXML
-    private Pane BottomBarHighScoreAlias;
+    protected Pane HighScoreBar;
 
     /**
-     * The real Pane of HighScoreList, as long as loadHighScoreBottomBar() is called before
-     */
-    Pane BottomBarHighScore;
-
-    /**
-     * The controller for HighScoreBar view, will be provided by calling loadHighScoreBottomBar()
+     * The controller for HighScoreBar
      * @see HighScoreBarController
      */
-    private HighScoreBarController highScoreBarController;
+    @FXML
+    protected HighScoreBarController HighScoreBarController;
 
     /**
-     * Pane reserved for substituting with the real Colour selector on the fly
-     * should only be used with loadMusicController()
+     * The Pane for ColourPreference
      */
     @FXML
-    private Pane ColourPreferenceAlias;
+    protected Pane ColourPreference;
 
     /**
-     * The real BorderPane of HighScoreList, as long as loadColourController() is called before
-     */
-    BorderPane colourPreference;
-
-    /**
-     * The controller for Colour selector view, will be provided by calling loadColourController()
+     * The controller for ColourPreference
      * @see ColourPreferenceController
      */
-    public ColourPreferenceController colourPreferenceController;
+    @FXML
+    protected ColourPreferenceController ColourPreferenceController;
 
     /**
      * The ImageView of Undo button
@@ -159,99 +144,27 @@ public class AbstractBarController {
         // set the animation and render
         highScoreIsShown.addListener((observable, oldValue, newValue) -> {
             if (observable != null && observable.getValue()==true) {
-                TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), BottomBarHighScore);
+                TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), HighScoreBar);
                 // render the high score list
                 renderHighScoreList();
 
                 translateTransition.setByY(-668);
                 translateTransition.play();
             } else if (observable != null && observable.getValue()==false){
-                TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), BottomBarHighScore);
+                TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), HighScoreBar);
                 translateTransition.setByY(668);
                 translateTransition.play();
             }
         });
+
     }
 
     /**
      * render the HighScoreList, will call renderRecords() in HighScoreBarController
      */
     private void renderHighScoreList() {
-        highScoreBarController.renderRecords();
+        HighScoreBarController.renderRecords();
     }
-
-    /**
-     * load the HighScoreBar from FXML and substitute to the corresponding position
-     * will initialize the colourPreferenceController
-     * @return the controller of HighScoreBar
-     * @see HighScoreBarController
-     */
-    public HighScoreBarController loadHighScoreBottomBar() {
-        Pane barView = null;
-        FXMLLoader menuBarLoader = null;
-        try {
-            menuBarLoader = new FXMLLoader(getClass().getResource("/ui/FXML/HighScoreBar.fxml"));
-            barView = menuBarLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        List<Node> parentChildren = ((Pane) BottomBarHighScoreAlias.getParent()).getChildren();
-        parentChildren.set(parentChildren.indexOf(BottomBarHighScoreAlias), barView);
-        BottomBarHighScore = barView;
-        barView.setLayoutY(668);
-        highScoreBarController = menuBarLoader.getController();
-        return highScoreBarController;
-    }
-
-    /**
-     * load the SoundPreference from FXML and substitute to the corresponding position
-     * will initialize the colourPreferenceController
-     * @return the controller of SoundPreference
-     * @see SoundPreferenceController
-     */
-    public SoundPreferenceController loadMusicController() {
-        Pane musicView = null;
-        FXMLLoader musicLoader = null;
-        try {
-            musicLoader = new FXMLLoader(getClass().getResource("/ui/FXML/SoundPreference.fxml"));
-            musicView = musicLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        musicView.setVisible(false);
-        List<Node> parentChildren = ((Pane) MusicControllerAlias.getParent()).getChildren();
-        parentChildren.set(parentChildren.indexOf(MusicControllerAlias), musicView);
-        MusicController = musicView;
-        soundPreferenceController = musicLoader.getController();
-        musicControlIsShowing.bindBidirectional(soundPreferenceController.isShowing);
-        return soundPreferenceController;
-    }
-
-    /**
-     * load the ColourPreference from FXML and substitute to the corresponding position
-     * will initialize the colourPreferenceController
-     * @return the controller of ColourPreference
-     * @see ColourPreferenceController
-     */
-    public ColourPreferenceController loadColourController() {
-        BorderPane colourView = null;
-        FXMLLoader colourLoader = null;
-        try {
-            colourLoader = new FXMLLoader(getClass().getResource("/ui/FXML/ColourPreference.fxml"));
-            colourView = colourLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        colourView.setVisible(false);
-        List<Node> parentChildren = ((Pane) ColourPreferenceAlias.getParent()).getChildren();
-        parentChildren.set(parentChildren.indexOf(ColourPreferenceAlias), colourView);
-        colourPreference = colourView;
-        colourPreferenceController = colourLoader.getController();
-        return colourPreferenceController;
-    }
-
 
     /**
      * disable the button in BottomBar

@@ -344,15 +344,12 @@
          </children>
       </Group>
 
-       <!--     MusicController Alias   -->
-       <Pane fx:id="BottomBarHighScoreAlias">
-
-       </Pane>
+       <!--     BottomHighScoreBar   -->
+       <fx:include source="HighScoreBar.fxml" fx:id="HighScoreBar" layoutY="668" visible="false"/>
 
       <Group layoutY="665.0">
          <children>
 
-      
                               <!--     BottomBar    -->
             <ImageView fitWidth="1280.0">
                <Image url="@../Assets/BottomBar/Bottombar.png" />
@@ -364,7 +361,7 @@
             </ImageView>
       
                               <!--     Music button    -->
-            <ImageView fx:id="musicSwitch" accessibleRole="BUTTON" layoutX="533.0" layoutY="2.0" onMouseClicked="#clickToggleMusic" styleClass="Button">
+            <ImageView accessibleRole="BUTTON" layoutX="533.0" layoutY="2.0" onMouseClicked="#clickToggleMusic" styleClass="Button">
                <Image url="@../Assets/BottomBar/Music_off.png" />
             </ImageView>
       
@@ -401,10 +398,19 @@
          </children>
       </Group>
 
-       <!--     MusicController Alias   -->
-       <Pane fx:id="MusicControllerAlias">
+       <!--     MusicController   -->
+       <fx:include source="SoundPreference.fxml" fx:id="SoundPreference" visible="false"/>
 
-       </Pane>
+       <!--     LevelCompletePopUp   -->
+       <fx:include source="LevelCompletePopUp.fxml" fx:id="LevelCompletePopUp" visible="false"/>
+
+       <!--     GameCompletePopUp   -->
+       <fx:include source="GameCompletePopUp.fxml" fx:id="GameCompletePopUp" visible="false"/>
+
+       <!--     ExitPopUp   -->
+       <fx:include source="ExitPopUp.fxml" fx:id="ExitPopUp" visible="false"/>
+
+
 
 
    </children>
