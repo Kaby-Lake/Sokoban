@@ -1,6 +1,5 @@
 package com.ae2dms.Business.Data;
 
-import com.ae2dms.Business.GameDocument;
 import com.ae2dms.GameObject.AbstractGameObject;
 
 import java.awt.*;

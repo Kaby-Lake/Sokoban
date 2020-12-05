@@ -7,7 +7,6 @@ import com.ae2dms.IO.MapFileLoader;
 import com.ae2dms.Main.Main;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.media.AudioClip;
 
 import java.io.IOException;
 import java.io.InputStream;

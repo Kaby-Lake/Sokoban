@@ -28,7 +28,8 @@ public class GameTimer {
     public StringProperty timeToDisplay = new SimpleStringProperty("00:00");
 
     /**
-     * called to start a new time counters
+     * This will create a new Timer, which add 1 to $seconds every minute
+     * and update $timeToDisplay for binding with view
      */
     public void start() {
         seconds = 0;
@@ -38,7 +39,7 @@ public class GameTimer {
     }
 
     /**
-     * called to end a timer
+     * called when want to stop the timer, the $seconds and $timeToDisplay will still
      */
     public void stop(){
         if (timer != null) {

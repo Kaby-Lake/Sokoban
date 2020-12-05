@@ -3,43 +3,81 @@ package com.ae2dms.UI;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
-import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.property.*;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Slider;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
 
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * singleton MediaPlayer to player music
+ */
 public class GameMediaPlayer {
+
+    /**
+     * The GameMediaPlayer instance
+     */
     private static volatile GameMediaPlayer instance;
 
+    /**
+     * The JavaFX MediaPlayer
+     * @see MediaPlayer
+     */
     public MediaPlayer backgroundMusicPlayer;
 
+    /**
+     * total duration of the music playing
+     */
     public int duration;
 
+    /**
+     * The name of the music playing
+     */
     public StringProperty nowPlaying = new SimpleStringProperty();
 
+    /**
+     * a list of music that can be chosen, will be bind to view
+     */
     public ObservableList<String> bgmList;
 
+    /**
+     * The hashMap to store the duration of the songs
+     * with (Song Name, Duration) pair
+     */
     public HashMap<String, Integer> bgmDuration = new HashMap<>();
 
+    /**
+     * The hashmap to store all sound effects, can get the AudioClip by searching the name
+     * with (SFX Name, AudioClip) pair
+     */
     public HashMap<String, AudioClip> soundEffects = new HashMap<>();
 
+    /**
+     * The music volume of the MediaPlayer, bind to sound volume in Main and in Controller and in View
+     */
     public DoubleProperty MusicVolume = new SimpleDoubleProperty(80);
 
+    /**
+     * The SFX volume of the AudioCLip, bind to SFX volume in Main and in Controller and in View
+     */
     public DoubleProperty SFXVolume = new SimpleDoubleProperty(80);
 
+    /**
+     * The controller of SoundPreference view
+     */
     private SoundPreferenceController controller;
 
+    /**
+     * private constructor, can only be initialized by getInstance in the inside
+     */
     private GameMediaPlayer() {
 
         soundEffects.put("UNMOVABLE_AUDIO_CLIP_MEDIA", (AudioClip)ResourceFactory.getResource("UNMOVABLE_AUDIO_CLIP", ResourceType.AudioClip));
@@ -92,6 +130,10 @@ public class GameMediaPlayer {
         });
     }
 
+    /**
+     * get the only GameMediaPlayer instance
+     * @return the only GameMediaPlayer instance
+     */
     public static synchronized GameMediaPlayer getInstance()
     {
         if(instance == null) {
@@ -100,6 +142,10 @@ public class GameMediaPlayer {
         return instance;
     }
 
+    /**
+     * play the specified musicName in the bgmList;
+     * @param musicName the musicName to play, must be in the bgmList
+     */
     public void play(String musicName) {
 
         duration = bgmDuration.get(musicName);
@@ -115,6 +161,9 @@ public class GameMediaPlayer {
         });
     }
 
+    /**
+     * Shuffle play music in the bgmList
+     */
     public void play() {
 
         String songName = getRandomBackgroundMusicName();
@@ -131,11 +180,23 @@ public class GameMediaPlayer {
         });
     }
 
+    /**
+     * get a random music name from the bgmList
+     * @return a random music name from the bgmList
+     */
     private String getRandomBackgroundMusicName() {
         Random random = new Random();
         return bgmList.get(random.nextInt(bgmList.size()));
     }
 
+    /**
+     * set the status of MediaPlayer
+     * PLAY: resume the MediaPlayer
+     * PAUSE: pause the MediaPlayer
+     * STOP: stop the MediaPlayer and select a random music for next play
+     * @param state MediaState: PLAY, PAUSE, STOP
+     * @see MediaState
+     */
     public void setMusic(MediaState state) {
         switch (state) {
             case PLAY -> {
@@ -161,10 +222,19 @@ public class GameMediaPlayer {
         }
     }
 
+    /**
+     * the Listener to call each time music duration change
+     * will update the progress in view
+     */
     private ChangeListener listener = (observable, oldValue, newValue) -> {
         controller.updatesDurationSlider();
     };
 
+    /**
+     * bind the controller in SoundPreferences view
+     * because the binding and updating all goes through this controller
+     * @param controller
+     */
     public void bindSoundPreferencesController(SoundPreferenceController controller) {
         this.controller = controller;
     }

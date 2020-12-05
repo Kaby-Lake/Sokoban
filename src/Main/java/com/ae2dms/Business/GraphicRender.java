@@ -1,14 +1,11 @@
 package com.ae2dms.Business;
 
-import com.ae2dms.Business.Data.GameGrid;
 import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.GameObject.Objects.*;
 import com.ae2dms.UI.Game.GameViewController;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 public class GraphicRender {

@@ -1,13 +1,11 @@
 package com.ae2dms.UI.Game;
 
 import com.ae2dms.Business.GameDebugger;
-import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.UI.ViewUtilities;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.MediaPlayer;
 
 public class GameView {
 
@@ -33,7 +31,7 @@ public class GameView {
             gameView = gameLoader.load();
             controller = gameLoader.getController();
             controller.bindLevelGameCompleteController(levelCompleteViewLoader.getController(), gameCompleteViewLoader.getController(), exitViewLoader.getController());
-            controller.bindLevelGameCompleteView(this.getLevelCompleteView(), this.getGameCompleteView(), this.getExitView());
+            controller.addLevelGameCompleteView(levelCompleteView, gameCompleteView, exitView);
         } catch (Exception e) {
             GameDebugger.logErrorMessage(e.getMessage());
         }
@@ -45,21 +43,9 @@ public class GameView {
         return gameView;
     }
 
-    public void bind(Scene scene) {
+    public void bindKey(Scene scene) {
         scene.setOnKeyPressed(keyEvent ->  {
             controller.handleKey(keyEvent);
         });
-    }
-
-    public BorderPane getLevelCompleteView() {
-        return levelCompleteView;
-    }
-
-    public BorderPane getGameCompleteView() {
-        return gameCompleteView;
-    }
-
-    public BorderPane getExitView() {
-        return exitView;
     }
 }

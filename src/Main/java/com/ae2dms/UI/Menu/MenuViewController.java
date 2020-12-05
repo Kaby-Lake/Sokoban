@@ -42,12 +42,11 @@ public class MenuViewController extends AbstractBarController {
         super.disableButton("Undo");
 
         StringConverter<Number> converter = new NumberStringConverter();
-        this.highestScore.textProperty().bindBidirectional(Main.gameDocument.bestRecord, converter);
-        highScoreBarController = loadBottomBar();
+        this.bestRecord.textProperty().bindBidirectional(Main.gameDocument.bestRecord, converter);
+        highScoreBarController = loadHighScoreBottomBar();
         soundPreferenceController = loadMusicController();
         colourPreferenceController = loadColourController();
 
-        musicControlIsShowing.bindBidirectional(soundPreferenceController.isShowing);
     }
 
 
@@ -58,14 +57,14 @@ public class MenuViewController extends AbstractBarController {
         this.gameDocument.restoreObject(GameStageSaver.getInitialState());
         GameView gameView = new GameView();
         Scene gameViewScene = new Scene(gameView.getGameView());
-        gameView.bind(gameViewScene);
+        gameView.bindKey(gameViewScene);
 
         Main.primaryStage.setScene(gameViewScene);
 
     }
 
     public void clickToggleMusic(MouseEvent mouseEvent) {
-        menuBarClickToggleMusic();
+        menuBarClickMusic();
     }
 
     public void clickInformation(MouseEvent mouseEvent) {
@@ -106,7 +105,7 @@ public class MenuViewController extends AbstractBarController {
     }
 
     public void clickHighScoreList() {
-        menuBarClickToggleHighScoreList();
+        menuBarClickHighScoreList();
     }
 
 

@@ -1,15 +1,9 @@
-package com.ae2dms.UI.Game;
+package com.ae2dms.UI.Game.PopUps;
 
-import com.ae2dms.Business.GameDocument;
-import com.ae2dms.Business.GameStageSaver;
 import com.ae2dms.Business.GameTimer;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
-import com.ae2dms.UI.MediaState;
-import com.ae2dms.UI.Menu.MenuView;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -28,10 +22,10 @@ public class GameCompletePopUpController {
     private BorderPane Game_Complete_Pop_Up;
 
     @FXML
-    ImageView Level_Complete_Back_To_Menu;
+    public ImageView Level_Complete_Back_To_Menu;
 
     @FXML
-    ImageView Level_Complete_High_Score_List;
+    public ImageView Level_Complete_High_Score_List;
 
     @FXML
     private TextField Game_Complete_Name;
@@ -49,7 +43,7 @@ public class GameCompletePopUpController {
 
     }
 
-    void assignData(int time, int score) {
+    public void assignData(int time, int score) {
         this.timeDuration = time;
         this.score = score;
 

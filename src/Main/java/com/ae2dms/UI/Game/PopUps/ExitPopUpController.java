@@ -1,4 +1,4 @@
-package com.ae2dms.UI.Game;
+package com.ae2dms.UI.Game.PopUps;
 
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
@@ -13,10 +13,10 @@ public class ExitPopUpController {
     private BorderPane Confirm_Exit_Pop_Up;
 
     @FXML
-    ImageView Confirm_Exit_Exit;
+    public ImageView Confirm_Exit_Exit;
 
     @FXML
-    ImageView Confirm_Exit_Back;
+    public ImageView Confirm_Exit_Back;
 
 
     public void show() {

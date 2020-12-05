@@ -7,6 +7,9 @@ import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
+import com.ae2dms.UI.Game.PopUps.ExitPopUpController;
+import com.ae2dms.UI.Game.PopUps.GameCompletePopUpController;
+import com.ae2dms.UI.Game.PopUps.LevelCompletePopUpController;
 import com.ae2dms.UI.GameMediaPlayer;
 import com.ae2dms.UI.MediaState;
 import com.ae2dms.UI.SoundPreferenceController;
@@ -34,21 +37,22 @@ import java.util.HashMap;
 
 public class GameViewController extends AbstractBarController {
 
+    /**
+     * The Content Pane reserved for add draggable object into
+     */
     @FXML
-    private Pane Content;
+    private Pane content;
 
+    /**
+     * The First Level grid to add preview Floor when dragging and hovering Floor behind
+     */
     @FXML
     private GridPane previewGrid;
 
     @FXML
-    private Pane MusicControllerAlias;
-
-    //Group: LevelCompletePopUp and GameCompletePopUp
-    @FXML
     private Pane root;
 
     //TextBinding: Score of current game, top_right
-
     @FXML
     private Label Score;
 
@@ -153,15 +157,13 @@ public class GameViewController extends AbstractBarController {
         render.renderMap(gameDocument.getCurrentLevel());
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
 
-        highestScore.textProperty().bind(this.gameDocument.bestRecord.asString());
+        bestRecord.textProperty().bind(this.gameDocument.bestRecord.asString());
         StringConverter<Number> converter = new NumberStringConverter();
         Score.textProperty().bindBidirectional(this.gameDocument.movesCount, converter);
 
-        loadBottomBar();
+        loadHighScoreBottomBar();
 
         soundPreferenceController = loadMusicController();
-
-        musicControlIsShowing.bindBidirectional(soundPreferenceController.isShowing);
     }
 
     public void bindLevelGameCompleteController(LevelCompletePopUpController controller1, GameCompletePopUpController controller2, ExitPopUpController controller3) {
@@ -170,7 +172,7 @@ public class GameViewController extends AbstractBarController {
         this.exitPopUpController = controller3;
     }
 
-    public void bindLevelGameCompleteView(BorderPane level, BorderPane game, BorderPane exit) {
+    public void addLevelGameCompleteView(BorderPane level, BorderPane game, BorderPane exit) {
         level.setVisible(false);
         game.setVisible(false);
         exit.setVisible(false);
@@ -288,7 +290,7 @@ public class GameViewController extends AbstractBarController {
 
     @FXML
     private void clickToggleDebug() {
-        menuBarClickToggleDebug();
+        menuBarClickDebug();
     }
 
     private void checkIsLevelComplete() {
@@ -334,7 +336,7 @@ public class GameViewController extends AbstractBarController {
             gameCompletePopUpController.Level_Complete_High_Score_List.setOnMouseClicked((event) -> {
                 gameCompletePopUpController.hide();
                 exitGaussianBlur();
-                menuBarClickToggleHighScoreList();
+                menuBarClickHighScoreList();
             });
 
             // the save code is in GameViewController
@@ -370,7 +372,7 @@ public class GameViewController extends AbstractBarController {
 
     @FXML
     private void clickToggleMusic(MouseEvent mouseEvent) {
-        menuBarClickToggleMusic();
+        menuBarClickMusic();
     }
 
     @FXML
@@ -425,7 +427,7 @@ public class GameViewController extends AbstractBarController {
 
     @FXML
     private void clickHighScoreList(MouseEvent mouseEvent) {
-        menuBarClickToggleHighScoreList();
+        menuBarClickHighScoreList();
     }
 
 
@@ -451,7 +453,7 @@ public class GameViewController extends AbstractBarController {
         stageDrag.setOnMousePressed(this::selectDragging);
 
         DragList.add(stageDrag);
-        Content.getChildren().add(stageDrag);
+        content.getChildren().add(stageDrag);
         ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), stageDrag);
         scaleTransition.setFromX(0.01);
         scaleTransition.setFromY(0.01);

@@ -8,11 +8,13 @@ import com.ae2dms.GameObject.Movable;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.UI.Game.GameViewController;
-import javafx.animation.*;
 import com.ae2dms.UI.Menu.ColourPreferenceController;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
-import javafx.scene.image.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
