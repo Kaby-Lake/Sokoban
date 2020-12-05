@@ -77,14 +77,15 @@ public class MenuViewController extends AbstractBarController {
         infoGroup.getStyleClass().add("Hide");
     }
 
-    public void clickLoadGame(MouseEvent mouseEvent) {
+    public void clickLoadGame(MouseEvent mouseEvent) throws FileNotFoundException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Game Save File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban save file", "*.skbsave"));
         File file = fileChooser.showOpenDialog(Main.primaryStage.getScene().getWindow());
         if (file != null) {
             System.out.println(file.getAbsolutePath());
-            // TODO:
+            gameDocument.reloadStateFromFile(new FileInputStream(file));
+            clickStartGame(null);
         }
     }
 

@@ -8,12 +8,7 @@ import com.ae2dms.IO.ResourceType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-/**
- * @Description: $
- * @Param: $
- * @return: $
- * @Author: Zichen XU
- */
+
 public class Candy extends AbstractGameObject {
 
     public Candy(Level linksTo, int atX, int atY) {

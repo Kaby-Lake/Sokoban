@@ -393,9 +393,9 @@
             <ImageView fitHeight="34.0" fitWidth="239.0" layoutX="25.0" layoutY="11.0">
                <Image url="@../Assets/BottomBar/Best_Record.png" />
             </ImageView>
-      
+
                               <!--     Highest Score Number Binding -->
-            <BorderPane layoutX="176.0" layoutY="8.0" prefHeight="40.0" prefWidth="88.0">
+            <BorderPane layoutX="176.0" layoutY="13.0" prefHeight="40.0" prefWidth="88.0">
                <top>
                   <Label fx:id="highestScore" alignment="CENTER" contentDisplay="CENTER" text="High_Score" textFill="WHITE" BorderPane.alignment="CENTER">
                      <font>

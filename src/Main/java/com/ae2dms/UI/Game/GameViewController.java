@@ -10,6 +10,7 @@ import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.GameMediaPlayer;
 import com.ae2dms.UI.MediaState;
 import com.ae2dms.UI.SoundPreferenceController;
+import javafx.animation.ScaleTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -23,6 +24,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.AudioClip;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 
@@ -129,13 +131,6 @@ public class GameViewController extends AbstractBarController {
 
         super.disableButton("High score");
 
-        // this.isLevelComplete.bindBidirectional(gameDocument.isLevelComplete());
-        soundEffects.put("UNMOVABLE_AUDIO_CLIP_MEDIA", (AudioClip)ResourceFactory.getResource("UNMOVABLE_AUDIO_CLIP", ResourceType.AudioClip));
-        soundEffects.put("MOVE_AUDIO_CLIP_MEDIA", (AudioClip)ResourceFactory.getResource("MOVE_AUDIO_CLIP", ResourceType.AudioClip));
-        soundEffects.put("MOVE_CRATE_AUDIO_CLIP_MEDIA", (AudioClip)ResourceFactory.getResource("MOVE_CRATE_AUDIO_CLIP", ResourceType.AudioClip));
-        soundEffects.put("LEVEL_COMPLETE_AUDIO_CLIP", (AudioClip)ResourceFactory.getResource("LEVEL_COMPLETE_AUDIO_CLIP",ResourceType.AudioClip));
-        soundEffects.put("GAME_COMPLETE_AUDIO_CLIP", (AudioClip)ResourceFactory.getResource("GAME_COMPLETE_AUDIO_CLIP",ResourceType.AudioClip));
-
         This_Level_Index.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
 
         All_Level_Count.setText(Integer.toString(gameDocument.getLevelsCount()));
@@ -158,7 +153,7 @@ public class GameViewController extends AbstractBarController {
         render.renderMap(gameDocument.getCurrentLevel());
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
 
-        this.highestScore.textProperty().bind(this.gameDocument.bestRecord.asString());
+        highestScore.textProperty().bind(this.gameDocument.bestRecord.asString());
         StringConverter<Number> converter = new NumberStringConverter();
         Score.textProperty().bindBidirectional(this.gameDocument.movesCount, converter);
 
@@ -255,6 +250,7 @@ public class GameViewController extends AbstractBarController {
             Crate cheatingCrate = GraphicRender.selectedCrate;
             if (code == KeyCode.SPACE) {
                 cheatingCrate.settleDown();
+                checkIsLevelComplete();
                 return;
             }
             if (cheatingCrate.canMoveBy(direction)) {
@@ -287,9 +283,6 @@ public class GameViewController extends AbstractBarController {
             player.headTo(direction);
             player.shakeAnimation(direction);
         }
-
-
-
         checkIsLevelComplete();
     }
 
@@ -459,6 +452,12 @@ public class GameViewController extends AbstractBarController {
 
         DragList.add(stageDrag);
         Content.getChildren().add(stageDrag);
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), stageDrag);
+        scaleTransition.setFromX(0.01);
+        scaleTransition.setFromY(0.01);
+        scaleTransition.setToX(1);
+        scaleTransition.setToY(1);
+        scaleTransition.play();
     }
 
     private void draggingOnMouseReleased(MouseEvent mouseEvent) {

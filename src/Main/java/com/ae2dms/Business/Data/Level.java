@@ -5,12 +5,15 @@ import com.ae2dms.Business.GameDocument;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.GameObject.GameObjectFactory;
 import com.ae2dms.GameObject.Objects.Crate;
+import com.ae2dms.GameObject.Objects.Floor;
 import com.ae2dms.GameObject.Objects.Player;
+import com.ae2dms.GameObject.Objects.Wall;
 
 import java.awt.*;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 public final class Level implements Serializable {
 

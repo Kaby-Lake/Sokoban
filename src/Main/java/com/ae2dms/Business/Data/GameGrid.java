@@ -37,6 +37,10 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
      */
     final int Y;
 
+    public AbstractGameObject[][] getGameObjects() {
+        return gameObjects;
+    }
+
     /**
      * the 2d list to store all AbstractGameObject
      */

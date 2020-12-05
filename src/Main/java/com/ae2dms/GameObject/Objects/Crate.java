@@ -234,13 +234,13 @@ public class Crate extends AbstractGameObject implements Movable {
             isAnimating.set(false);
         });
 
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(150), this.view);
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(150), this.cheatingView);
         translateTransition.setByX(10*direction.x);
         translateTransition.setByY(10*direction.y);
         translateTransition.setCycleCount(2);
         translateTransition.setAutoReverse(true);
 
-        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), this.view);
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), this.cheatingView);
         scaleTransition.setToY(0.5);
         scaleTransition.setCycleCount(2);
         scaleTransition.setAutoReverse(true);

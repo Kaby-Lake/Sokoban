@@ -196,6 +196,7 @@ public class GameDocument implements Serializable {
      * @param input the InputStream of the map file
      */
     public void reloadMapFromFile(InputStream input) {
+        this.currentLevel = null;
         this.init(input);
         this.movesCount.set(0);
     }

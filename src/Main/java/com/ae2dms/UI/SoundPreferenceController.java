@@ -22,48 +22,102 @@ import javafx.util.converter.NumberStringConverter;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+/**
+ * The controller class for SoundPreference
+ */
 public class SoundPreferenceController {
 
+    /**
+     * The GameMediaPlayer that this controller can control, including volume, songs and progress
+     */
     private final GameMediaPlayer player = GameMediaPlayer.getInstance();
 
+    /**
+     * The JavaFX Label to display the music time, in 02:13/04:23 format
+     */
     @FXML
     private Label MusicTime;
 
+    /**
+     * The JavaFX Label to display the name of the song
+     */
     @FXML
     private Label MusicName;
 
+    /**
+     * The JavaFX Slider which progress is sync to the progress of the song
+     * and user can drag to change the progress
+     */
     @FXML
     private Slider MusicProgressSlider;
 
+    /**
+     * The Underlying JavaFX Control Pane
+     * used to control the show and hide of this controller
+     */
     @FXML
     private Pane MusicControl;
-    
+
+    /**
+     * The Image which indicated if it is in mute mode or not
+     */
     @FXML
     private ImageView MuteImage;
 
+    /**
+     * The Text to indicate if it is in mute mode or not
+     */
     @FXML
     private Label MuteLabel;
 
+    /**
+     * The JavaFX slider to control the volume of playing Music
+     */
     @FXML
     private Slider MusicSlider;
 
+    /**
+     * The JavaFX slider to control the volume of playing Sound Effects(SFX)
+     */
     @FXML
     private Slider SFXSlider;
 
+    /**
+     * The value to indicate how much volume the music is set, with max of 100
+     */
     @FXML
     private Label MusicSliderValue;
 
+    /**
+     * The value to indicate how much volume the SFX is set, with max of 100
+     */
     @FXML
     private Label SFXSliderValue;
 
+    /**
+     * The JavaFX list to show all songs
+     */
     @FXML
     private ListView MusicList;
-    
+
+    /**
+     * whether this control pane is showing or not
+     */
     public BooleanProperty isShowing = new SimpleBooleanProperty(false);
 
+    /**
+     * whether it is globally muted or not
+     */
     public BooleanProperty isMute = new SimpleBooleanProperty(false);
-    
-    
+
+
+    /**
+     * Called by JavaFX
+     * to bind the Sliders with corresponding SliderValue
+     * and bind the SliderValue to the global preference in Main
+     * if all volume is set to 0, then the mute button will be automatically set
+     * and bind the musicList in GameMediaPlayer to the list view
+     */
     public void initialize() {
         isShowing.addListener((observable, oldValue, newValue) -> {
             if (observable != null && observable.getValue()==true) {
@@ -131,18 +185,19 @@ public class SoundPreferenceController {
         if (Main.prefSFXVolume.getValue() == 0 || Main.prefSFXVolume.getValue() == 0) {
             this.isMute.setValue(true);
         }
-        init();
 
-    }
-
-    private void init() {
         MusicProgressSlider.setOnMouseClicked((event) ->{
             player.backgroundMusicPlayer.seek(Duration.seconds(player.duration * MusicProgressSlider.getValue() / 100));
         });
 
         player.bindSoundPreferencesController(this);
+
     }
 
+    /**
+     * should be called when a song's progress has changed
+     * will update the position of progress slider with sync
+     */
     public void updatesDurationSlider() {
         if (!MusicProgressSlider.isPressed()) {
             double value = player.backgroundMusicPlayer.getCurrentTime().toSeconds() / player.duration * 100;
@@ -151,8 +206,11 @@ public class SoundPreferenceController {
         }
     }
 
+    /**
+     * click between mute all and open to 80% volume
+     */
     @FXML
-    private void clickMuteAll(MouseEvent mouseEvent) {
+    private void clickMuteAll() {
         isMute.setValue(!isMute.getValue());
     }
 }
