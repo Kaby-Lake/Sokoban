@@ -117,10 +117,10 @@ public class SoundPreferenceController {
      */
     public void initialize() {
         isShowing.addListener((observable, oldValue, newValue) -> {
-            if (observable != null && observable.getValue()==true) {
-                MusicControl.setVisible(true);
-            } else if (observable != null && observable.getValue()==false){
-                MusicControl.setVisible(false);
+            if (observable != null && observable.getValue() == true) {
+                ViewUtilities.popUp(MusicControl);
+            } else if (observable != null && observable.getValue() == false){
+                ViewUtilities.fadeOut(MusicControl);
             }
         });
 

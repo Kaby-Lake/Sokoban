@@ -1,9 +1,13 @@
 package com.ae2dms.UI.Game.PopUps;
 
+import com.ae2dms.UI.ViewUtilities;
+import javafx.animation.Interpolator;
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.util.Duration;
 
 public class LevelCompletePopUpController {
 
@@ -55,13 +59,13 @@ public class LevelCompletePopUpController {
      * show the pop up
      */
     public void show() {
-        Level_Complete_Pop_Up.setVisible(true);
+        ViewUtilities.popUp(Level_Complete_Pop_Up);
     }
 
     /**
      * hide the pop up
      */
     public void hide() {
-        Level_Complete_Pop_Up.setVisible(false);
+        ViewUtilities.fadeOut(Level_Complete_Pop_Up);
     }
 }

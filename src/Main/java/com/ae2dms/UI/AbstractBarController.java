@@ -77,11 +77,6 @@ public class AbstractBarController {
     private ImageView undoSwitch;
 
     /**
-     * Whether the music controller is showing, can be set and the music controller view will appear
-     */
-    public BooleanProperty musicControlIsShowing = new SimpleBooleanProperty(false);
-
-    /**
      * The label to show the best record at the bottom-left, will be bind to document
      */
     @FXML
@@ -221,7 +216,7 @@ public class AbstractBarController {
      * click the Music button
      */
     public void menuBarClickMusic() {
-        musicControlIsShowing.setValue(!musicControlIsShowing.getValue());
+        SoundPreferenceController.isShowing.setValue(!SoundPreferenceController.isShowing.getValue());
     }
 
     /**

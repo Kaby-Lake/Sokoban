@@ -35,9 +35,6 @@ public class MenuViewController extends AbstractBarController {
 
 
     public void initialize() throws IllegalStateException {
-        musicControlIsShowing.bindBidirectional(SoundPreferenceController.isShowing);
-
-
         super.disableButton("Debug");
         super.disableButton("Save Game");
         super.disableButton("Undo");

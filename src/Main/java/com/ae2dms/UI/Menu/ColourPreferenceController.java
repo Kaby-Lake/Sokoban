@@ -1,5 +1,6 @@
 package com.ae2dms.UI.Menu;
 
+import com.ae2dms.UI.ViewUtilities;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
@@ -135,11 +136,11 @@ public class ColourPreferenceController {
 
 
     public void show() {
-        Colour_Preference_Pop_Up.setVisible(true);
+        ViewUtilities.popUp(Colour_Preference_Pop_Up);
     }
 
     public void hide() {
-        Colour_Preference_Pop_Up.setVisible(false);
+        ViewUtilities.fadeOut(Colour_Preference_Pop_Up);
     }
 
 

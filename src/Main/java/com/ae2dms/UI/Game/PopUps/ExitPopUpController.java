@@ -1,5 +1,6 @@
 package com.ae2dms.UI.Game.PopUps;
 
+import com.ae2dms.UI.ViewUtilities;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,11 +21,11 @@ public class ExitPopUpController {
 
 
     public void show() {
-        Confirm_Exit_Pop_Up.setVisible(true);
+        ViewUtilities.popUp(Confirm_Exit_Pop_Up);
     }
 
     public void hide() {
-        Confirm_Exit_Pop_Up.setVisible(false);
+        ViewUtilities.fadeOut(Confirm_Exit_Pop_Up);
     }
 
 
