@@ -3,8 +3,8 @@ package com.ae2dms.Main;
 import com.ae2dms.Business.GameDocument;
 import com.ae2dms.UI.Menu.MenuView;
 import javafx.application.Application;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.effect.Effect;
@@ -27,7 +27,8 @@ public class Main extends Application {
     public static Scene menuScene;
     public static Font smartisanMaquetteBold;
 
-    public static BooleanProperty prefMusicIsMute = new SimpleBooleanProperty(false);
+    public static DoubleProperty prefMusicVolume = new SimpleDoubleProperty(80);
+    public static DoubleProperty prefSFXVolume = new SimpleDoubleProperty(80);
 
     public static void main(String[] args) {
         launch(args);

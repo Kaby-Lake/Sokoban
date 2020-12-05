@@ -1,6 +1,5 @@
 package com.ae2dms.GameObject.Objects;
 
-import com.ae2dms.Business.Data.GameGrid;
 import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.IO.ResourceFactory;
@@ -11,16 +10,10 @@ import javafx.scene.image.ImageView;
 
 public class Diamond extends AbstractGameObject {
 
-    private Image DIAMOND_IMAGE = (Image)ResourceFactory.getResource("DIAMOND_IMAGE_Red", ResourceType.Image);
-
+    private transient Image DIAMOND_IMAGE;
 
     public Diamond(Level linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
-        ColourPreferenceController.selectedDiamondColour.addListener((observable, oldValue, newValue) -> {
-            if (observable != null) {
-                DIAMOND_IMAGE = (Image)ResourceFactory.getResource("DIAMOND_IMAGE_" + newValue, ResourceType.Image);
-            }
-        });
     }
 
     @Override
@@ -33,10 +26,19 @@ public class Diamond extends AbstractGameObject {
         return "DIAMOND";
     }
 
+    private Image getDiamondImage() {
+        if (DIAMOND_IMAGE == null) {
+            DIAMOND_IMAGE = (Image)ResourceFactory.getResource("DIAMOND_IMAGE_" + ColourPreferenceController.selectedDiamondColour.getValue(), ResourceType.Image);
+        }
+        return DIAMOND_IMAGE;
+    }
+
+
+
     @Override
     public ImageView render() {
         if (this.view == null) {
-            this.view = new ImageView(DIAMOND_IMAGE);
+            this.view = new ImageView(getDiamondImage());
             this.view.setFitHeight(16);
             this.view.setFitWidth(16);
             this.view.setTranslateX(16);

@@ -1,5 +1,21 @@
 package com.ae2dms.UI;
 
+/**
+ * The State of Media
+ */
 public enum MediaState {
-    MUTE, NON_MUTE, PAUSE, PLAY, STOP;
+    /**
+     * Media is paused,
+     */
+    PAUSE,
+
+    /**
+     * Media is playing
+     */
+    PLAY,
+
+    /**
+     * Media is stopped
+     */
+    STOP;
 }

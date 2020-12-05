@@ -7,9 +7,13 @@ import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
+import com.ae2dms.UI.Game.PopUps.ExitPopUpController;
+import com.ae2dms.UI.Game.PopUps.GameCompletePopUpController;
+import com.ae2dms.UI.Game.PopUps.LevelCompletePopUpController;
 import com.ae2dms.UI.GameMediaPlayer;
 import com.ae2dms.UI.MediaState;
 import com.ae2dms.UI.SoundPreferenceController;
+import javafx.animation.ScaleTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -23,6 +27,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.AudioClip;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 
@@ -32,21 +37,22 @@ import java.util.HashMap;
 
 public class GameViewController extends AbstractBarController {
 
+    /**
+     * The Content Pane reserved for add draggable object into
+     */
     @FXML
-    private Pane Content;
+    private Pane content;
 
+    /**
+     * The First Level grid to add preview Floor when dragging and hovering Floor behind
+     */
     @FXML
     private GridPane previewGrid;
 
     @FXML
-    private Pane MusicControllerAlias;
-
-    //Group: LevelCompletePopUp and GameCompletePopUp
-    @FXML
     private Pane root;
 
     //TextBinding: Score of current game, top_right
-
     @FXML
     private Label Score;
 
@@ -129,13 +135,6 @@ public class GameViewController extends AbstractBarController {
 
         super.disableButton("High score");
 
-        // this.isLevelComplete.bindBidirectional(gameDocument.isLevelComplete());
-        soundEffects.put("UNMOVABLE_AUDIO_CLIP_MEDIA", (AudioClip)ResourceFactory.getResource("UNMOVABLE_AUDIO_CLIP", ResourceType.AudioClip));
-        soundEffects.put("MOVE_AUDIO_CLIP_MEDIA", (AudioClip)ResourceFactory.getResource("MOVE_AUDIO_CLIP", ResourceType.AudioClip));
-        soundEffects.put("MOVE_CRATE_AUDIO_CLIP_MEDIA", (AudioClip)ResourceFactory.getResource("MOVE_CRATE_AUDIO_CLIP", ResourceType.AudioClip));
-        soundEffects.put("LEVEL_COMPLETE_AUDIO_CLIP", (AudioClip)ResourceFactory.getResource("LEVEL_COMPLETE_AUDIO_CLIP",ResourceType.AudioClip));
-        soundEffects.put("GAME_COMPLETE_AUDIO_CLIP", (AudioClip)ResourceFactory.getResource("GAME_COMPLETE_AUDIO_CLIP",ResourceType.AudioClip));
-
         This_Level_Index.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
 
         All_Level_Count.setText(Integer.toString(gameDocument.getLevelsCount()));
@@ -158,16 +157,13 @@ public class GameViewController extends AbstractBarController {
         render.renderMap(gameDocument.getCurrentLevel());
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
 
-        this.highestScore.textProperty().bind(this.gameDocument.bestRecord.asString());
+        bestRecord.textProperty().bind(this.gameDocument.bestRecord.asString());
         StringConverter<Number> converter = new NumberStringConverter();
         Score.textProperty().bindBidirectional(this.gameDocument.movesCount, converter);
 
-        loadBottomBar();
+        loadHighScoreBottomBar();
 
         soundPreferenceController = loadMusicController();
-
-        musicControlIsShowing.bindBidirectional(soundPreferenceController.isShowing);
-        soundPreferenceController.isMute.bindBidirectional(Main.prefMusicIsMute);
     }
 
     public void bindLevelGameCompleteController(LevelCompletePopUpController controller1, GameCompletePopUpController controller2, ExitPopUpController controller3) {
@@ -176,7 +172,7 @@ public class GameViewController extends AbstractBarController {
         this.exitPopUpController = controller3;
     }
 
-    public void bindLevelGameCompleteView(BorderPane level, BorderPane game, BorderPane exit) {
+    public void addLevelGameCompleteView(BorderPane level, BorderPane game, BorderPane exit) {
         level.setVisible(false);
         game.setVisible(false);
         exit.setVisible(false);
@@ -256,6 +252,7 @@ public class GameViewController extends AbstractBarController {
             Crate cheatingCrate = GraphicRender.selectedCrate;
             if (code == KeyCode.SPACE) {
                 cheatingCrate.settleDown();
+                checkIsLevelComplete();
                 return;
             }
             if (cheatingCrate.canMoveBy(direction)) {
@@ -288,15 +285,12 @@ public class GameViewController extends AbstractBarController {
             player.headTo(direction);
             player.shakeAnimation(direction);
         }
-
-
-
         checkIsLevelComplete();
     }
 
     @FXML
     private void clickToggleDebug() {
-        menuBarClickToggleDebug();
+        menuBarClickDebug();
     }
 
     private void checkIsLevelComplete() {
@@ -342,7 +336,7 @@ public class GameViewController extends AbstractBarController {
             gameCompletePopUpController.Level_Complete_High_Score_List.setOnMouseClicked((event) -> {
                 gameCompletePopUpController.hide();
                 exitGaussianBlur();
-                menuBarClickToggleHighScoreList();
+                menuBarClickHighScoreList();
             });
 
             // the save code is in GameViewController
@@ -378,7 +372,7 @@ public class GameViewController extends AbstractBarController {
 
     @FXML
     private void clickToggleMusic(MouseEvent mouseEvent) {
-        menuBarClickToggleMusic();
+        menuBarClickMusic();
     }
 
     @FXML
@@ -433,7 +427,7 @@ public class GameViewController extends AbstractBarController {
 
     @FXML
     private void clickHighScoreList(MouseEvent mouseEvent) {
-        menuBarClickToggleHighScoreList();
+        menuBarClickHighScoreList();
     }
 
 
@@ -459,7 +453,13 @@ public class GameViewController extends AbstractBarController {
         stageDrag.setOnMousePressed(this::selectDragging);
 
         DragList.add(stageDrag);
-        Content.getChildren().add(stageDrag);
+        content.getChildren().add(stageDrag);
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), stageDrag);
+        scaleTransition.setFromX(0.01);
+        scaleTransition.setFromY(0.01);
+        scaleTransition.setToX(1);
+        scaleTransition.setToY(1);
+        scaleTransition.play();
     }
 
     private void draggingOnMouseReleased(MouseEvent mouseEvent) {

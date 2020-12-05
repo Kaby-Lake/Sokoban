@@ -15,6 +15,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,13 +41,12 @@ public class MenuViewController extends AbstractBarController {
         super.disableButton("Save Game");
         super.disableButton("Undo");
 
-        this.highestScore.textProperty().bind(Main.gameDocument.bestRecord.asString());
-        highScoreBarController = loadBottomBar();
+        StringConverter<Number> converter = new NumberStringConverter();
+        this.bestRecord.textProperty().bindBidirectional(Main.gameDocument.bestRecord, converter);
+        highScoreBarController = loadHighScoreBottomBar();
         soundPreferenceController = loadMusicController();
         colourPreferenceController = loadColourController();
 
-        musicControlIsShowing.bindBidirectional(soundPreferenceController.isShowing);
-        soundPreferenceController.isMute.bindBidirectional(Main.prefMusicIsMute);
     }
 
 
@@ -56,14 +57,14 @@ public class MenuViewController extends AbstractBarController {
         this.gameDocument.restoreObject(GameStageSaver.getInitialState());
         GameView gameView = new GameView();
         Scene gameViewScene = new Scene(gameView.getGameView());
-        gameView.bind(gameViewScene);
+        gameView.bindKey(gameViewScene);
 
         Main.primaryStage.setScene(gameViewScene);
 
     }
 
     public void clickToggleMusic(MouseEvent mouseEvent) {
-        menuBarClickToggleMusic();
+        menuBarClickMusic();
     }
 
     public void clickInformation(MouseEvent mouseEvent) {
@@ -75,14 +76,15 @@ public class MenuViewController extends AbstractBarController {
         infoGroup.getStyleClass().add("Hide");
     }
 
-    public void clickLoadGame(MouseEvent mouseEvent) {
+    public void clickLoadGame(MouseEvent mouseEvent) throws FileNotFoundException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Game Save File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban save file", "*.skbsave"));
         File file = fileChooser.showOpenDialog(Main.primaryStage.getScene().getWindow());
         if (file != null) {
             System.out.println(file.getAbsolutePath());
-            // TODO:
+            gameDocument.reloadStateFromFile(new FileInputStream(file));
+            clickStartGame(null);
         }
     }
 
@@ -103,7 +105,7 @@ public class MenuViewController extends AbstractBarController {
     }
 
     public void clickHighScoreList() {
-        menuBarClickToggleHighScoreList();
+        menuBarClickHighScoreList();
     }
 
 

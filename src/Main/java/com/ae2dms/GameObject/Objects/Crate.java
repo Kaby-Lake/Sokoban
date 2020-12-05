@@ -8,11 +8,13 @@ import com.ae2dms.GameObject.Movable;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.UI.Game.GameViewController;
-import javafx.animation.*;
 import com.ae2dms.UI.Menu.ColourPreferenceController;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
-import javafx.scene.image.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
@@ -25,8 +27,8 @@ public class Crate extends AbstractGameObject implements Movable {
 
     public boolean isCheating = false;
 
-    private static Image CRATE_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_Silver", ResourceType.Image);
-    private static Image CRATE_ON_DIAMOND_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_Red", ResourceType.Image);
+    private transient Image CRATE_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_Silver", ResourceType.Image);
+    private transient Image CRATE_ON_DIAMOND_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_Red", ResourceType.Image);
 
     private final UUID uuid = UUID.randomUUID();
 
@@ -52,6 +54,20 @@ public class Crate extends AbstractGameObject implements Movable {
         });
     }
 
+    private Image getCrateImage() {
+        if (CRATE_IMAGE == null) {
+            CRATE_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_" + ColourPreferenceController.selectedCrateColour.getValue(), ResourceType.Image);
+        }
+        return CRATE_IMAGE;
+    }
+
+    private Image getCrateOnDiamondImage() {
+        if (CRATE_ON_DIAMOND_IMAGE == null) {
+            CRATE_ON_DIAMOND_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_" + ColourPreferenceController.selectedDiamondColour.getValue(), ResourceType.Image);
+        }
+        return CRATE_ON_DIAMOND_IMAGE;
+    }
+
     @Override
     public char getCharSymbol() {
         return 'C';
@@ -68,12 +84,12 @@ public class Crate extends AbstractGameObject implements Movable {
             this.view.setTranslateX(7);
             this.view.setTranslateY(-20);
             if (isOnDiamond()) {
-                this.view.setImage(CRATE_ON_DIAMOND_IMAGE);
+                this.view.setImage(getCrateOnDiamondImage());
             } else {
-                this.view.setImage(CRATE_IMAGE);
+                this.view.setImage(getCrateImage());
             }
         } else {
-            this.view = new ImageView(CRATE_IMAGE);
+            this.view = new ImageView(getCrateImage());
             this.view.setFitHeight(38);
             this.view.setFitWidth(35);
             this.view.setTranslateX(7);
@@ -83,7 +99,7 @@ public class Crate extends AbstractGameObject implements Movable {
     }
 
     public StackPane renderCheating() {
-        ImageView crateImage = new ImageView(CRATE_IMAGE);
+        ImageView crateImage = new ImageView(getCrateImage());
         crateImage.setFitHeight(38);
         crateImage.setFitWidth(35);
         crateImage.setTranslateX(0);
@@ -220,13 +236,13 @@ public class Crate extends AbstractGameObject implements Movable {
             isAnimating.set(false);
         });
 
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(150), this.view);
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(150), this.cheatingView);
         translateTransition.setByX(10*direction.x);
         translateTransition.setByY(10*direction.y);
         translateTransition.setCycleCount(2);
         translateTransition.setAutoReverse(true);
 
-        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), this.view);
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), this.cheatingView);
         scaleTransition.setToY(0.5);
         scaleTransition.setCycleCount(2);
         scaleTransition.setAutoReverse(true);

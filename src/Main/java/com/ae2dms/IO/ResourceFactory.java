@@ -6,7 +6,9 @@ import javafx.scene.media.Media;
 
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 
 public class ResourceFactory {
 
@@ -28,6 +30,9 @@ public class ResourceFactory {
         urlMap.put("PaperClip-KINGSTON","/music/Songs/PaperClip-KINGSTON.mp3");
         urlMap.put("PaperClip-Lust","/music/Songs/PaperClip-Lust.mp3");
         urlMap.put("PaperClip-Heat Up","/music/Songs/PaperClip-Heat Up.mp3");
+        urlMap.put("PaperClip-Bricks","/music/Songs/PaperClip-Bricks.mp3");
+        urlMap.put("PaperClip-GOOD SHOW","/music/Songs/PaperClip-GOOD SHOW.mp3");
+        urlMap.put("PaperClip-Last Time","/music/Songs/PaperClip-Last Time.mp3");
         urlMap.put("PETO-Okay","/music/Songs/PETO-Okay.mp3");
 
         urlMap.put("GameBackground_1", "/ui/Assets/Game/GameBackground1.jpg");
@@ -71,6 +76,9 @@ public class ResourceFactory {
 
         urlMap.put("MUSIC_ON_ICON", "/ui/Assets/BottomBar/Music_on.png");
         urlMap.put("MUSIC_OFF_ICON", "/ui/Assets/BottomBar/Music_off.png");
+
+        urlMap.put("ALL_SOUND_ON_ICON", "/ui/Assets/MusicControl/Sound_on.png");
+        urlMap.put("ALL_SOUND_OFF_ICON", "/ui/Assets/MusicControl/Sound_off.png");
 
         urlMap.put("UNDO_ICON", "/ui/Assets/BottomBar/Undo.png");
         urlMap.put("UNDO_NULL_ICON", "/ui/Assets/BottomBar/Undo_null.png");

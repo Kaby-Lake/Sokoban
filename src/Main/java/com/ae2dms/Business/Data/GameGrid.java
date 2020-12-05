@@ -1,6 +1,5 @@
 package com.ae2dms.Business.Data;
 
-import com.ae2dms.Business.GameDocument;
 import com.ae2dms.GameObject.AbstractGameObject;
 
 import java.awt.*;
@@ -36,6 +35,10 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
      * the Y bounds of the GameGrid map
      */
     final int Y;
+
+    public AbstractGameObject[][] getGameObjects() {
+        return gameObjects;
+    }
 
     /**
      * the 2d list to store all AbstractGameObject

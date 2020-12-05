@@ -7,7 +7,6 @@ import com.ae2dms.IO.MapFileLoader;
 import com.ae2dms.Main.Main;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.media.AudioClip;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -93,12 +92,16 @@ public class GameDocument implements Serializable {
             logger.warning("Cannot load the map file: " + e.getStackTrace());
         }
         changeToNextLevel();
-        records.restoreRecords(mapSetName, initialMapHashCode);
         records.bestRecord.addListener((observable, oldValue, newValue) -> {
-            if (observable != null && observable.getValue().intValue() != Integer.MAX_VALUE ) {
-                this.bestRecord.set(observable.getValue().intValue());
+            if (observable != null) {
+                if (observable.getValue().intValue() == Integer.MAX_VALUE) {
+                    this.bestRecord.set(0);
+                } else {
+                    this.bestRecord.set(observable.getValue().intValue());
+                }
             }
         });
+        records.restoreRecords(mapSetName, initialMapHashCode);
         serializeInitialState();
     }
 
@@ -192,6 +195,7 @@ public class GameDocument implements Serializable {
      * @param input the InputStream of the map file
      */
     public void reloadMapFromFile(InputStream input) {
+        this.currentLevel = null;
         this.init(input);
         this.movesCount.set(0);
     }
