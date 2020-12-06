@@ -8,10 +8,20 @@ import com.ae2dms.UI.Menu.ColourPreferenceController;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * Diamond, which represents the position that player have to move Crate to
+ */
 public class Diamond extends AbstractGameObject {
 
     private transient Image DIAMOND_IMAGE;
 
+    /**
+     * Instantiates a new Diamond.
+     *
+     * @param linksTo the links to
+     * @param atX     the at x
+     * @param atY     the at y
+     */
     public Diamond(Level linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
     }
@@ -34,7 +44,9 @@ public class Diamond extends AbstractGameObject {
     }
 
 
-
+    /**
+     * @return the Diamond image with selected colour
+     */
     @Override
     public ImageView render() {
         if (this.view == null) {

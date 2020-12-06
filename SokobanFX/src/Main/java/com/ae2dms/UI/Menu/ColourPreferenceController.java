@@ -54,8 +54,14 @@ public class ColourPreferenceController {
     @FXML
     private BorderPane DiamondRed;
 
+    /**
+     * The constant selectedCrateColour.
+     */
     public static final StringProperty selectedCrateColour = new SimpleStringProperty("Silver");
 
+    /**
+     * The constant selectedDiamondColour.
+     */
     public static final StringProperty selectedDiamondColour = new SimpleStringProperty("Red");
 
     private ImageView selectImageCrateView;
@@ -71,6 +77,9 @@ public class ColourPreferenceController {
         }
     }
 
+    /**
+     * Initialize.
+     */
     public void initialize() {
         selectedCrateColour.addListener((observable, oldValue, newValue) -> {
             if (observable != null) {
@@ -138,10 +147,16 @@ public class ColourPreferenceController {
     }
 
 
+    /**
+     * Show.
+     */
     public void show() {
         ViewUtilities.popUp(Colour_Preference_Pop_Up);
     }
 
+    /**
+     * Hide.
+     */
     public void hide() {
         ViewUtilities.fadeOut(Colour_Preference_Pop_Up);
     }

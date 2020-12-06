@@ -18,22 +18,37 @@ import javafx.scene.layout.BorderPane;
  */
 public class GameCompletePopUpController {
 
+    /**
+     * The Time duration.
+     */
     int timeDuration;
 
+    /**
+     * The Score.
+     */
     int score;
 
     @FXML
     private BorderPane Game_Complete_Pop_Up;
 
+    /**
+     * The Level complete back to menu.
+     */
     @FXML
     public ImageView Level_Complete_Back_To_Menu;
 
+    /**
+     * The Level complete high score list.
+     */
     @FXML
     public ImageView Level_Complete_High_Score_List;
 
     @FXML
     private TextField Game_Complete_Name;
 
+    /**
+     * The Save record.
+     */
     @FXML
     ImageView Save_Record;
 
@@ -43,10 +58,19 @@ public class GameCompletePopUpController {
     @FXML
     private Label Game_Complete_Score;
 
+    /**
+     * Initialize.
+     */
     public void initialize() {
 
     }
 
+    /**
+     * Assign data.
+     *
+     * @param time  the time
+     * @param score the score
+     */
     public void assignData(int time, int score) {
         this.timeDuration = time;
         this.score = score;
@@ -56,10 +80,16 @@ public class GameCompletePopUpController {
 
     }
 
+    /**
+     * Show.
+     */
     public void show() {
         ViewUtilities.popUp(Game_Complete_Pop_Up);
     }
 
+    /**
+     * Hide.
+     */
     public void hide() {
         ViewUtilities.fadeOut(Game_Complete_Pop_Up);
     }

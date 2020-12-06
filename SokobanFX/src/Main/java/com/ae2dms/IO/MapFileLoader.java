@@ -19,27 +19,38 @@ public class MapFileLoader {
     private String mapSetName;
     private String rawMapFile;
 
+    /**
+     * Instantiates a new Map file loader.
+     */
     public MapFileLoader() {
         levels = new ArrayList<>(5);
     }
 
     /**
+     * Gets levels.
+     *
      * @return an unmodifiable list of levels
      */
     public List<Level> getLevels() {
         return Collections.unmodifiableList(this.levels);
     }
 
+    /**
+     * Gets map set name.
+     *
+     * @return the map set name
+     */
     public String getMapSetName() {
         return this.mapSetName;
     }
 
     /**
      * load the map file from input stream
+     *
      * @param input map file input stream
      * @return if this is a valid map file
-     * @throws IOException
-     * @throws NullPointerException
+     * @throws IOException          the io exception
+     * @throws NullPointerException the null pointer exception
      */
     public boolean loadMapFile(InputStream input) throws IOException, NullPointerException {
 
@@ -166,6 +177,11 @@ public class MapFileLoader {
         return true;
     }
 
+    /**
+     * Gets map hash code.
+     *
+     * @return the map hash code
+     */
     public int getMapHashCode() {
         return rawMapFile.hashCode();
     }
@@ -174,26 +190,54 @@ public class MapFileLoader {
         System.out.println("Error in Line 👉 " + pointer + " " + message);
     }
 
+    /**
+     * The type Error map file load exception.
+     */
     public static class ErrorMapFileLoadException extends Throwable {
     }
 
+    /**
+     * The type Error save file load exception.
+     */
     public static class ErrorSaveFileLoadException extends Throwable {
     }
 
 }
 
+/**
+ * The type Modified buffer reader.
+ */
 class ModifiedBufferReader extends BufferedReader {
+    /**
+     * The Pointer.
+     */
     int pointer = 0;
 
+    /**
+     * Instantiates a new Modified buffer reader.
+     *
+     * @param in the in
+     */
     public ModifiedBufferReader(Reader in) {
         super(in);
     }
 
+    /**
+     * Read line and add pointer string.
+     *
+     * @return the string
+     * @throws IOException the io exception
+     */
     public String readLineAndAddPointer() throws IOException {
         this.pointer++;
         return readLine();
     }
 
+    /**
+     * Gets pointer.
+     *
+     * @return the pointer
+     */
     public int getPointer() {
         return pointer;
     }

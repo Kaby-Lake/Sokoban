@@ -49,6 +49,7 @@ public class GameTimer {
 
     /**
      * getter of time duration
+     *
      * @return time used in seconds
      */
     public int getTime() {
@@ -72,6 +73,7 @@ public class GameTimer {
     /**
      * static function
      * convert the time in seconds to ??:??
+     *
      * @param seconds the seconds to convert
      * @return a formatted string like ??:??
      */

@@ -21,10 +21,19 @@ import javafx.util.Duration;
 import java.awt.*;
 import java.util.UUID;
 
+/**
+ * Crate that Player can move, all Crate on Diamond means victory
+ */
 public class Crate extends AbstractGameObject implements Movable {
 
+    /**
+     * The Floor grid.
+     */
     GameGrid floorGrid;
 
+    /**
+     * The Is cheating.
+     */
     public boolean isCheating = false;
 
     private transient Image CRATE_IMAGE = (Image)ResourceFactory.getResource("CRATE_IMAGE_Silver", ResourceType.Image);
@@ -32,10 +41,20 @@ public class Crate extends AbstractGameObject implements Movable {
 
     private final UUID uuid = UUID.randomUUID();
 
+    /**
+     * The Cheating view.
+     */
     public transient StackPane cheatingView;
 
     private GameGrid diamondsGrid;
 
+    /**
+     * Instantiates a new Crate.
+     *
+     * @param linksTo the links to
+     * @param atX     the at x
+     * @param atY     the at y
+     */
     public Crate(Level linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
         this.grid = linksTo.objectsGrid;
@@ -78,6 +97,9 @@ public class Crate extends AbstractGameObject implements Movable {
         return "CRATE";
     }
 
+    /**
+     * @return the Crate image with selected colour
+     */
     @Override
     public ImageView render() {
         if (this.view != null) {
@@ -98,6 +120,11 @@ public class Crate extends AbstractGameObject implements Movable {
         return this.view;
     }
 
+    /**
+     * Render the cheating view of this Crate
+     *
+     * @return stack pane
+     */
     public StackPane renderCheating() {
         ImageView crateImage = new ImageView(getCrateImage());
         crateImage.setFitHeight(38);
@@ -140,6 +167,13 @@ public class Crate extends AbstractGameObject implements Movable {
 
     // Movable Methods
 
+    /**
+     * whether Crate can move by this direction
+     * Crate can only move when the direction is a Floor
+     * @param delta how far to be moved
+     *              should only be one step
+     * @return
+     */
     @Override
     public Boolean canMoveBy(Point delta) {
         if (moveMoreThanOneStep(delta)) {
@@ -149,6 +183,12 @@ public class Crate extends AbstractGameObject implements Movable {
         return canMoveTo(targetPosition);
     }
 
+    /**
+     * should be called only after calling canMoveBy()
+     * move this Crate by this direction
+     * @param delta how far to be moved
+     * @throws IllegalMovementException
+     */
     @Override
     public void moveBy(Point delta) throws IllegalMovementException {
         Point targetPosition = GameGrid.translatePoint(this.at(), delta);
@@ -161,6 +201,9 @@ public class Crate extends AbstractGameObject implements Movable {
         }
     }
 
+    /**
+     * settle down this Crate and exit Cheating Mode
+     */
     public void settleDown() {
         ImageView choiceGridHalo = (ImageView)this.cheatingView.getChildren().get(0);
         ImageView crateImage = (ImageView)this.cheatingView.getChildren().get(0);
@@ -187,6 +230,10 @@ public class Crate extends AbstractGameObject implements Movable {
         });
     }
 
+    /**
+     * move this crate to targetPosition
+     * @param targetPosition position to be moved to
+     */
     private void moveToFloor(Point targetPosition) {
         floorGrid.putGameObjectAt(new Floor(level, at()), at());
         grid.putGameObjectAt(null, at());
@@ -194,10 +241,21 @@ public class Crate extends AbstractGameObject implements Movable {
         this.updatePosition(targetPosition);
     }
 
+    /**
+     * Is on diamond boolean.
+     *
+     * @return whether this Crate is on Diamond
+     */
     public Boolean isOnDiamond() {
         return diamondsGrid.getGameObjectAt(at()) instanceof Diamond;
     }
 
+    /**
+     * whether this Crate can move by this direction
+     * Crate can only move if the destination is Floor
+     * @param destination point of destination
+     * @return
+     */
     private Boolean canMoveTo(Point destination) {
         AbstractGameObject objectOnDestination = floorGrid.getGameObjectAt(destination);
         return objectOnDestination instanceof Floor;
@@ -208,6 +266,10 @@ public class Crate extends AbstractGameObject implements Movable {
         this.yPosition = position.y;
     }
 
+    /**
+     * create a animation that move the Crate to which direction
+     * @param direction
+     */
     private void animateCrate(Point direction) {
 
         TranslateTransition translateTransition;
@@ -228,6 +290,11 @@ public class Crate extends AbstractGameObject implements Movable {
 
     }
 
+    /**
+     * create a shaking animation which indicates that Crate cannot be moved in this direction
+     *
+     * @param direction the direction
+     */
     public void shakeAnimation(Point direction) {
         GameViewController.soundEffects.get("UNMOVABLE_AUDIO_CLIP_MEDIA").play();
 

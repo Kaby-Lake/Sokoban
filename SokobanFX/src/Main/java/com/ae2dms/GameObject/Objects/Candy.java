@@ -8,8 +8,18 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 
+/**
+ * Candy that Player can eat to gain additional draggable Floor
+ */
 public class Candy extends AbstractGameObject {
 
+    /**
+     * Instantiates a new Candy.
+     *
+     * @param linksTo the links to
+     * @param atX     the at x
+     * @param atY     the at y
+     */
     public Candy(Level linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
         this.grid = linksTo.candyGrid;
@@ -37,6 +47,9 @@ public class Candy extends AbstractGameObject {
         return this.view;
     }
 
+    /**
+     * remove this Candy on grid
+     */
     public void eat() {
         this.grid.putGameObjectAt(null, this.xPosition, this.yPosition);
     }

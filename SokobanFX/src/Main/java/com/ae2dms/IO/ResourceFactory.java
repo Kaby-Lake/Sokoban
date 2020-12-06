@@ -12,6 +12,9 @@ import java.util.Random;
 
 import static com.ae2dms.Business.GameDocument.logger;
 
+/**
+ * The type Resource factory.
+ */
 public class ResourceFactory {
 
     //                              name     url
@@ -124,6 +127,13 @@ public class ResourceFactory {
         return null;
     }
 
+    /**
+     * Gets resource.
+     *
+     * @param name the name
+     * @param type the type
+     * @return the resource
+     */
     public static Object getResource(String name, ResourceType type) {
         String url = urlMap.get(name);
 
@@ -171,6 +181,11 @@ public class ResourceFactory {
         }
     }
 
+    /**
+     * Gets random background image.
+     *
+     * @return the random background image
+     */
     public static Image getRandomBackgroundImage() {
         ArrayList<String> list = new ArrayList<>();
         list.add("GameBackground_1");

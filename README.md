@@ -2,10 +2,10 @@
 
 #### Refactor
 
-- Split the GameObjects into several Classes (Wall, Crate, ..) with the inheritance from AbstractGameObject, and a Moveable interface which Player and Crate can implement to gain moving ability. Enhance maintainability that future GameObjects can be easily added.
-- Change the GameEngine to GameDocument which behaves as Document job with methods like reloadStateFromFile() or serializeCurrentState() to adherent to Model in MVC pattern.
-- The logic behind moving objects is down to the Player, who has canMoveBy() to determine if can move by which direction and moveBy() to move. If a Crate is on the way, Player will 'ask' that Crate if the Crate canMoveBy(). This leaves the behaviour to specific GameObject, and controller just acts as the forwarder.
-- Split the pop-ups into different FXMLs with its dedicated controller, and use FXML <include> to add nested controllers to MenuView / GameView
+- Split the GameObjects into several Classes (Wall, Crate, ..) with the inheritance from [AbstractGameObject](SokobanFX/src/Main/java/com/ae2dms/GameObject/AbstractGameObject.java), and a [Movable](SokobanFX/src/Main/java/com/ae2dms/GameObject/Movable.java) interface which Player and Crate can implement to gain moving ability. Enhance maintainability that future GameObjects can be easily added.
+- Change the GameEngine to [GameDocument](SokobanFX/src/Main/java/com/ae2dms/Business/GameDocument.java) which behaves as Document job with methods like reloadStateFromFile() or serializeCurrentState() to adherent to Model in MVC pattern.
+- The logic behind moving objects is down to the Player, who has [canMoveBy()](SokobanFX/src/Main/java/com/ae2dms/GameObject/Objects/Player.java#L83) to determine if can move by which direction and moveBy() to move. If a Crate is on the way, Player will 'ask' that Crate if the Crate canMoveBy(). This leaves the behaviour to specific GameObject, and controller just acts as the forwarder.
+- Split the pop-ups into different FXMLs with its dedicated controller, and use FXML \<include\> to add nested controllers to MenuView / GameView
 
 
 
@@ -13,19 +13,19 @@
 
 - ##### Template Method
 
-  AbstractGameObject has abstract render() method which different inheritance can have different implementations, but GraphicRender will only call render() on different GameObjects despite different views they return.
+  AbstractGameObject has abstract render() method which different inheritance can have different implementations, but GraphicRender will only call [render()](SokobanFX/src/Main/java/com/ae2dms/Business/GraphicRender.java#L81) on different GameObjects despite different views they return.
 
   
 
 - ##### Flyweight
 
-  ResourceFactory will only load data once and can share this data for the next usage. for example, different Floors will have an identical Image to load when constructing.
+  [ResourceFactory](SokobanFX/src/Main/java/com/ae2dms/IO/ResourceFactory.java#L127) will only load data once and can share this data for the next usage. for example, different Floors will have an identical Image to load when constructing.
 
   
 
 - ##### Singleton
 
-  The MenuView will only be constructed once and reserved to be ready for every time returning to Menu.
+  The [MenuView](SokobanFX/src/Main/java/com/ae2dms/UI/Menu/MenuView.java#L48) will only be constructed once and reserved to be ready for every time returning to Menu.
 
   The GameMediaPlayer as well.
 
@@ -33,13 +33,13 @@
 
 - ##### SimpleFactory
 
-  AbstractGameObject gives an identical constructor for all its inheritance, and all GameObjects can be constructed by GameObjectFactory with one single API.
+  AbstractGameObject gives an identical constructor for all its inheritance, and all GameObjects can be constructed by GameObjectFactory with one single [API](SokobanFX/src/Main/java/com/ae2dms/GameObject/GameObjectFactory.java#L10).
 
   
 
 - ##### Memento
 
-  GameStageSaver will save every state of GameDocument to the encoded string, and GameDocument offers a method to restore the state from another restored GameDocument.
+  [GameStageSaver](SokobanFX/src/Main/java/com/ae2dms/Business/GameStageSaver.java) will save every state of GameDocument to the encoded string, and GameDocument offers a method to restore the state from another restored GameDocument.
 
 
 
@@ -64,5 +64,5 @@ This project use MVC design pattern, in specific, GameDocument as Model, who kno
 
 #### Class Diagram and Explanations
 
-refer to this folder link
+refer to this folder [link](diagram)
 

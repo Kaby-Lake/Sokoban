@@ -18,10 +18,23 @@ import java.awt.*;
 
 import static com.ae2dms.UI.Game.GameViewController.render;
 
+/**
+ * The Player that user can manipulate on
+ */
 public class Player extends AbstractGameObject implements Movable {
 
+    /**
+     * The Floor grid.
+     */
     GameGrid floorGrid;
 
+    /**
+     * Instantiates a new Player.
+     *
+     * @param linksTo the links to
+     * @param atX     the at x
+     * @param atY     the at y
+     */
     public Player(Level linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
         this.grid = linksTo.objectsGrid;
@@ -40,6 +53,9 @@ public class Player extends AbstractGameObject implements Movable {
 
     // Movable Methods
 
+    /**
+     * @return return the Player image with direction specified
+     */
     @Override
     public ImageView render() {
         if (this.view != null) {
@@ -52,6 +68,12 @@ public class Player extends AbstractGameObject implements Movable {
         }
     }
 
+    /**
+     * let the Player head to which direction
+     *
+     * @param direction Point(x, y), can be (0, 1) (0, -1) (1, 0) (-1, 0)
+     * @return the ImageView of the Player which heads to this direction
+     */
     public ImageView headTo(Point direction) {
         Image playerDirectionalImage;
         if (new Point(0, 1).equals(direction)) {
@@ -79,6 +101,13 @@ public class Player extends AbstractGameObject implements Movable {
         return this.view;
     }
 
+    /**
+     * if Player can move by this direction
+     * if Crate is on the way, then it will 'ask' Crate if Crate can move by this direction
+     * @param delta how far to be moved
+     *              should only be one step
+     * @return
+     */
     @Override
     public Boolean canMoveBy(Point delta) {
         if (moveMoreThanOneStep(delta)) {
@@ -98,6 +127,13 @@ public class Player extends AbstractGameObject implements Movable {
 
     }
 
+    /**
+     * should be called only after calling canMoveBy()
+     * move the Player by this direction
+     * if Crate is on the way, then it will 'ask' Crate to move this direction too
+     * @param delta how far to be moved
+     * @throws IllegalMovementException
+     */
     @Override
     public void moveBy(Point delta) throws IllegalMovementException {
         isAnimating.set(true);
@@ -122,10 +158,19 @@ public class Player extends AbstractGameObject implements Movable {
         }
     }
 
+    /**
+     * if this Player is on a Candy
+     *
+     * @return boolean boolean
+     */
     public boolean isOnCandy() {
         return level.candyGrid.getGameObjectAt(at()) instanceof Candy;
     }
 
+    /**
+     * move this player to this position
+     * @param targetPosition
+     */
     private void moveToFloor(Point targetPosition) {
         floorGrid.putGameObjectAt(new Floor(level, at()), at());
         grid.putGameObjectAt(null, at());
@@ -138,6 +183,12 @@ public class Player extends AbstractGameObject implements Movable {
         this.yPosition = position.y;
     }
 
+    /**
+     * move the Player by this direction with animation and SFX
+
+     * @param direction which direction to move
+     * @param SFXType FXType 0 means move to Floor, 1 means move the Crate
+     */
     private void animatePlayer(Point direction, int SFXType) {
         switch (SFXType) {
             case 0 -> {
@@ -161,6 +212,11 @@ public class Player extends AbstractGameObject implements Movable {
         translateTransition.play();
     }
 
+    /**
+     * will 'eat' the candy if Player is on the Candy
+     *
+     * @return boolean
+     */
     public boolean eatingCrate() {
         AbstractGameObject object = level.candyGrid.getGameObjectAt(this.xPosition, this.yPosition);
         if (object instanceof Candy) {
@@ -171,6 +227,11 @@ public class Player extends AbstractGameObject implements Movable {
         return false;
     }
 
+    /**
+     * produce a Shaking animation to indicate that cannot move by this direction
+     *
+     * @param direction direction to move
+     */
     public void shakeAnimation(Point direction) {
         GameViewController.soundEffects.get("UNMOVABLE_AUDIO_CLIP_MEDIA").play();
 

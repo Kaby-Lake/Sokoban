@@ -29,6 +29,7 @@ public class GameMediaPlayer {
 
     /**
      * The JavaFX MediaPlayer
+     *
      * @see MediaPlayer
      */
     public MediaPlayer backgroundMusicPlayer;
@@ -132,6 +133,7 @@ public class GameMediaPlayer {
 
     /**
      * get the only GameMediaPlayer instance
+     *
      * @return the only GameMediaPlayer instance
      */
     public static synchronized GameMediaPlayer getInstance()
@@ -144,6 +146,7 @@ public class GameMediaPlayer {
 
     /**
      * play the specified musicName in the bgmList;
+     *
      * @param musicName the musicName to play, must be in the bgmList
      */
     public void play(String musicName) {
@@ -194,6 +197,7 @@ public class GameMediaPlayer {
      * PLAY: resume the MediaPlayer
      * PAUSE: pause the MediaPlayer
      * STOP: stop the MediaPlayer and select a random music for next play
+     *
      * @param state MediaState: PLAY, PAUSE, STOP
      * @see MediaState
      */
@@ -233,7 +237,8 @@ public class GameMediaPlayer {
     /**
      * bind the controller in SoundPreferences view
      * because the binding and updating all goes through this controller
-     * @param controller
+     *
+     * @param controller the controller
      */
     public void bindSoundPreferencesController(SoundPreferenceController controller) {
         this.controller = controller;

@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * the Model in MVC, only contains the data and underlying logic
+ * can be serialized to store every state
+ */
 public class GameDocument implements Serializable {
 
     /**
@@ -72,10 +76,17 @@ public class GameDocument implements Serializable {
 
     /**
      * The static GameRecord to store all records, can restore all records from defined directory by calling restoreRecords()
+     *
      * @see GameRecord
      */
     public static transient GameRecord records = new GameRecord();
 
+    /**
+     * Instantiates a new Game document.
+     *
+     * @param input the input
+     * @throws ErrorMapFileLoadException the error map file load exception
+     */
     public GameDocument(InputStream input) throws MapFileLoader.ErrorMapFileLoadException {
         init(input);
     }
@@ -106,6 +117,8 @@ public class GameDocument implements Serializable {
     }
 
     /**
+     * Gets player.
+     *
      * @return return the Player object of this level, will be changed when level switched
      */
     public Player getPlayer() {
@@ -136,12 +149,18 @@ public class GameDocument implements Serializable {
 
     /**
      * check if the current level is complete
-     * @return boolean
+     *
+     * @return boolean boolean
      */
     public boolean isLevelComplete() {
         return this.currentLevel.isComplete();
     }
 
+    /**
+     * Is game complete boolean.
+     *
+     * @return the boolean
+     */
     public boolean isGameComplete() {
         for (Level level : levels) {
             if (!level.isComplete()) {
@@ -165,6 +184,7 @@ public class GameDocument implements Serializable {
     /**
      * get the next level from current level, if first called, will set to the first level
      * if there is no more levels left, will return null
+     *
      * @return the next level object or null if no more lefts
      */
     public Level getNextLevel() {
@@ -176,6 +196,8 @@ public class GameDocument implements Serializable {
     }
 
     /**
+     * Gets current level.
+     *
      * @return the current level
      */
     public Level getCurrentLevel() {
@@ -183,6 +205,8 @@ public class GameDocument implements Serializable {
     }
 
     /**
+     * Gets levels count.
+     *
      * @return the total counts of all levels
      */
     public int getLevelsCount() {
@@ -192,7 +216,9 @@ public class GameDocument implements Serializable {
     /**
      * to reload a customized map from inputStream
      * will flush all data and state stored before
+     *
      * @param input the InputStream of the map file
+     * @throws ErrorMapFileLoadException the error map file load exception
      */
     public void reloadMapFromFile(InputStream input) throws MapFileLoader.ErrorMapFileLoadException {
         this.currentLevel = null;
@@ -203,7 +229,9 @@ public class GameDocument implements Serializable {
     /**
      * to reload a previously saved .skbsave from inputStream
      * will flush all data and state stored before
+     *
      * @param input the InputStream of the save file
+     * @throws ErrorSaveFileLoadException the error save file load exception
      */
     public void reloadStateFromFile(InputStream input) throws MapFileLoader.ErrorSaveFileLoadException {
         Scanner s = new Scanner(input);
@@ -239,6 +267,7 @@ public class GameDocument implements Serializable {
     /**
      * Push the current state of this document to GameStageSaver
      * to realize the redo function, as GameStageSaver will store a Stack of serialized document
+     *
      * @see GameStageSaver
      */
     public void serializeCurrentState() {
@@ -253,6 +282,7 @@ public class GameDocument implements Serializable {
 
     /**
      * restore some of the data field to this from the given another GameDocument Object
+     *
      * @param object another GameDocument with data to be stored to this document
      */
     public void restoreObject(GameDocument object) {
@@ -271,10 +301,11 @@ public class GameDocument implements Serializable {
 
     /**
      * push this record to GmeRecord
-     * @see GameRecord
+     *
      * @param steps the steps of this turn
-     * @param name the name inputted by user
-     * @param time the seconds duration of this turn
+     * @param name  the name inputted by user
+     * @param time  the seconds duration of this turn
+     * @see GameRecord
      */
     public void saveRecord(int steps, String name, int time) {
         records.pushRecord(steps, name, time);
@@ -282,6 +313,7 @@ public class GameDocument implements Serializable {
 
     /**
      * Undo to the last state
+     *
      * @return true if restored, false if no stage available
      */
     public boolean undo() {

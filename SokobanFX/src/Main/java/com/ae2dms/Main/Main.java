@@ -14,15 +14,41 @@ import javafx.stage.Stage;
 
 import java.io.InputStream;
 
+/**
+ * The type Main.
+ */
 public class Main extends Application {
+    /**
+     * The constant primaryStage.
+     */
     public static Stage primaryStage;
+    /**
+     * The constant gameDocument.
+     */
     public static GameDocument gameDocument;
+    /**
+     * The constant menuScene.
+     */
     public static Scene menuScene;
+    /**
+     * The constant smartisanMaquetteBold.
+     */
     public static Font smartisanMaquetteBold;
 
+    /**
+     * The constant prefMusicVolume.
+     */
     public static DoubleProperty prefMusicVolume = new SimpleDoubleProperty(80);
+    /**
+     * The constant prefSFXVolume.
+     */
     public static DoubleProperty prefSFXVolume = new SimpleDoubleProperty(80);
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         launch(args);
     }
@@ -47,8 +73,11 @@ public class Main extends Application {
 
     }
 
+    /**
+     * Load default game map and init document.
+     */
     void loadDefaultGameMapAndInitDocument() {
-        InputStream in = getClass().getClassLoader().getResourceAsStream("level/debugLevel.skb");
+        InputStream in = getClass().getClassLoader().getResourceAsStream("level/SampleGame.skb");
         try {
             Main.gameDocument = new GameDocument(in);
         } catch (MapFileLoader.ErrorMapFileLoadException e) {

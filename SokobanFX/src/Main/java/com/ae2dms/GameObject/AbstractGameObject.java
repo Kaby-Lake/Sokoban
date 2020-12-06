@@ -7,6 +7,9 @@ import javafx.scene.image.ImageView;
 import java.awt.*;
 import java.io.Serializable;
 
+/**
+ * The type Abstract game object.
+ */
 public abstract class AbstractGameObject implements Serializable {
 
     /**
@@ -35,6 +38,8 @@ public abstract class AbstractGameObject implements Serializable {
     public transient ImageView view;
 
     /**
+     * At point.
+     *
      * @return the Point(x, y)
      */
     public Point at() {
@@ -42,9 +47,11 @@ public abstract class AbstractGameObject implements Serializable {
     }
 
     /**
+     * Instantiates a new Abstract game object.
+     *
      * @param linksTo the Level it connects to (within)
-     * @param atX x position
-     * @param atY y position
+     * @param atX     x position
+     * @param atY     y position
      */
     public AbstractGameObject(Level linksTo, int atX, int atY) {
         level = linksTo;
@@ -53,8 +60,10 @@ public abstract class AbstractGameObject implements Serializable {
     }
 
     /**
+     * Instantiates a new Abstract game object.
+     *
      * @param linksTo the Level it connects to (within)
-     * @param at its position
+     * @param at      its position
      */
     public AbstractGameObject(Level linksTo, Point at) {
         level = linksTo;
@@ -63,16 +72,22 @@ public abstract class AbstractGameObject implements Serializable {
     }
 
     /**
+     * Gets char symbol.
+     *
      * @return the character representation of this GameObject
      */
     public abstract char getCharSymbol();
 
     /**
+     * Gets string symbol.
+     *
      * @return the string representation of this GameObject
      */
     public abstract String getStringSymbol();
 
     /**
+     * Render image view.
+     *
      * @return the ImageView of this GameObject, different Objects will have different views
      */
     public abstract ImageView render();

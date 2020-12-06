@@ -13,6 +13,7 @@ public class ViewUtilities {
 
     /**
      * load the given node with a scale effect
+     *
      * @param view the view to add effect
      */
     public static void loadViewWithEffect(Node view) {
@@ -34,6 +35,7 @@ public class ViewUtilities {
 
     /**
      * add pup up effects to the specified node
+     *
      * @param view the node to add effect
      */
     public static void popUp(Node view) {
@@ -49,6 +51,7 @@ public class ViewUtilities {
 
     /**
      * add fade out effects to the specified node, will disappear in the end
+     *
      * @param view the node to add effect
      */
     public static void fadeOut(Node view) {

@@ -7,11 +7,13 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 /**
- *
+ * The type Game grid.
  */
 public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
 
     /**
+     * Gets x.
+     *
      * @return get the X bounds of the GameGrid map
      */
     public int getX() {
@@ -19,6 +21,8 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
     }
 
     /**
+     * Gets y.
+     *
      * @return get the Y bounds of the GameGrid map
      */
     public int getY() {
@@ -36,6 +40,11 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
      */
     final int Y;
 
+    /**
+     * Get game objects abstract game object [ ] [ ].
+     *
+     * @return the abstract game object [ ] [ ]
+     */
     public AbstractGameObject[][] getGameObjects() {
         return gameObjects;
     }
@@ -45,6 +54,12 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
      */
     private final AbstractGameObject[][] gameObjects;
 
+    /**
+     * Instantiates a new Game grid.
+     *
+     * @param X the x
+     * @param Y the y
+     */
     public GameGrid(int X, int Y) {
         this.X = X;
         this.Y = Y;
@@ -55,8 +70,10 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
 
 
     /**
+     * Translate point point.
+     *
      * @param sourceLocation Java.awt.Point, target source location
-     * @param delta Java.awt.Point, distance respective
+     * @param delta          Java.awt.Point, distance respective
      * @return Translated point from source and delta
      */
     public static Point translatePoint(Point sourceLocation, Point delta) {
@@ -66,18 +83,12 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
     }
 
     /**
+     * Gets game object at.
+     *
      * @param x x axis
-     * @param y y axis
-     *            Coordinates: system
-     *             ------------> +col
-     *             |
-     *             |
-     *             |
-     *             |
-     *             ∨
-     *             +row
+     * @param y y axis            Coordinates: system             ------------> +col             |             |             |             |             ∨             +row
      * @return corresponding GameObject in which position
-     * @throws ArrayIndexOutOfBoundsException
+     * @throws ArrayIndexOutOfBoundsException the array index out of bounds exception
      */
     public AbstractGameObject getGameObjectAt(int x, int y) throws ArrayIndexOutOfBoundsException {
         if (isPointOutOfBounds(x, y)) {
@@ -88,9 +99,12 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
     }
 
     /**
+     * Gets game object at.
+     *
      * @param p Point object
      * @return corresponding GameObject in which position
-     * @throws ArrayIndexOutOfBoundsException
+     * @throws IllegalArgumentException       the illegal argument exception
+     * @throws ArrayIndexOutOfBoundsException the array index out of bounds exception
      */
     public AbstractGameObject getGameObjectAt(Point p) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
         if (p == null) {
@@ -102,9 +116,11 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
 
 
     /**
+     * Put game object at boolean.
+     *
      * @param gameObject the object to be put in
-     * @param x
-     * @param y
+     * @param x          the x
+     * @param y          the y
      * @return false if PointOutOfBounds
      */
     public boolean putGameObjectAt(AbstractGameObject gameObject, int x, int y) {
@@ -117,18 +133,33 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
     }
 
     /**
+     * Put game object at boolean.
+     *
      * @param gameObject the object to be put in
-     * @param p Point
+     * @param p          Point
      * @return false if PointOutOfBounds, true otherwise
      */
     public boolean putGameObjectAt(AbstractGameObject gameObject, Point p) {
         return p != null && putGameObjectAt(gameObject, (int) p.getX(), (int) p.getY());
     }
 
+    /**
+     * Is point out of bounds boolean.
+     *
+     * @param x the x
+     * @param y the y
+     * @return the boolean
+     */
     public boolean isPointOutOfBounds(int x, int y) {
         return (x < 0 || y < 0 || x >= X || y >= Y);
     }
 
+    /**
+     * Is point out of bounds boolean.
+     *
+     * @param p the p
+     * @return the boolean
+     */
     public boolean isPointOutOfBounds(Point p) {
         return isPointOutOfBounds(p.x, p.y);
     }
@@ -157,8 +188,17 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
         return new GridIterator();
     }
 
+    /**
+     * The type Grid iterator.
+     */
     public class GridIterator implements Iterator<AbstractGameObject> {
+        /**
+         * The X.
+         */
         int x = 0;
+        /**
+         * The Y.
+         */
         int y = 0;
 
         @Override

@@ -35,6 +35,9 @@ import java.util.HashMap;
 
 import static com.ae2dms.Business.GameDocument.logger;
 
+/**
+ * The type Game view controller.
+ */
 public class GameViewController extends AbstractBarController {
 
     /**
@@ -45,6 +48,7 @@ public class GameViewController extends AbstractBarController {
 
     /**
      * Controller for LevelCompletePopUp
+     *
      * @see LevelCompletePopUpController
      */
     @FXML
@@ -58,6 +62,7 @@ public class GameViewController extends AbstractBarController {
 
     /**
      * Controller for GameCompletePopUp
+     *
      * @see GameCompletePopUpController
      */
     @FXML
@@ -71,6 +76,7 @@ public class GameViewController extends AbstractBarController {
 
     /**
      * Controller for ExitPopUp
+     *
      * @see ExitPopUpController
      */
     @FXML
@@ -221,7 +227,6 @@ public class GameViewController extends AbstractBarController {
      * set the background image to a random one
      * bind the level index, level count, steps and time count with the one in GameDocument
      * render the game map with the map in GameDocument
-     *
      */
     public void initialize() {
         player.setMusic(MediaState.STOP);
@@ -272,6 +277,7 @@ public class GameViewController extends AbstractBarController {
     /**
      * handle the key event in the game view
      * like the WSAD, Up Down Left and Right
+     *
      * @param event keyboard event
      */
     public void handleKey(KeyEvent event) {
@@ -536,8 +542,26 @@ public class GameViewController extends AbstractBarController {
     }
 }
 
+/**
+ * The enum Game status.
+ */
 enum GameStatus {
-    READY, PAUSE, PLAY, END;
+    /**
+     * Ready game status.
+     */
+    READY,
+    /**
+     * Pause game status.
+     */
+    PAUSE,
+    /**
+     * Play game status.
+     */
+    PLAY,
+    /**
+     * End game status.
+     */
+    END;
 };
 
 

@@ -16,10 +16,19 @@ import java.io.File;
  * add debug information when debug is active
  */
 public class GameDebugger {
+    /**
+     * The constant active.
+     */
     public static BooleanProperty active = new SimpleBooleanProperty(false);
 
     private static final GameLogger debugger = new GameLogger();
 
+    /**
+     * Log movement.
+     *
+     * @param document  the document
+     * @param direction the direction
+     */
     public static void logMovement(GameDocument document, Point direction) {
         if (!active.getValue()) {
             return;
@@ -46,7 +55,6 @@ public class GameDebugger {
             log.addInfo("Movement Status: " + "❕ Failed to Move: Destination on " + emoji + targetPosition + " is Outside of Map");
         } else {
             AbstractGameObject objectOnDestination = document.getCurrentLevel().objectsGrid.getGameObjectAt(targetPosition);
-            log.addInfo("Target Object: " + objectOnDestination.toString());
 
             if (player.canMoveBy(direction)) {
                 if (objectOnDestination instanceof Crate) {
@@ -66,6 +74,13 @@ public class GameDebugger {
         debugger.info(log.get());
     }
 
+    /**
+     * Log level complete.
+     *
+     * @param currentLevel the current level
+     * @param time         the time
+     * @param score        the score
+     */
     public static void logLevelComplete(Level currentLevel, String time, String score) {
         if (!active.getValue()) {
             return;
@@ -76,6 +91,13 @@ public class GameDebugger {
 
     }
 
+    /**
+     * Log game complete.
+     *
+     * @param totalLevels the total levels
+     * @param time        the time
+     * @param score       the score
+     */
     public static void logGameComplete(int totalLevels, String time, String score) {
         if (!active.getValue()) {
             return;
@@ -85,6 +107,11 @@ public class GameDebugger {
         debugger.info(log.get());
     }
 
+    /**
+     * Log undo.
+     *
+     * @param document the document
+     */
     public static void logUndo(GameDocument document) {
         if (!active.getValue()) {
             return;
@@ -95,6 +122,11 @@ public class GameDebugger {
         debugger.info(log.get());
     }
 
+    /**
+     * Log load map file.
+     *
+     * @param file the file
+     */
     public static void logLoadMapFile(File file) {
         if (!active.getValue()) {
             return;
@@ -104,6 +136,9 @@ public class GameDebugger {
         debugger.info(log.get());
     }
 
+    /**
+     * Log load map failure.
+     */
     public static void logLoadMapFailure() {
         if (!active.getValue()) {
             return;
@@ -113,6 +148,12 @@ public class GameDebugger {
         debugger.warning(log.get());
     }
 
+    /**
+     * Log load map failure with reason.
+     *
+     * @param pointer the pointer
+     * @param message the message
+     */
     public static void logLoadMapFailureWithReason(int pointer, String message) {
         if (!active.getValue()) {
             return;
@@ -122,6 +163,12 @@ public class GameDebugger {
         debugger.warning(log.get());
     }
 
+    /**
+     * Log read level.
+     *
+     * @param levelIndex the level index
+     * @param levelName  the level name
+     */
     public static void logReadLevel(int levelIndex, String levelName) {
         if (!active.getValue()) {
             return;
@@ -131,6 +178,11 @@ public class GameDebugger {
         debugger.info(log.get());
     }
 
+    /**
+     * Log error message.
+     *
+     * @param msg the msg
+     */
     public static void logErrorMessage(String msg) {
         if (!active.getValue()) {
             return;
@@ -141,29 +193,58 @@ public class GameDebugger {
     }
 }
 
+/**
+ * The type Log message.
+ */
 class LogMessage {
     private String logMessage;
 
+    /**
+     * Instantiates a new Log message.
+     */
     public LogMessage() {
         this.logMessage = "";
     }
 
+    /**
+     * Add info.
+     *
+     * @param log the log
+     */
     public void addInfo(String log) {
         this.logMessage += "ℹ️ " + log + "\n";
     }
 
+    /**
+     * Add warring.
+     *
+     * @param log the log
+     */
     public void addWarring(String log) {
         this.logMessage += "⚠️ " + log + "\n";
     }
 
+    /**
+     * Add severe.
+     *
+     * @param log the log
+     */
     public void addSevere(String log) {
         this.logMessage += "❌ " + log + "\n";
     }
 
+    /**
+     * Get string.
+     *
+     * @return the string
+     */
     public String get() {
         return logMessage;
     }
 
+    /**
+     * New line.
+     */
     public void newLine() {
         this.logMessage += "\n";
     }

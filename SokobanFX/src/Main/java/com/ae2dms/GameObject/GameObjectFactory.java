@@ -3,10 +3,22 @@ package com.ae2dms.GameObject;
 import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.Objects.*;
 
+/**
+ * The type Game object factory.
+ */
 public class GameObjectFactory {
 
 
-    // diamonds Object is only for Crate object to detect whether on diamond
+    /**
+     * Gets game object.
+     *
+     * @param type      the type
+     * @param linkTo    the link to
+     * @param xPosition the x position
+     * @param yPosition the y position
+     * @return the game object
+     */
+// diamonds Object is only for Crate object to detect whether on diamond
     public AbstractGameObject getGameObject(Character type, Level linkTo, int xPosition, int yPosition) {
 
         if (type == null) {

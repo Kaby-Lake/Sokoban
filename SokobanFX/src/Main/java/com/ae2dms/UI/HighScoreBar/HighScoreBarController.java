@@ -16,6 +16,9 @@ import java.net.URL;
 import static com.ae2dms.Business.GameDocument.logger;
 import static com.ae2dms.Business.GameDocument.records;
 
+/**
+ * The type High score bar controller.
+ */
 public class HighScoreBarController {
 
     /**

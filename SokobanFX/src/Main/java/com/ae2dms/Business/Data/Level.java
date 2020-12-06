@@ -9,16 +9,21 @@ import com.ae2dms.GameObject.Objects.Player;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * The type Level.
+ */
 public final class Level implements Serializable {
 
     /**
      * the GameGrid which only contains Floor Object, null at other positions
+     *
      * @see com.ae2dms.GameObject.Objects.Floor
      */
     public volatile GameGrid floorGrid;
 
     /**
      * the GameGrid which only contains Player and Crate Object, null at other positions
+     *
      * @see com.ae2dms.GameObject.Objects.Crate
      * @see com.ae2dms.GameObject.Objects.Player
      */
@@ -26,12 +31,14 @@ public final class Level implements Serializable {
 
     /**
      * the GameGrid which only contains Diamond Object, null at other positions
+     *
      * @see com.ae2dms.GameObject.Objects.Diamond
      */
     public volatile GameGrid diamondsGrid;
 
     /**
      * the GameGrid which only contains Candy Object, null at other positions
+     *
      * @see com.ae2dms.GameObject.Objects.Candy
      */
     public volatile GameGrid candyGrid;
@@ -52,13 +59,17 @@ public final class Level implements Serializable {
     public int eatenCandyCount = 0;
 
 
+    /**
+     * The Player.
+     */
     Player player;
 
     /**
      * a Level Object with specified name and index, will parse the rawLevel into private GameGrid field
-     * @param levelName name of the level
+     *
+     * @param levelName  name of the level
      * @param levelIndex index of the level, starting from 1
-     * @param rawLevel a list of string of raw data from skb, one line in skb denotes a String in the List
+     * @param rawLevel   a list of string of raw data from skb, one line in skb denotes a String in the List
      */
     public Level(String levelName, int levelIndex, List<String> rawLevel) {
         GameDebugger.logReadLevel(levelIndex, levelName);
@@ -142,6 +153,7 @@ public final class Level implements Serializable {
 
     /**
      * check if this level is complete
+     *
      * @return is complete
      */
     public boolean isComplete() {
@@ -158,6 +170,8 @@ public final class Level implements Serializable {
     }
 
     /**
+     * Gets name.
+     *
      * @return getter of name
      */
     public String getName() {
@@ -165,6 +179,8 @@ public final class Level implements Serializable {
     }
 
     /**
+     * Gets index.
+     *
      * @return getter of index
      */
     public int getIndex() {
@@ -172,6 +188,8 @@ public final class Level implements Serializable {
     }
 
     /**
+     * Gets player object.
+     *
      * @return getter of Player object
      * @see Player
      */

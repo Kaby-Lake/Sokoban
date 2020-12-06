@@ -15,6 +15,9 @@ import java.util.Date;
 
 import static com.ae2dms.Business.GameDocument.logger;
 
+/**
+ * Saver that can save and retrieve the state of GameDocument
+ */
 public class GameStageSaver {
 
     /**
@@ -45,8 +48,9 @@ public class GameStageSaver {
 
     /**
      * Push the object onto a stack with limited capacity, can call pop() to restore it
+     *
      * @param object the one to be pushed
-     * */
+     */
     public static void push(GameDocument object) {
         try {
             if (GameDocumentJsonList.size() >= LIMIT - 1) {
@@ -60,8 +64,8 @@ public class GameStageSaver {
 
     /**
      * pop out the last stage on the stack
-     * @return the GameDocument object to restore
-     *          will return null if no stages in the Stack
+     *
+     * @return the GameDocument object to restore          will return null if no stages in the Stack
      */
     public static GameDocument pop() {
         try {
@@ -77,10 +81,12 @@ public class GameStageSaver {
 
     /**
      * decode the object stored in Serialized Base64 string back to object
+     *
      * @param coding coded string
      * @return restored Object
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws IOException              the io exception
+     * @throws ClassNotFoundException   the class not found exception
+     * @throws IllegalArgumentException the illegal argument exception
      */
     public static Object decode(String coding) throws IOException, ClassNotFoundException, IllegalArgumentException {
         byte[] data = Base64.getDecoder().decode(coding);
@@ -92,9 +98,11 @@ public class GameStageSaver {
 
 
     /**
+     * Encode string.
+     *
      * @param object encode the Object into a Serialized Base64 string
      * @return the encoded string
-     * @throws IOException
+     * @throws IOException the io exception
      */
     public static String encode(Object object) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -107,6 +115,7 @@ public class GameStageSaver {
     /**
      * should call this everytime load a new map
      * when back to menu and click start again, the initial state will be restored
+     *
      * @param object initial state of GameDocument
      */
     public static void pushInitialState(GameDocument object) {
@@ -119,6 +128,7 @@ public class GameStageSaver {
 
     /**
      * get the initial state of the GameDocument
+     *
      * @return the initial GameDocument Object
      */
     public static GameDocument getInitialState() {
@@ -136,6 +146,7 @@ public class GameStageSaver {
     /**
      * Used for saving the current state to File
      * can later load this game state to recover GameDocument
+     *
      * @param object the current GameDocument Object
      */
     public static void saveToFile(GameDocument object) {

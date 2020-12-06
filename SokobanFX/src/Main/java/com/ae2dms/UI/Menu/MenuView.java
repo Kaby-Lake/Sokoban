@@ -43,6 +43,7 @@ public class MenuView {
 
     /**
      * get the singleton instance of MenuView, if not initialized yet, wil call private constructor
+     *
      * @return the only MenuView instance
      */
     public static synchronized MenuView getInstance()
@@ -55,6 +56,7 @@ public class MenuView {
 
     /**
      * get the JavaFX view Pane for MenuView
+     *
      * @return the Pane
      */
     public Pane getView() {

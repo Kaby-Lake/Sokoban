@@ -9,13 +9,29 @@ import javafx.scene.image.ImageView;
 
 import java.awt.*;
 
+/**
+ * The type Floor.
+ */
 public class Floor extends AbstractGameObject {
 
+    /**
+     * Instantiates a new Floor.
+     *
+     * @param linksTo the links to
+     * @param atX     the at x
+     * @param atY     the at y
+     */
     public Floor(Level linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
         grid = linksTo.floorGrid;
     }
 
+    /**
+     * Instantiates a new Floor.
+     *
+     * @param linksTo the links to
+     * @param at      the at
+     */
     public Floor(Level linksTo, Point at) {
         super(linksTo, at);
         grid = linksTo.floorGrid;
@@ -31,6 +47,9 @@ public class Floor extends AbstractGameObject {
         return "FLOOR";
     }
 
+    /**
+     * @return return the Floor image
+     */
     @Override
     public ImageView render() {
         if (this.view == null) {

@@ -8,6 +8,9 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 
+/**
+ * used for render Maps on the JavaFX gridPane
+ */
 public class GraphicRender {
 
     /**
@@ -36,10 +39,11 @@ public class GraphicRender {
 
     /**
      * the GraphicRender Object to render all GameObjects into the assigned GridPane
-     * @param stageGrid the stageGrid in FXML
-     * @param objectsGrid the objectsGrid in FXML
+     *
+     * @param stageGrid    the stageGrid in FXML
+     * @param objectsGrid  the objectsGrid in FXML
      * @param diamondsGrid the diamondsGrid in FXML
-     * @param candyGrid the candyGrid in FXML
+     * @param candyGrid    the candyGrid in FXML
      */
     public GraphicRender(GridPane stageGrid, GridPane objectsGrid, GridPane diamondsGrid, GridPane candyGrid) {
         this.stageGrid = stageGrid;
@@ -50,6 +54,7 @@ public class GraphicRender {
 
     /**
      * render GameObjects according to the GameGrids in level
+     *
      * @param level the level which contains floorGrid, diamondsGrid, objectsGrid and candyGrid
      * @see Level
      */
@@ -71,6 +76,11 @@ public class GraphicRender {
         renderItemAndPlayer(level);
     }
 
+    /**
+     * Render item and player.
+     *
+     * @param level the level
+     */
     public void renderItemAndPlayer(Level level) {
 
         this.objectsGrid.getChildren().clear();

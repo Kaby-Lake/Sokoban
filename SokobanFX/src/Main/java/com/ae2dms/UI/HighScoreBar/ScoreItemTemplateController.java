@@ -9,6 +9,9 @@ import javafx.scene.image.ImageView;
 
 import java.util.Random;
 
+/**
+ * The type Score item template controller.
+ */
 public class ScoreItemTemplateController {
 
     /**
@@ -48,6 +51,7 @@ public class ScoreItemTemplateController {
 
     /**
      * set the type of this record, will update the background image if according to the type
+     *
      * @param type the type of this record: "Score" or "Time"
      */
     public void setType(String type) {
@@ -61,16 +65,27 @@ public class ScoreItemTemplateController {
         }
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name) {
         this.NameField.setText(name);
     }
 
+    /**
+     * Sets data.
+     *
+     * @param data the data
+     */
     public void setData(int data) {
         this.DataField.setText(String.valueOf(data));
     }
 
     /**
      * called if this record is the first(best) in the whole list, will change the background image accordingly
+     *
      * @param type the type of this record: "Score" or "Time"
      */
     public void setFirst(String type) {

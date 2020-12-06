@@ -38,7 +38,6 @@ public class MenuViewController extends AbstractBarController {
      * disables the button not relevant to MenuView and bind the bestRecord with gameDocument
      */
     public void initialize() {
-        super.disableButton("Debug");
         super.disableButton("Save Game");
         super.disableButton("Undo");
 
@@ -51,7 +50,6 @@ public class MenuViewController extends AbstractBarController {
     /**
      * button to click Start Game
      * will restore the GameStatus to initial and set the scene
-     *
      */
     public void clickStartGame() {
 
@@ -71,6 +69,9 @@ public class MenuViewController extends AbstractBarController {
         infoGroup.getStyleClass().clear();
     }
 
+    /**
+     * Click close information.
+     */
     public void clickCloseInformation() {
         infoGroup.getStyleClass().clear();
         infoGroup.getStyleClass().add("Hide");

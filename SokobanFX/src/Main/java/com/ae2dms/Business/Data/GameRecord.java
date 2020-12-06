@@ -9,6 +9,9 @@ import java.util.*;
 
 import static com.ae2dms.Business.GameDocument.logger;
 
+/**
+ * The type Game record.
+ */
 public class GameRecord implements Serializable {
 
     /**
@@ -35,8 +38,9 @@ public class GameRecord implements Serializable {
     /**
      * create a record and push to records list, will sort and update @bestRecord accordingly
      * will set the record adding time to now()
-     * @param steps the total moved steps of this turn
-     * @param playerName the inputted name by user when game complete
+     *
+     * @param steps           the total moved steps of this turn
+     * @param playerName      the inputted name by user when game complete
      * @param durationSeconds the duration seconds that timer recorded
      */
     public void pushRecord(int steps, String playerName, int durationSeconds) {
@@ -86,6 +90,7 @@ public class GameRecord implements Serializable {
 
     /**
      * Produce a List of Records, sorted by time duration of records in ascending order
+     *
      * @return a unmodifiable list of sorted list
      */
     public List<Record> sortRecordsByTime() {
@@ -99,6 +104,8 @@ public class GameRecord implements Serializable {
 
 
     /**
+     * Gets records.
+     *
      * @return getter of records
      */
     public List<Record> getRecords() {
@@ -108,7 +115,8 @@ public class GameRecord implements Serializable {
     /**
      * to read permanent record from the $(user.dir)/records/$(mapName)$(mapHashcode).rec
      * if not found, then create the directory or file
-     * @param mapName name of the mapSet
+     *
+     * @param mapName     name of the mapSet
      * @param mapHashCode hashcode of the mapSet, for verify the map in case maps with same name but different content
      */
     public void restoreRecords(String mapName, Integer mapHashCode) {
@@ -154,11 +162,31 @@ public class GameRecord implements Serializable {
 
         private final UUID uuid = UUID.randomUUID();
 
+        /**
+         * The Steps.
+         */
         Integer steps;
+        /**
+         * The Date.
+         */
         Date date;
+        /**
+         * The Player name.
+         */
         String playerName;
+        /**
+         * The Duration seconds.
+         */
         Integer durationSeconds;
 
+        /**
+         * Instantiates a new Record.
+         *
+         * @param score           the score
+         * @param date            the date
+         * @param playerName      the player name
+         * @param durationSeconds the duration seconds
+         */
         public Record(int score, Date date, String playerName, int durationSeconds) {
             this.steps = score;
             this.date = date;
@@ -167,6 +195,8 @@ public class GameRecord implements Serializable {
         }
 
         /**
+         * Gets duration seconds.
+         *
          * @return getter of durationSeconds
          */
         public int getDurationSeconds() {
@@ -174,6 +204,8 @@ public class GameRecord implements Serializable {
         }
 
         /**
+         * Gets name.
+         *
          * @return getter of playerName
          */
         public String getName() {
@@ -181,6 +213,8 @@ public class GameRecord implements Serializable {
         }
 
         /**
+         * Gets steps.
+         *
          * @return getter of score
          */
         public int getSteps() {

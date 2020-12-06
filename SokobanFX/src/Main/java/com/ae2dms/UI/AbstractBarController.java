@@ -21,7 +21,7 @@ import javafx.util.Duration;
  * MenuView and GameView all have tbe same Bar, and the same FXMLs to that,
  * so the control login inside the bar items will be manages here,
  * GameView and MenuView shall all extend this Controller and get the identical controller for Bar
- *
+ * <p>
  * Nested FXML are used here to improve maintainability and structure controller code
  */
 public class AbstractBarController {
@@ -39,6 +39,7 @@ public class AbstractBarController {
 
     /**
      * The Controller for SoundPreference
+     *
      * @see SoundPreferenceController
      */
     @FXML
@@ -52,6 +53,7 @@ public class AbstractBarController {
 
     /**
      * The controller for HighScoreBar
+     *
      * @see HighScoreBarController
      */
     @FXML
@@ -65,6 +67,7 @@ public class AbstractBarController {
 
     /**
      * The controller for ColourPreference
+     *
      * @see ColourPreferenceController
      */
     @FXML
@@ -163,6 +166,7 @@ public class AbstractBarController {
 
     /**
      * disable the button in BottomBar
+     *
      * @param name chosen from "Debug", "Undo" and "Save Game"
      */
     public void disableButton(String name) {
@@ -187,6 +191,7 @@ public class AbstractBarController {
 
     /**
      * enable the button in BottomBar
+     *
      * @param name chosen from "Undo" and "Save Game"
      */
     public void enableButton(String name) {

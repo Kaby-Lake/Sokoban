@@ -38,6 +38,7 @@ public class GameView {
 
     /**
      * used for get the view Pane from GameView
+     *
      * @return view with loading effect
      */
     public Pane getGameView() {
@@ -47,6 +48,7 @@ public class GameView {
 
     /**
      * bind the key listener with controller
+     *
      * @param scene the scene to be added to PrimaryState
      */
     public void bindKey(Scene scene) {

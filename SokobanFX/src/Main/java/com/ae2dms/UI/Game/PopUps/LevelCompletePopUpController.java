@@ -43,9 +43,10 @@ public class LevelCompletePopUpController {
 
     /**
      * assign data to this pop up
+     *
      * @param levelIndex the level index of this completion
-     * @param time the total time for now
-     * @param steps the total steps for now
+     * @param time       the total time for now
+     * @param steps      the total steps for now
      */
     public void assignData(String levelIndex, String time, String steps) {
 

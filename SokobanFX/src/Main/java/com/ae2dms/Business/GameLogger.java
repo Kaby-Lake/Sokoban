@@ -9,12 +9,18 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+/**
+ * The type Game logger.
+ */
 public class GameLogger extends Logger {
 
     private static Logger logger = Logger.getLogger("GameLogger");
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private Calendar calendar = Calendar.getInstance();
 
+    /**
+     * Instantiates a new Game logger.
+     */
     public GameLogger() {
         super("com.aes2dms.sokoban", null);
 
