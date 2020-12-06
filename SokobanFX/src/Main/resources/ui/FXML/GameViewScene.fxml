@@ -17,8 +17,6 @@
             <Pane>
                <children>
 
-                   <!--     DraggableFloor   -->
-                   <fx:include source="DraggableFloorPane.fxml" fx:id="DraggableFloor"/>
 
                    <GridPane fx:id="stageGrid" layoutX="195.0" layoutY="55.0">
                        <columnConstraints>
@@ -70,6 +68,9 @@
 
                        </children>
                    </GridPane>
+
+                   <!--     DraggableFloor   -->
+                   <fx:include source="DraggableFloorPane.fxml" fx:id="DraggableFloor"/>
 
 
                    <!--     diamondsGrid  -->

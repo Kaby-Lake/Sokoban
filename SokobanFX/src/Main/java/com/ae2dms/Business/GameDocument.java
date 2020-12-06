@@ -4,7 +4,6 @@ import com.ae2dms.Business.Data.GameRecord;
 import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.Objects.Player;
 import com.ae2dms.IO.MapFileLoader;
-import com.ae2dms.Main.Main;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 

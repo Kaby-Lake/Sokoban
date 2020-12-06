@@ -33,7 +33,6 @@ class GameRecordTest {
     }
 
     @Test
-        //first failed, but fix the restoreRecords <
     void testRestoreRecordsFromEmpty() throws Exception {
         record.restoreRecords(testMapName, testMapHashCode);
         File file = new File(System.getProperty("user.dir") + "/" + "records" + "/" + testMapName + testMapHashCode.toString() + ".rec");
@@ -45,7 +44,6 @@ class GameRecordTest {
 
 
     @Test
-    //first failed, but fix the restoreRecords <
     void testWriteChangesToFileAndRestoreRecords() throws Exception {
         record.restoreRecords(testMapName, testMapHashCode);
         record.pushRecord(20, "Test1", 20);
@@ -62,7 +60,6 @@ class GameRecordTest {
     }
 
     @Test
-    //first failed, in the first assertion, fix the comparison in sortRecordsByTime
     void testSortRecords() {
         record.pushRecord(20, "Test1", 20);
         record.pushRecord(15, "Test2", 60);

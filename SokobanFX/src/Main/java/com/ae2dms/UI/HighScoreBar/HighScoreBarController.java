@@ -3,12 +3,17 @@ package com.ae2dms.UI.HighScoreBar;
 import com.ae2dms.Business.Data.GameRecord.Record;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
+import javafx.animation.TranslateTransition;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,6 +26,8 @@ import static com.ae2dms.Business.GameDocument.records;
  */
 public class HighScoreBarController {
 
+    @FXML
+    private Pane HighScoreBar;
     /**
      * The Vertical Box to display all sorted Records of Best Step Records, every individual is ScoreItemTemplate
      * see ScoreItemTemplate.fxml
@@ -125,5 +132,19 @@ public class HighScoreBarController {
         if (scoreCount == 0) {
             HighTimeItemVBox.getChildren().add( 0, new ImageView((Image)ResourceFactory.getResource("NO_RECORDS_INFO", ResourceType.Image)));
         }
+    }
+
+    public void show() {
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), HighScoreBar);
+        // render the high score list
+        renderRecords();
+        translateTransition.setByY(-668);
+        translateTransition.play();
+    }
+
+    public void hide() {
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), HighScoreBar);
+        translateTransition.setByY(668);
+        translateTransition.play();
     }
 }

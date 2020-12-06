@@ -117,8 +117,6 @@ class LevelTest extends ApplicationTest {
     }
 
     @Test
-    // first false, then modified Player to test whether it is on Candy
-    // modify toString() to use iterator
     void testMovement2() throws IllegalMovementException {
         List<String> level1Raw = LevelTest.lineParser(
                 """

@@ -1,4 +1,8 @@
-Package **GameObject**
+## Overall Diagram
+
+[Diagram PDF](diagram/20126507-ClassDiagram.pdf)
+
+### Package **GameObject**
 
 ![Screen Shot 2020-12-05 at 5.59.24 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glddcazdflj30kb08pq36.jpg)
 
@@ -12,7 +16,7 @@ The GameObjectFactory here is a Factory that follows SimpleFactory Design Patter
 
 
 
-Package **UI**
+### Package **UI**
 
 ![Screen Shot 2020-12-06 at 8.48.14 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glefc9tf1bj31f60jsac6.jpg) 
 
@@ -26,7 +30,7 @@ The GameView and MenuView class are the wrapper, which will read in FXML when co
 
 
 
-Package **Business**
+### Package **Business**
 
 ![Screen Shot 2020-12-06 at 8.43.18 PM](/Users/kabylake/Desktop/Screen Shot 2020-12-06 at 8.43.18 PM.png)
 

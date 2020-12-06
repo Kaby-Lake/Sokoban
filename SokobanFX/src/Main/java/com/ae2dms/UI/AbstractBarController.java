@@ -7,7 +7,6 @@ import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.HighScoreBar.HighScoreBarController;
 import com.ae2dms.UI.Menu.ColourPreferenceController;
-import javafx.animation.TranslateTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -15,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
 
 /**
  * MenuView and GameView all have tbe same Bar, and the same FXMLs to that,
@@ -130,38 +128,15 @@ public class AbstractBarController {
             }
         });
 
-        // set the button image
         highScoreIsShown.addListener((observable, oldValue, newValue) -> {
             if (observable != null && observable.getValue()==true) {
                 highScoreSwitch.setImage((Image)ResourceFactory.getResource("HIGH_SCORE_LIST_ON_ICON", ResourceType.Image));
+                HighScoreBarController.show();
             } else if (observable != null && observable.getValue()==false){
                 highScoreSwitch.setImage((Image)ResourceFactory.getResource("HIGH_SCORE_LIST_OFF_ICON", ResourceType.Image));
+                HighScoreBarController.hide();
             }
         });
-
-        // set the animation and render
-        highScoreIsShown.addListener((observable, oldValue, newValue) -> {
-            if (observable != null && observable.getValue()==true) {
-                TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), HighScoreBar);
-                // render the high score list
-                renderHighScoreList();
-
-                translateTransition.setByY(-668);
-                translateTransition.play();
-            } else if (observable != null && observable.getValue()==false){
-                TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), HighScoreBar);
-                translateTransition.setByY(668);
-                translateTransition.play();
-            }
-        });
-
-    }
-
-    /**
-     * render the HighScoreList, will call renderRecords() in HighScoreBarController
-     */
-    private void renderHighScoreList() {
-        HighScoreBarController.renderRecords();
     }
 
     /**

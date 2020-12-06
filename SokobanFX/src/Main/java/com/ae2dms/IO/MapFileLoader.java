@@ -8,8 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.ae2dms.Business.GameDocument.logger;
-
 /**
  * helper class to load map file into game Document
  * can detect which line is incorrect in the sysout

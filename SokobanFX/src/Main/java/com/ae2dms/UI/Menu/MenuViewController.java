@@ -7,8 +7,8 @@ import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.Game.GameView;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
@@ -22,16 +22,21 @@ import java.io.FileNotFoundException;
  */
 public class MenuViewController extends AbstractBarController {
 
-    /**
-     * static GameDocument
-     */
-    private GameDocument gameDocument = Main.gameDocument;
 
     /**
      * The view to show information
      */
     @FXML
-    private Group infoGroup;
+    private Pane Information;
+
+    @FXML
+    private InformationController InformationController;
+
+    /**
+     * static GameDocument
+     */
+    private GameDocument gameDocument = Main.gameDocument;
+
 
     /**
      * will be called first by JavaFX
@@ -66,15 +71,7 @@ public class MenuViewController extends AbstractBarController {
      * Click the game information panel
      */
     public void clickInformation() {
-        infoGroup.getStyleClass().clear();
-    }
-
-    /**
-     * Click close information.
-     */
-    public void clickCloseInformation() {
-        infoGroup.getStyleClass().clear();
-        infoGroup.getStyleClass().add("Hide");
+        InformationController.show();
     }
 
     // TODO: add information
