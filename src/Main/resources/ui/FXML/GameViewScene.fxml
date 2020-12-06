@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
 <?import javafx.scene.Group?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.text.Font?>
-
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@GlobalCSS.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ae2dms.UI.Game.GameViewController">
    <children>
       <Group fx:id="Can_Blur_Group" layoutX="-35.0" layoutY="-1.0">
@@ -22,7 +14,7 @@
             <ImageView fx:id="Background_Image" fitHeight="720.0" fitWidth="1673.0">
                   <Image url="@../Assets/Game/GameBackground1.jpg" />
             </ImageView>
-            <Pane fx:id="Content">
+            <Pane>
                <children>
 
                    <GridPane fx:id="stageGrid" layoutX="195.0" layoutY="55.0">
@@ -128,60 +120,6 @@
 
                        </children>
                    </GridPane>
-
-
-                   <!--     previewGrid  -->
-                   <GridPane fx:id="previewGrid" layoutX="195.0" layoutY="55.0">
-                       <columnConstraints>
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                       </columnConstraints>
-                       <rowConstraints>
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                       </rowConstraints>
-                       <children>
-
-
-                       </children>
-                   </GridPane>
-
 
                    <!--     candyGrid  -->
                    <GridPane fx:id="candyGrid" layoutX="195.0" layoutY="55.0" mouseTransparent="true">
@@ -346,16 +284,22 @@
                            </Group>
                        </children>
                    </Group>
+
+                   <!--     DraggableFloor   -->
+                   <fx:include source="DraggableFloorPane.fxml" fx:id="DraggableFloor"/>
+
                </children>
             </Pane>
 
          </children>
       </Group>
-      <Pane fx:id="BottomBarAlias" mouseTransparent="true" />
+
+       <!--     BottomHighScoreBar   -->
+       <fx:include source="HighScoreBar.fxml" fx:id="HighScoreBar" layoutY="668" visible="false"/>
+
       <Group layoutY="665.0">
          <children>
 
-      
                               <!--     BottomBar    -->
             <ImageView fitWidth="1280.0">
                <Image url="@../Assets/BottomBar/Bottombar.png" />
@@ -367,12 +311,12 @@
             </ImageView>
       
                               <!--     Music button    -->
-            <ImageView fx:id="musicSwitch" accessibleRole="BUTTON" layoutX="533.0" layoutY="2.0" onMouseClicked="#clickToggleMusic" styleClass="Button">
+            <ImageView accessibleRole="BUTTON" layoutX="533.0" layoutY="2.0" onMouseClicked="#menuBarClickMusic" styleClass="Button">
                <Image url="@../Assets/BottomBar/Music_off.png" />
             </ImageView>
       
                               <!--     Debug button    -->
-            <ImageView fx:id="debugSwitch" accessibleRole="BUTTON" layoutX="662.0" layoutY="2.0" onMouseClicked="#clickToggleDebug" styleClass="Button">
+            <ImageView fx:id="debugSwitch" accessibleRole="BUTTON" layoutX="662.0" layoutY="2.0" onMouseClicked="#menuBarClickDebug" styleClass="Button">
                <Image url="@../Assets/BottomBar/Debug_off.png" />
             </ImageView>
       
@@ -382,33 +326,38 @@
             </ImageView>
 
                          <!--     High Score List button    -->
-             <ImageView fx:id="highScoreSwitch" accessibleRole="BUTTON" layoutX="1046.0" layoutY="2.0" onMouseClicked="#clickHighScoreList" styleClass="Button">
+             <ImageView fx:id="highScoreSwitch" accessibleRole="BUTTON" layoutX="1046.0" layoutY="2.0" onMouseClicked="#menuBarClickHighScoreList" styleClass="Button">
                  <Image url="@../Assets/BottomBar/High_Score_List_off.png" />
              </ImageView>
       
                               <!--     Highest Score    -->
             <ImageView fitHeight="34.0" fitWidth="239.0" layoutX="25.0" layoutY="11.0">
-               <Image url="@../Assets/BottomBar/Highest_Score.png" />
+               <Image url="@../Assets/BottomBar/Best_Record.png" />
             </ImageView>
-      
+
                               <!--     Highest Score Number Binding -->
-            <BorderPane layoutX="178.0" layoutY="8.0" prefHeight="40.0" prefWidth="88.0">
-               <center>
-                  <Label fx:id="highestScore" alignment="CENTER" contentDisplay="CENTER" text="High_Score" textFill="WHITE" BorderPane.alignment="CENTER">
+            <BorderPane layoutX="176.0" layoutY="13.0" prefHeight="40.0" prefWidth="88.0">
+               <top>
+                  <Label fx:id="bestRecord" alignment="CENTER" contentDisplay="CENTER" text="High_Score" textFill="WHITE" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="Smartisan Maquette Bold" size="21.0" />
                      </font>
                   </Label>
-               </center>
+               </top>
             </BorderPane>
          </children>
       </Group>
 
-       <!--     BottomBar Alias   -->
-       <Pane fx:id="MusicControllerAlias">
+       <!--     MusicController   -->
+       <fx:include source="SoundPreference.fxml" fx:id="SoundPreference" visible="false"/>
 
-       </Pane>
+       <!--     LevelCompletePopUp   -->
+       <fx:include source="LevelCompletePopUp.fxml" fx:id="LevelCompletePopUp" visible="false"/>
 
+       <!--     GameCompletePopUp   -->
+       <fx:include source="GameCompletePopUp.fxml" fx:id="GameCompletePopUp" visible="false"/>
 
+       <!--     ExitPopUp   -->
+       <fx:include source="ExitPopUp.fxml" fx:id="ExitPopUp" visible="false"/>
    </children>
 </Pane>

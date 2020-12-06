@@ -1,127 +1,149 @@
 package com.ae2dms.UI.Menu;
 
-import com.ae2dms.Business.GameDebugger;
 import com.ae2dms.Business.GameDocument;
 import com.ae2dms.Business.GameStageSaver;
+import com.ae2dms.IO.MapFileLoader;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.Game.GameView;
-import com.ae2dms.UI.Game.GameViewController;
-import com.ae2dms.UI.GameMediaPlayer;
-import com.ae2dms.UI.HighScoreBar.HighScoreBarController;
-import com.ae2dms.UI.MediaState;
-import com.ae2dms.UI.SoundPreferenceController;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+/**
+ * JavaFX controller for MenuView
+ */
 public class MenuViewController extends AbstractBarController {
 
+    /**
+     * static GameDocument
+     */
     private GameDocument gameDocument = Main.gameDocument;
 
-    private final GameMediaPlayer player = GameMediaPlayer.getInstance();
-
+    /**
+     * The view to show information
+     */
     @FXML
     private Group infoGroup;
 
-    private HighScoreBarController highScoreBarController;
-
-    private SoundPreferenceController soundPreferenceController;
-
-    public void initialize() throws IllegalStateException {
-
+    /**
+     * will be called first by JavaFX
+     * disables the button not relevant to MenuView and bind the bestRecord with gameDocument
+     */
+    public void initialize() {
         super.disableButton("Debug");
         super.disableButton("Save Game");
         super.disableButton("Undo");
 
-        this.highestScore.textProperty().bind(Main.gameDocument.highestScore.asString());
-        highScoreBarController = loadBottomBar();
-        soundPreferenceController = loadMusicController();
-        colourPreferenceController = loadColourController();
+        StringConverter<Number> converter = new NumberStringConverter();
+        this.bestRecord.textProperty().bindBidirectional(Main.gameDocument.bestRecord, converter);
 
-        musicControlIsShowing.bindBidirectional(soundPreferenceController.isShowing);
-        soundPreferenceController.isMute.bindBidirectional(Main.prefMusicIsMute);
     }
 
 
-    public void clickStartGame(MouseEvent mouseEvent) {
-        player.setMusic(MediaState.STOP);
-        player.play();
+    /**
+     * button to click Start Game
+     * will restore the GameStatus to initial and set the scene
+     *
+     */
+    public void clickStartGame() {
 
         this.gameDocument.restoreObject(GameStageSaver.getInitialState());
         GameView gameView = new GameView();
         Scene gameViewScene = new Scene(gameView.getGameView());
-        gameView.bind(gameViewScene);
+        gameView.bindKey(gameViewScene);
 
         Main.primaryStage.setScene(gameViewScene);
 
     }
 
-    public void clickToggleMusic(MouseEvent mouseEvent) {
-        menuBarClickToggleMusic();
-    }
-
-    public void clickInformation(MouseEvent mouseEvent) {
+    /**
+     * Click the game information panel
+     */
+    public void clickInformation() {
         infoGroup.getStyleClass().clear();
     }
 
-    public void clickCloseInformation(MouseEvent mouseEvent) {
+    public void clickCloseInformation() {
         infoGroup.getStyleClass().clear();
         infoGroup.getStyleClass().add("Hide");
     }
 
-    public void clickLoadGame(MouseEvent mouseEvent) {
+    // TODO: add information
+
+    /**
+     * click restore game from file button
+     * will read a file from user select and restored to GameDocument
+     * will log status of success or failed
+     */
+    public void clickLoadGame() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Game Save File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban save file", "*.skbsave"));
         File file = fileChooser.showOpenDialog(Main.primaryStage.getScene().getWindow());
         if (file != null) {
-            System.out.println(file.getAbsolutePath());
-            // TODO:
+            GameDocument.logger.info("reading file from" + file.getAbsolutePath());
+            try {
+                gameDocument.reloadStateFromFile(new FileInputStream(file));
+                GameDocument.logger.info("restored state from" + file.getAbsolutePath());
+            } catch (FileNotFoundException e) {
+                GameDocument.logger.warning(e.getMessage());
+            } catch (MapFileLoader.ErrorSaveFileLoadException | IllegalArgumentException e) {
+                GameDocument.logger.warning("Not a valid sokoban save file");
+                return;
+            }
+            clickStartGame();
+        } else {
+            GameDocument.logger.warning("file not chosen");
         }
     }
 
-    public void clickLoadMapFile(MouseEvent mouseEvent) throws FileNotFoundException {
+    /**
+     * click Load Map file button
+     * will read a file from user select and restored the map to GameDocument
+     * will log status of success or failed
+     */
+    public void clickLoadMapFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Game Map File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban Map file", "*.skb"));
         File file = fileChooser.showOpenDialog(Main.primaryStage.getScene().getWindow());
         if (file != null) {
-            gameDocument.reloadMapFromFile(new FileInputStream(file));
-            GameDebugger.logLoadMapFile(file);
-            clickStartGame(null);
+            GameDocument.logger.info("reading file from" + file.getAbsolutePath());
+            try {
+                gameDocument.reloadMapFromFile(new FileInputStream(file));
+                GameDocument.logger.info("loaded map from" + file.getAbsolutePath());
+            } catch (FileNotFoundException e) {
+                GameDocument.logger.warning(e.getMessage());
+            } catch (MapFileLoader.ErrorMapFileLoadException e) {
+                return;
+            }
+            clickStartGame();
+        } else {
+            GameDocument.logger.warning("file not chosen");
         }
     }
 
-    public void clickExit(MouseEvent mouseEvent) {
+    /**
+     * click Exit on the screen
+     */
+    public void clickExit() {
         System.exit(0);
     }
 
-    public void clickHighScoreList() {
-        menuBarClickToggleHighScoreList();
-    }
-
-
-    // Not used in MenuViewController
-
-    public void clickToggleDebug() {
-    }
-    public void clickUndo(MouseEvent mouseEvent) {
-    }
-    public void clickSaveGame(MouseEvent mouseEvent) {
-    }
-
+    /**
+     * click Colour Preference button on screen
+     */
     @FXML
     private void toggleColourPreferences() {
-        colourPreferenceController.show();
+        ColourPreferenceController.show();
     }
 
 

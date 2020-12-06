@@ -122,6 +122,10 @@ public class Player extends AbstractGameObject implements Movable {
         }
     }
 
+    private boolean isOnCandy() {
+        return level.candyGrid.getGameObjectAt(at()) instanceof Candy;
+    }
+
     private void moveToFloor(Point targetPosition) {
         floorGrid.putGameObjectAt(new Floor(level, at()), at());
         grid.putGameObjectAt(null, at());

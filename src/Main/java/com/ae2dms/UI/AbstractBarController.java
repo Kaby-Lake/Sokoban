@@ -1,7 +1,7 @@
 package com.ae2dms.UI;
 
-import com.ae2dms.Business.Data.GameRecord;
 import com.ae2dms.Business.GameDebugger;
+import com.ae2dms.Business.GameDocument;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
@@ -11,67 +11,110 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
-import java.io.IOException;
-import java.util.List;
-
+/**
+ * MenuView and GameView all have tbe same Bar, and the same FXMLs to that,
+ * so the control login inside the bar items will be manages here,
+ * GameView and MenuView shall all extend this Controller and get the identical controller for Bar
+ *
+ * Nested FXML are used here to improve maintainability and structure controller code
+ */
 public class AbstractBarController {
 
+    /**
+     * static GameDocument
+     */
+    private GameDocument gameDocument = Main.gameDocument;
 
+    /**
+     * The Pane for SoundPreference
+     */
     @FXML
-    private Pane MusicControllerAlias;
+    protected Pane SoundPreference;
 
-    Pane MusicController;
-
-    private SoundPreferenceController soundPreferenceController;
-
+    /**
+     * The Controller for SoundPreference
+     * @see SoundPreferenceController
+     */
     @FXML
-    private Pane BottomBarAlias;
+    protected SoundPreferenceController SoundPreferenceController;
 
-    Pane BottomBar;
-
+    /**
+     * The Pane for HighScoreBar
+     */
     @FXML
-    private Pane ColourPreferenceAlias;
+    protected Pane HighScoreBar;
 
-    BorderPane colourPreference;
+    /**
+     * The controller for HighScoreBar
+     * @see HighScoreBarController
+     */
+    @FXML
+    protected HighScoreBarController HighScoreBarController;
 
-    public ColourPreferenceController colourPreferenceController;
+    /**
+     * The Pane for ColourPreference
+     */
+    @FXML
+    protected Pane ColourPreference;
 
-    private HighScoreBarController highScoreBarController;
+    /**
+     * The controller for ColourPreference
+     * @see ColourPreferenceController
+     */
+    @FXML
+    protected ColourPreferenceController ColourPreferenceController;
 
+    /**
+     * The ImageView of Undo button
+     */
     @FXML
     private ImageView undoSwitch;
 
-    public BooleanProperty musicControlIsShowing = new SimpleBooleanProperty(false);
-
+    /**
+     * The label to show the best record at the bottom-left, will be bind to document
+     */
     @FXML
-    private ImageView musicSwitch;
+    public Label bestRecord;
 
-    @FXML
-    public Label highestScore;
-
+    /**
+     * Whether the debug mode is activated, can be set and the debugger will start to log message
+     */
     public BooleanProperty debugIsActive = new SimpleBooleanProperty(false);
 
+    /**
+     * The Image of Debug button, will be set with change to debugIsActive
+     */
     @FXML
     private ImageView debugSwitch;
 
+    /**
+     * The Image of save game button
+     */
     @FXML
     private ImageView saveGameSwitch;
 
+    /**
+     * Whether the high score list is showing, can be set and the high score view will appear
+     */
     public BooleanProperty highScoreIsShown = new SimpleBooleanProperty(false);
 
+    /**
+     * The Image of high score button
+     */
     @FXML
     private ImageView highScoreSwitch;
 
 
+    /**
+     * constructor of AbstractBarController
+     * bind the state of debugButton with the static state in GameDebugger
+     */
     public AbstractBarController() {
 
         debugIsActive.bindBidirectional(GameDebugger.active);
@@ -93,112 +136,35 @@ public class AbstractBarController {
             }
         });
 
-        // set the animation
+        // set the animation and render
         highScoreIsShown.addListener((observable, oldValue, newValue) -> {
             if (observable != null && observable.getValue()==true) {
-                TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), BottomBar);
+                TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), HighScoreBar);
                 // render the high score list
                 renderHighScoreList();
 
                 translateTransition.setByY(-668);
                 translateTransition.play();
             } else if (observable != null && observable.getValue()==false){
-                TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), BottomBar);
+                TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), HighScoreBar);
                 translateTransition.setByY(668);
                 translateTransition.play();
             }
         });
+
     }
 
+    /**
+     * render the HighScoreList, will call renderRecords() in HighScoreBarController
+     */
     private void renderHighScoreList() {
-        GameRecord records = Main.gameDocument.getRecords();
-        highScoreBarController.renderRecords(records);
-
+        HighScoreBarController.renderRecords();
     }
 
-    public HighScoreBarController loadBottomBar() {
-        // load real pane
-        Pane barView = null;
-        FXMLLoader menuBarLoader = null;
-        try {
-            menuBarLoader = new FXMLLoader(getClass().getResource("/ui/FXML/HighScoreBar.fxml"));
-            barView = menuBarLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // get children of parent of secPane (the VBox)
-        List<Node> parentChildren = ((Pane) BottomBarAlias.getParent()).getChildren();
-
-        // replace the child that contained the old secPane
-        parentChildren.set(parentChildren.indexOf(BottomBarAlias), barView);
-
-        // store the new pane in the secPane field to allow replacing it the same way later
-        BottomBar = barView;
-
-        barView.setLayoutY(668);
-
-        highScoreBarController = menuBarLoader.getController();
-
-        return highScoreBarController;
-    }
-
-    public SoundPreferenceController loadMusicController() {
-        // load real pane
-        Pane musicView = null;
-        FXMLLoader musicLoader = null;
-        try {
-            musicLoader = new FXMLLoader(getClass().getResource("/ui/FXML/SoundPreference.fxml"));
-            musicView = musicLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        musicView.setVisible(false);
-
-        // get children of parent of secPane (the VBox)
-        List<Node> parentChildren = ((Pane) MusicControllerAlias.getParent()).getChildren();
-
-        // replace the child that contained the old secPane
-        parentChildren.set(parentChildren.indexOf(MusicControllerAlias), musicView);
-
-        // store the new pane in the secPane field to allow replacing it the same way later
-        MusicController = musicView;
-
-        soundPreferenceController = musicLoader.getController();
-
-        return soundPreferenceController;
-    }
-
-    public ColourPreferenceController loadColourController() {
-        // load real pane
-        BorderPane colourView = null;
-        FXMLLoader colourLoader = null;
-        try {
-            colourLoader = new FXMLLoader(getClass().getResource("/ui/FXML/ColourPreference.fxml"));
-            colourView = colourLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        colourView.setVisible(false);
-
-        // get children of parent of secPane (the VBox)
-        List<Node> parentChildren = ((Pane) ColourPreferenceAlias.getParent()).getChildren();
-
-        // replace the child that contained the old secPane
-        parentChildren.set(parentChildren.indexOf(ColourPreferenceAlias), colourView);
-
-        // store the new pane in the secPane field to allow replacing it the same way later
-        colourPreference = colourView;
-
-        colourPreferenceController = colourLoader.getController();
-
-        return colourPreferenceController;
-    }
-
-
-
+    /**
+     * disable the button in BottomBar
+     * @param name chosen from "Debug", "Undo" and "Save Game"
+     */
     public void disableButton(String name) {
         switch (name) {
             case "Debug" -> {
@@ -219,6 +185,10 @@ public class AbstractBarController {
         };
     }
 
+    /**
+     * enable the button in BottomBar
+     * @param name chosen from "Undo" and "Save Game"
+     */
     public void enableButton(String name) {
         switch (name) {
             case "Undo" -> {
@@ -235,19 +205,27 @@ public class AbstractBarController {
     }
 
 
-    public void menuBarClickToggleDebug() {
+    /**
+     * click the Debug button
+     */
+    @FXML
+    protected void menuBarClickDebug() {
         debugIsActive.setValue(!debugIsActive.getValue());
     }
 
-    public void menuBarClickToggleMusic() {
-        musicControlIsShowing.setValue(!musicControlIsShowing.getValue());
+    /**
+     * click the Music button
+     */
+    @FXML
+    protected void menuBarClickMusic() {
+        SoundPreferenceController.isShowing.setValue(!SoundPreferenceController.isShowing.getValue());
     }
 
-    public void menuBarSetMusicIsMute(boolean value) {
-        musicControlIsShowing.setValue(value);
-    }
-
-    public void menuBarClickToggleHighScoreList() {
+    /**
+     * click the HighScoreList button
+     */
+    @FXML
+    protected void menuBarClickHighScoreList() {
         highScoreIsShown.setValue(!highScoreIsShown.getValue());
     }
 

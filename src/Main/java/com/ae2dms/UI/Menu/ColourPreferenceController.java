@@ -1,5 +1,6 @@
 package com.ae2dms.UI.Menu;
 
+import com.ae2dms.UI.ViewUtilities;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
@@ -10,14 +11,16 @@ import javafx.scene.layout.BorderPane;
 
 import java.net.URISyntaxException;
 
+import static com.ae2dms.Business.GameDocument.logger;
+
 /**
- * @Description: $
- * @Param: $
- * @return: $
- * @Author: Zichen XU
+ * Controller for ColourPreference selector
  */
 public class ColourPreferenceController {
 
+    /**
+     * The whole JavaFX BorderPane
+     */
     @FXML
     private BorderPane Colour_Preference_Pop_Up;
 
@@ -56,6 +59,7 @@ public class ColourPreferenceController {
     public static final StringProperty selectedDiamondColour = new SimpleStringProperty("Red");
 
     private ImageView selectImageCrateView;
+
     private ImageView selectImageDiamondView;
 
     {
@@ -63,7 +67,7 @@ public class ColourPreferenceController {
             selectImageCrateView = new ImageView(new Image(getClass().getResource("/ui/Assets/Colour_Select/Colour_Selected.png").toURI().toString()));
             selectImageDiamondView = new ImageView(new Image(getClass().getResource("/ui/Assets/Colour_Select/Colour_Selected.png").toURI().toString()));
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         }
     }
 
@@ -135,11 +139,11 @@ public class ColourPreferenceController {
 
 
     public void show() {
-        Colour_Preference_Pop_Up.setVisible(true);
+        ViewUtilities.popUp(Colour_Preference_Pop_Up);
     }
 
     public void hide() {
-        Colour_Preference_Pop_Up.setVisible(false);
+        ViewUtilities.fadeOut(Colour_Preference_Pop_Up);
     }
 
 

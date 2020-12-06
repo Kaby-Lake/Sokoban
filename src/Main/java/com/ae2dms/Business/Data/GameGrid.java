@@ -1,25 +1,48 @@
 package com.ae2dms.Business.Data;
 
-import com.ae2dms.Business.GameDocument;
 import com.ae2dms.GameObject.AbstractGameObject;
 
 import java.awt.*;
 import java.io.Serializable;
 import java.util.Iterator;
 
+/**
+ *
+ */
 public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
 
+    /**
+     * @return get the X bounds of the GameGrid map
+     */
     public int getX() {
         return X;
     }
 
+    /**
+     * @return get the Y bounds of the GameGrid map
+     */
     public int getY() {
         return Y;
     }
 
+    /**
+     * the X bounds of the GameGrid map
+     */
     final int X;
+
+
+    /**
+     * the Y bounds of the GameGrid map
+     */
     final int Y;
 
+    public AbstractGameObject[][] getGameObjects() {
+        return gameObjects;
+    }
+
+    /**
+     * the 2d list to store all AbstractGameObject
+     */
     private final AbstractGameObject[][] gameObjects;
 
     public GameGrid(int X, int Y) {
@@ -40,19 +63,6 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
         Point translatedPoint = new Point(sourceLocation);
         translatedPoint.translate((int) delta.getX(), (int) delta.getY());
         return translatedPoint;
-    }
-
-    /**
-     * @param source
-     * @param delta
-     * @return corresponding GameObject in which position
-     * @throws ArrayIndexOutOfBoundsException
-     */
-    public AbstractGameObject getTargetFromSource(Point source, Point delta) throws ArrayIndexOutOfBoundsException {
-        if (delta == null) {
-            delta = new Point(0, 0);
-        }
-        return getGameObjectAt(translatePoint(source, delta));
     }
 
     /**
@@ -90,10 +100,6 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
         return getGameObjectAt((int) p.getX(), (int) p.getY());
     }
 
-    public Dimension getDimension() {
-        return new Dimension(X, Y);
-    }
-
 
     /**
      * @param gameObject the object to be put in
@@ -119,16 +125,6 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
         return p != null && putGameObjectAt(gameObject, (int) p.getX(), (int) p.getY());
     }
 
-    /**
-     * @param position the position of object to be deleted
-     * @return false if PointOutOfBounds, true otherwise
-     */
-    public boolean removeGameObjectAt(Point position) {
-        return putGameObjectAt(null, position);
-    }
-
-
-
     public boolean isPointOutOfBounds(int x, int y) {
         return (x < 0 || y < 0 || x >= X || y >= Y);
     }
@@ -145,11 +141,11 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
         for (AbstractGameObject[] gameObject : gameObjects) {
             for (AbstractGameObject aGameObject : gameObject) {
                 if (aGameObject == null) {
-                    // aGameObject = GameObject1.DEBUG_OBJECT;
+                    sb.append(' ');
+                    continue;
                 }
                 sb.append(aGameObject.getCharSymbol());
             }
-
             sb.append('\n');
         }
 

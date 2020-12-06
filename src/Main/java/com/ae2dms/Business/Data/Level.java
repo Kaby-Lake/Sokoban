@@ -1,25 +1,59 @@
 package com.ae2dms.Business.Data;
 
 import com.ae2dms.Business.GameDebugger;
-import com.ae2dms.Business.GameDocument;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.GameObject.GameObjectFactory;
 import com.ae2dms.GameObject.Objects.Crate;
+import com.ae2dms.GameObject.Objects.Player;
 
-import java.awt.*;
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
-public final class Level implements Iterable<AbstractGameObject>, Serializable {
-    public volatile GameGrid floorGrid;
-    public volatile GameGrid objectsGrid;
-    public volatile GameGrid diamondsGrid;
-    public volatile GameGrid candyGrid;
-    private final String name;
-    private final int index;
-    private Point playerPosition = new Point(0, 0);
+public final class Level implements Serializable {
 
+    /**
+     * the GameGrid which only contains Floor Object, null at other positions
+     * @see com.ae2dms.GameObject.Objects.Floor
+     */
+    public volatile GameGrid floorGrid;
+
+    /**
+     * the GameGrid which only contains Player and Crate Object, null at other positions
+     * @see com.ae2dms.GameObject.Objects.Crate
+     * @see com.ae2dms.GameObject.Objects.Player
+     */
+    public volatile GameGrid objectsGrid;
+
+    /**
+     * the GameGrid which only contains Diamond Object, null at other positions
+     * @see com.ae2dms.GameObject.Objects.Diamond
+     */
+    public volatile GameGrid diamondsGrid;
+
+    /**
+     * the GameGrid which only contains Candy Object, null at other positions
+     * @see com.ae2dms.GameObject.Objects.Candy
+     */
+    public volatile GameGrid candyGrid;
+
+    /**
+     * Name of this Level, assigned by reading skb from file
+     */
+    private final String name;
+
+    /**
+     * Name of this Level, starting from 1
+     */
+    private final int index;
+
+    Player player;
+
+    /**
+     * a Level Object with specified name and index, will parse the rawLevel into private GameGrid field
+     * @param levelName name of the level
+     * @param levelIndex index of the level, starting from 1
+     * @param rawLevel a list of string of raw data from skb, one line in skb denotes a String in the List
+     */
     public Level(String levelName, int levelIndex, List<String> rawLevel) {
         GameDebugger.logReadLevel(levelIndex, levelName);
 
@@ -44,6 +78,8 @@ public final class Level implements Iterable<AbstractGameObject>, Serializable {
                 AbstractGameObject curTile;
 
                 switch (Character.toUpperCase(curChar)) {
+
+                    // Diamond
                     case 'D' -> {
                         curTile = factory.getGameObject('D', this, x, y);
                         diamondsGrid.putGameObjectAt(curTile, x, y);
@@ -52,10 +88,10 @@ public final class Level implements Iterable<AbstractGameObject>, Serializable {
                         floorGrid.putGameObjectAt(curTile, x, y);
                     }
 
-                    // player
+                    // Player
                     case 'S' -> {
-                        playerPosition = new Point(x, y);
                         curTile = factory.getGameObject('S', this, x, y);
+                        player = (Player)curTile;
                         objectsGrid.putGameObjectAt(curTile, x, y);
 
                         curTile = factory.getGameObject(' ', this, x, y);
@@ -87,7 +123,7 @@ public final class Level implements Iterable<AbstractGameObject>, Serializable {
 
                     }
 
-                    // Space
+                    // Wall
                     case 'W' -> {
                         curTile = factory.getGameObject('W', this, x, y);
                         floorGrid.putGameObjectAt(curTile, x, y);
@@ -98,6 +134,10 @@ public final class Level implements Iterable<AbstractGameObject>, Serializable {
         }
     }
 
+    /**
+     * check if this level is complete
+     * @return is complete
+     */
     public boolean isComplete() {
         boolean isComplete = true;
         for (int y = 0; y < objectsGrid.Y; y++) {
@@ -111,50 +151,46 @@ public final class Level implements Iterable<AbstractGameObject>, Serializable {
         return isComplete;
     }
 
+    /**
+     * @return getter of name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return getter of index
+     */
     public int getIndex() {
         return index;
     }
 
-    public Point getPlayerPosition() {
-        return playerPosition;
+    /**
+     * @return getter of Player object
+     * @see Player
+     */
+    public Player getPlayerObject() {
+        return this.player;
     }
 
-    public AbstractGameObject getTargetObject(Point source, Point delta) {
-        return objectsGrid.getTargetFromSource(source, delta);
-    }
-
+    /**
+     * @return print the four grids to string
+     */
     @Override
     public String toString() {
-        return objectsGrid.toString();
-    }
-
-    @Override
-    public Iterator<AbstractGameObject> iterator() {
-        return new LevelIterator();
-    }
-
-    public class LevelIterator implements Iterator<AbstractGameObject> {
-
-        int column = 0;
-        int row = 0;
-
-        @Override
-        public boolean hasNext() {
-            return !(row == objectsGrid.Y - 1 && column == objectsGrid.X);
-        }
-
-        @Override
-        public AbstractGameObject next() {
-            if (column >= objectsGrid.X) {
-                column = 0;
-                row++;
-            }
-
-            return objectsGrid.getGameObjectAt(column, row);
-        }
+        String string = """
+            FloorGrid:
+            %s
+            
+            ObjectGrid:
+            %s
+            
+            DiamondsGrid:
+            %s
+            
+            CandyGrid:
+            %s
+    """;
+        return string.formatted(floorGrid.toString(), objectsGrid.toString(), diamondsGrid.toString(), candyGrid.toString());
     }
 }

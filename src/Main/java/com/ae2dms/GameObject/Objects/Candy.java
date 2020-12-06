@@ -1,6 +1,5 @@
 package com.ae2dms.GameObject.Objects;
 
-import com.ae2dms.Business.Data.GameGrid;
 import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.AbstractGameObject;
 import com.ae2dms.IO.ResourceFactory;
@@ -8,19 +7,12 @@ import com.ae2dms.IO.ResourceType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-/**
- * @Description: $
- * @Param: $
- * @return: $
- * @Author: Zichen XU
- */
-public class Candy extends AbstractGameObject {
 
-    GameGrid candyGrid;
+public class Candy extends AbstractGameObject {
 
     public Candy(Level linksTo, int atX, int atY) {
         super(linksTo, atX, atY);
-        this.candyGrid = linksTo.candyGrid;
+        this.grid = linksTo.candyGrid;
     }
 
     @Override
@@ -46,7 +38,6 @@ public class Candy extends AbstractGameObject {
     }
 
     public void eat() {
-        this.view.setVisible(false);
-        this.candyGrid.putGameObjectAt(null, this.xPosition, this.yPosition);
+        this.grid.putGameObjectAt(null, this.xPosition, this.yPosition);
     }
 }

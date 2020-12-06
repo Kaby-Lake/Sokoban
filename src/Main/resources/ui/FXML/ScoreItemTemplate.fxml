@@ -1,8 +1,8 @@
-<?import javafx.scene.Group?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 <Group xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ae2dms.UI.HighScoreBar.ScoreItemTemplateController">
     <children>
@@ -10,7 +10,7 @@
             <Image url="@../Assets/HighScore/Score_Item.png"/>
         </ImageView>
         <ImageView layoutX="8.0" layoutY="6.0" fx:id="AvatarImage">
-            <Image url="@../Assets/HighScore/avatars-02_Nemo.png"/>
+            <Image url="@../Assets/HighScore/avatars-01.png"/>
         </ImageView>
         <BorderPane layoutX="54.0" layoutY="3.0" prefHeight="40.0" prefWidth="132.0">
             <center>

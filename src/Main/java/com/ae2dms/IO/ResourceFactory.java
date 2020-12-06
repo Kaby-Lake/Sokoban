@@ -6,7 +6,11 @@ import javafx.scene.media.Media;
 
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+
+import static com.ae2dms.Business.GameDocument.logger;
 
 public class ResourceFactory {
 
@@ -28,6 +32,9 @@ public class ResourceFactory {
         urlMap.put("PaperClip-KINGSTON","/music/Songs/PaperClip-KINGSTON.mp3");
         urlMap.put("PaperClip-Lust","/music/Songs/PaperClip-Lust.mp3");
         urlMap.put("PaperClip-Heat Up","/music/Songs/PaperClip-Heat Up.mp3");
+        urlMap.put("PaperClip-Bricks","/music/Songs/PaperClip-Bricks.mp3");
+        urlMap.put("PaperClip-GOOD SHOW","/music/Songs/PaperClip-GOOD SHOW.mp3");
+        urlMap.put("PaperClip-Last Time","/music/Songs/PaperClip-Last Time.mp3");
         urlMap.put("PETO-Okay","/music/Songs/PETO-Okay.mp3");
 
         urlMap.put("GameBackground_1", "/ui/Assets/Game/GameBackground1.jpg");
@@ -36,6 +43,8 @@ public class ResourceFactory {
 
         urlMap.put("SCORE_ITEM_BACKGROUND", "/ui/Assets/HighScore/Score_Item.png");
         urlMap.put("TIME_ITEM_BACKGROUND", "/ui/Assets/HighScore/Time_Item.png");
+        urlMap.put("SCORE_ITEM_FIRST_BACKGROUND", "/ui/Assets/HighScore/Score_Item_First.png");
+        urlMap.put("TIME_ITEM_FIRST_BACKGROUND", "/ui/Assets/HighScore/Time_Item_First.png");
         urlMap.put("NO_RECORDS_INFO", "/ui/Assets/HighScore/No_Records_Info.png");
 
         urlMap.put("STAGE_IMAGE", "/ui/Assets/Game/Stage.png");
@@ -70,6 +79,9 @@ public class ResourceFactory {
         urlMap.put("MUSIC_ON_ICON", "/ui/Assets/BottomBar/Music_on.png");
         urlMap.put("MUSIC_OFF_ICON", "/ui/Assets/BottomBar/Music_off.png");
 
+        urlMap.put("ALL_SOUND_ON_ICON", "/ui/Assets/MusicControl/Sound_on.png");
+        urlMap.put("ALL_SOUND_OFF_ICON", "/ui/Assets/MusicControl/Sound_off.png");
+
         urlMap.put("UNDO_ICON", "/ui/Assets/BottomBar/Undo.png");
         urlMap.put("UNDO_NULL_ICON", "/ui/Assets/BottomBar/Undo_null.png");
         urlMap.put("HIGH_SCORE_LIST_ON_ICON", "/ui/Assets/BottomBar/High_Score_List_on.png");
@@ -79,6 +91,19 @@ public class ResourceFactory {
         urlMap.put("SAVE_RECORD_DONE", "/ui/Assets/Game/GameCompletePopUp/Save_Record_done.png");
         urlMap.put("SAVE_GAME_ICON", "/ui/Assets/BottomBar/Save_Game.png");
         urlMap.put("SAVE_GAME_NULL_ICON", "/ui/Assets/BottomBar/Save_Game_null.png");
+
+
+        urlMap.put("AVATARS_1", "/ui/Assets/HighScore/avatars-01.png");
+        urlMap.put("AVATARS_2", "/ui/Assets/HighScore/avatars-02.png");
+        urlMap.put("AVATARS_3", "/ui/Assets/HighScore/avatars-03.png");
+        urlMap.put("AVATARS_4", "/ui/Assets/HighScore/avatars-04.png");
+        urlMap.put("AVATARS_5", "/ui/Assets/HighScore/avatars-05.png");
+        urlMap.put("AVATARS_6", "/ui/Assets/HighScore/avatars-06.png");
+        urlMap.put("AVATARS_7", "/ui/Assets/HighScore/avatars-07.png");
+        urlMap.put("AVATARS_8", "/ui/Assets/HighScore/avatars-08.png");
+        urlMap.put("AVATARS_9", "/ui/Assets/HighScore/avatars-09.png");
+        urlMap.put("AVATARS_10", "/ui/Assets/HighScore/avatars-10.png");
+
 
         urlMap.put("UNMOVABLE_AUDIO_CLIP", "/music/SFX/Basso.mp3");
         urlMap.put("MOVE_AUDIO_CLIP", "/music/SFX/Pop.mp3");
@@ -94,7 +119,7 @@ public class ResourceFactory {
         try {
             return ResourceFactory.class.getResource(url).toURI().toString();
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         }
         return null;
     }
