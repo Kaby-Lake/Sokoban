@@ -1,25 +1,21 @@
 package com.ae2dms.UI;
 
 import com.ae2dms.Business.GameDebugger;
+import com.ae2dms.Business.GameDocument;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
+import com.ae2dms.Main.Main;
 import com.ae2dms.UI.HighScoreBar.HighScoreBarController;
 import com.ae2dms.UI.Menu.ColourPreferenceController;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * MenuView and GameView all have tbe same Bar, and the same FXMLs to that,
@@ -30,6 +26,10 @@ import java.util.List;
  */
 public class AbstractBarController {
 
+    /**
+     * static GameDocument
+     */
+    private GameDocument gameDocument = Main.gameDocument;
 
     /**
      * The Pane for SoundPreference
@@ -208,21 +208,24 @@ public class AbstractBarController {
     /**
      * click the Debug button
      */
-    public void menuBarClickDebug() {
+    @FXML
+    protected void menuBarClickDebug() {
         debugIsActive.setValue(!debugIsActive.getValue());
     }
 
     /**
      * click the Music button
      */
-    public void menuBarClickMusic() {
+    @FXML
+    protected void menuBarClickMusic() {
         SoundPreferenceController.isShowing.setValue(!SoundPreferenceController.isShowing.getValue());
     }
 
     /**
      * click the HighScoreList button
      */
-    public void menuBarClickHighScoreList() {
+    @FXML
+    protected void menuBarClickHighScoreList() {
         highScoreIsShown.setValue(!highScoreIsShown.getValue());
     }
 

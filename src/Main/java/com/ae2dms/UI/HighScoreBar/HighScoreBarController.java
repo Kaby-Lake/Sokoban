@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.net.URL;
 
+import static com.ae2dms.Business.GameDocument.logger;
 import static com.ae2dms.Business.GameDocument.records;
 
 public class HighScoreBarController {
@@ -63,7 +64,7 @@ public class HighScoreBarController {
                 itemLoader = new FXMLLoader((URL)ResourceFactory.getResource("SCORE_ITEM_TEMPLATE_FXML", ResourceType.FXML));
                 itemView = itemLoader.load();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.severe(e.getMessage());
             }
 
             ScoreItemTemplateController scoreController = itemLoader.getController();
@@ -104,7 +105,7 @@ public class HighScoreBarController {
                 itemLoader = new FXMLLoader((URL)ResourceFactory.getResource("SCORE_ITEM_TEMPLATE_FXML", ResourceType.FXML));
                 itemView = itemLoader.load();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.severe(e.getMessage());
             }
 
             ScoreItemTemplateController timeController = itemLoader.getController();

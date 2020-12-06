@@ -1,10 +1,10 @@
 package com.ae2dms.UI.Game;
 
 import com.ae2dms.Business.*;
-import com.ae2dms.GameObject.AbstractGameObject;
-import com.ae2dms.GameObject.Objects.*;
+import com.ae2dms.GameObject.Objects.Crate;
+import com.ae2dms.GameObject.Objects.IllegalMovementException;
+import com.ae2dms.GameObject.Objects.Player;
 import com.ae2dms.IO.ResourceFactory;
-import com.ae2dms.IO.ResourceType;
 import com.ae2dms.Main.Main;
 import com.ae2dms.UI.AbstractBarController;
 import com.ae2dms.UI.Game.PopUps.ExitPopUpController;
@@ -12,137 +12,224 @@ import com.ae2dms.UI.Game.PopUps.GameCompletePopUpController;
 import com.ae2dms.UI.Game.PopUps.LevelCompletePopUpController;
 import com.ae2dms.UI.GameMediaPlayer;
 import com.ae2dms.UI.MediaState;
-import javafx.animation.ScaleTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.AudioClip;
-import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.ae2dms.Business.GameDocument.logger;
 
 public class GameViewController extends AbstractBarController {
 
+    /**
+     * JavaFX BorderPane for LevelCompletePopUp
+     */
     @FXML
     protected BorderPane LevelCompletePopUp;
 
+    /**
+     * Controller for LevelCompletePopUp
+     * @see LevelCompletePopUpController
+     */
     @FXML
     protected LevelCompletePopUpController LevelCompletePopUpController;
 
+    /**
+     * JavaFX BorderPane for GameCompletePopUp
+     */
     @FXML
     protected BorderPane GameCompletePopUp;
 
+    /**
+     * Controller for GameCompletePopUp
+     * @see GameCompletePopUpController
+     */
     @FXML
     protected GameCompletePopUpController GameCompletePopUpController;
 
+    /**
+     * JavaFX BorderPane for ExitPopUp
+     */
     @FXML
     protected BorderPane ExitPopUp;
 
+    /**
+     * Controller for ExitPopUp
+     * @see ExitPopUpController
+     */
     @FXML
     protected ExitPopUpController ExitPopUpController;
 
     /**
-     * The Content Pane reserved for add draggable object into
+     * JavaFX Pane for DraggableFloor
      */
     @FXML
-    private Pane content;
+    private Pane DraggableFloor;
 
     /**
-     * The First Level grid to add preview Floor when dragging and hovering Floor behind
+     * Controller for DraggableFloor
+     * @see DraggableFloorController
      */
     @FXML
-    private GridPane previewGrid;
+    private DraggableFloorController DraggableFloorController;
 
-    //TextBinding: Score of current game, top_right
-    @FXML
-    private Label Score;
-
-    @FXML
-    private Label Time_Spend;
-
-    //Group: Content Group, used to be blurred when pop up shows
-
+    /**
+     * Content Group, used for blurring when pop up shows
+     */
     @FXML
     private Group Can_Blur_Group;
 
+    /**
+     * The Background Image of this game, will dynamically change between levels
+     */
     @FXML
     private ImageView Background_Image;
 
 
-    //Assigned to numbers
 
+
+    /**
+     * Text for Binding: Score of current game, on the top_right
+     */
+    @FXML
+    private Label Score;
+
+    /**
+     * Text for Binding: Time duration spend, on the top-right
+     */
+    @FXML
+    private Label Time_Spend;
+
+    /**
+     * Text for Binding: index for this level, on the top
+     */
     @FXML
     private Label This_Level_Index;
 
+    /**
+     * Text for Binding: count for all levels, on the top
+     */
     @FXML
     private Label All_Level_Count;
 
 
 
-    // Map to manipulate
 
+    /**
+     * The JavaFX GridPane as stageGrid to add Wall and Floor, assigned in constructor
+     */
     @FXML
     private volatile GridPane stageGrid;
 
+    /**
+     * The JavaFX GridPane as objectsGrid to add Crate and Player, assigned in constructor
+     */
     @FXML
     private volatile GridPane objectsGrid;
 
+    /**
+     * The JavaFX GridPane as diamondsGrid to add Diamond, assigned in constructor
+     */
     @FXML
     private volatile GridPane diamondsGrid;
 
+    /**
+     * The JavaFX GridPane as candyGrid to add Candy, assigned in constructor
+     */
     @FXML
     private volatile GridPane candyGrid;
 
 
-    // Controllers to control LevelCompleteView and GameCompleteView
-
-
+    /**
+     * GameMediaPlayer instance
+     */
     private GameMediaPlayer player = GameMediaPlayer.getInstance();
 
+    /**
+     * GameDocument Instance
+     */
     private volatile GameDocument gameDocument = Main.gameDocument;
 
+    /**
+     * GraphicRender to render maps
+     */
     public volatile static GraphicRender render;
 
+    /**
+     * The current game status
+     * @see GameStatus
+     */
     private GameStatus gameStatus = GameStatus.READY;
 
+    /**
+     * The concurrent game timer to count time
+     */
     private GameTimer timer = new GameTimer();
 
+    /**
+     * The hashmap to store all sound effects, can get the AudioClip by searching the name
+     * with (SFX Name, AudioClip) pair
+     */
     public static HashMap<String, AudioClip> soundEffects = GameMediaPlayer.getInstance().soundEffects;
 
+    /**
+     * whether can undo at this status
+     * bind to view to determine if the undo button can click
+     * bind to GameStageSaver.canUndo
+     */
     private final BooleanProperty canUndo = new SimpleBooleanProperty(true);
 
+    /**
+     * whether is Cheating at this time (Crate is left up for moving)
+     */
     public static BooleanProperty isCheating = new SimpleBooleanProperty(false);
 
-    // undo
+    /**
+     * KeyCombination of Ctrl(Command) + Z for undo
+     */
     private final KeyCombination keyCombCtrZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
 
-    // mute
+    /**
+     * KeyCombination of Ctrl(Command) + M for Music
+     */
     private final KeyCombination keyCombCtrM = new KeyCodeCombination(KeyCode.M, KeyCombination.SHORTCUT_DOWN);
 
-    // save
+    /**
+     * KeyCombination of Ctrl(Command) + S for Save
+     */
     private final KeyCombination keyCombCtrS = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
 
 
-    public void initialize() throws IllegalStateException {
+    /**
+     * Initialize the GameView and Controller
+     * set the background image to a random one
+     * bind the level index, level count, steps and time count with the one in GameDocument
+     * render the game map with the map in GameDocument
+     *
+     */
+    public void initialize() {
+        player.setMusic(MediaState.STOP);
+        player.setMusic(MediaState.PLAY);
 
         isCheating.setValue(false);
 
         Background_Image.setImage(ResourceFactory.getRandomBackgroundImage());
-
-        super.disableButton("High score");
 
         This_Level_Index.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
 
@@ -170,10 +257,23 @@ public class GameViewController extends AbstractBarController {
         Score.textProperty().bindBidirectional(this.gameDocument.movesCount, converter);
     }
 
+    /**
+     * whether at this time the animation is happening or not
+     * will ignore all key events if still animating
+     */
     private final BooleanProperty isAnimating = new SimpleBooleanProperty(false);
 
+    /**
+     * whether at this time the gameView is blurred or not
+     * will ignore all key events if still animating
+     */
     private final BooleanProperty isBlur = new SimpleBooleanProperty(false);
 
+    /**
+     * handle the key event in the game view
+     * like the WSAD, Up Down Left and Right
+     * @param event keyboard event
+     */
     public void handleKey(KeyEvent event) {
 
         // simply ignore keys when animating
@@ -197,19 +297,18 @@ public class GameViewController extends AbstractBarController {
         }
 
         // if is shortcuts
-
         if (keyCombCtrZ.match(event)) {
-            this.clickUndo(null);
+            this.clickUndo();
             return;
         }
 
         if (keyCombCtrM.match(event)) {
-            this.clickToggleMusic(null);
+            this.menuBarClickMusic();
             return;
         }
 
         if (keyCombCtrS.match(event)) {
-            this.clickSaveGame(null);
+            this.clickSaveGame();
             return;
         }
 
@@ -247,7 +346,7 @@ public class GameViewController extends AbstractBarController {
                 try {
                     cheatingCrate.moveBy(direction);
                 } catch (IllegalMovementException e) {
-                    e.printStackTrace();
+                    logger.severe(e.getMessage());
                 }
             } else {
                 cheatingCrate.shakeAnimation(direction);
@@ -263,11 +362,10 @@ public class GameViewController extends AbstractBarController {
                 this.gameDocument.getPlayer().moveBy(direction);
                 this.gameDocument.movesCount.set(this.gameDocument.movesCount.getValue() + 1);
                 if (player.eatingCrate(gameDocument.getCurrentLevel().candyGrid)) {
-                    addDraggableItem();
+                    DraggableFloorController.addDraggableItem();
                 }
-
             } catch (IllegalMovementException e) {
-                e.printStackTrace();
+                logger.severe(e.getMessage());
             }
         } else {
             player.headTo(direction);
@@ -276,11 +374,10 @@ public class GameViewController extends AbstractBarController {
         checkIsLevelComplete();
     }
 
-    @FXML
-    private void clickToggleDebug() {
-        menuBarClickDebug();
-    }
-
+    /**
+     * Check if this level is complete
+     * if so, pop up the LevelCompletePopUp with steps and time duration
+     */
     private void checkIsLevelComplete() {
         if (gameDocument.isLevelComplete()) {
             GameViewController.soundEffects.get("LEVEL_COMPLETE_AUDIO_CLIP").play();
@@ -305,6 +402,10 @@ public class GameViewController extends AbstractBarController {
         }
     }
 
+    /**
+     * Check if this Game is complete
+     * if so, pop up the GameCompletePopUp with steps and time duration, with text field where user can type in names to save record
+     */
     private void checkIsGameComplete() {
         if (gameDocument.isGameComplete()) {
             GameViewController.soundEffects.get("GAME_COMPLETE_AUDIO_CLIP").play();
@@ -343,6 +444,9 @@ public class GameViewController extends AbstractBarController {
         }
     }
 
+    /**
+     * Change to the next level, if no more level, then call checkIsGameComplete()
+     */
     private void switchToNextLevel() {
         if (gameDocument.isGameComplete()) {
             checkIsGameComplete();
@@ -358,25 +462,30 @@ public class GameViewController extends AbstractBarController {
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
     }
 
+    /**
+     * click undo button
+     */
     @FXML
-    private void clickToggleMusic(MouseEvent mouseEvent) {
-        menuBarClickMusic();
-    }
-
-    @FXML
-    private void clickUndo(MouseEvent mouseEvent) {
+    private void clickUndo() {
         if (gameDocument.undo()) {
             render.renderMap(gameDocument.getCurrentLevel());
         }
     }
 
+    /**
+     * click save game button
+     */
     @FXML
-    private void clickSaveGame(MouseEvent mouseEvent) {
+    private void clickSaveGame() {
         GameStageSaver.saveToFile(this.gameDocument);
     }
 
+    /**
+     * click back to menu button
+     * will pop up a alert where you can save your game with advice
+     */
     @FXML
-    private void clickToMenu(MouseEvent mouseEvent) {
+    private void clickToMenu() {
 
         gaussianBlur();
         ExitPopUpController.show();
@@ -401,134 +510,22 @@ public class GameViewController extends AbstractBarController {
 
     }
 
+    /**
+     * exit the state where game view is in Gaussian Blur
+     */
     private void exitGaussianBlur() {
         Can_Blur_Group.setEffect(null);
         this.isBlur.setValue(false);
     }
 
+    /**
+     * enter the state where game view is in Gaussian Blur
+     */
     private void gaussianBlur() {
         GaussianBlur gaussianBlur = new GaussianBlur();
         gaussianBlur.setRadius(20);
         Can_Blur_Group.setEffect(gaussianBlur);
         this.isBlur.setValue(true);
-    }
-
-    @FXML
-    private void clickHighScoreList(MouseEvent mouseEvent) {
-        menuBarClickHighScoreList();
-    }
-
-
-
-
-    // Dragging Stage
-
-    // Draggable Object on the top right
-
-
-    private final ArrayList<ImageView> DragList = new ArrayList<>();
-
-    @FXML
-    private void addDraggableItem() {
-
-        ImageView stageDrag = new ImageView((Image)ResourceFactory.getResource("STAGE_DRAG_IMAGE", ResourceType.Image));
-
-        stageDrag.setLayoutX(1234);
-        stageDrag.setLayoutY(70 + DragList.size() * 70);
-
-        stageDrag.setOnMouseReleased(this::draggingOnMouseReleased);
-        stageDrag.setOnMouseDragged(this::previewDragging);
-        stageDrag.setOnMousePressed(this::selectDragging);
-
-        DragList.add(stageDrag);
-        content.getChildren().add(stageDrag);
-        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), stageDrag);
-        scaleTransition.setFromX(0.01);
-        scaleTransition.setFromY(0.01);
-        scaleTransition.setToX(1);
-        scaleTransition.setToY(1);
-        scaleTransition.play();
-    }
-
-    private void draggingOnMouseReleased(MouseEvent mouseEvent) {
-        double x = mouseEvent.getSceneX() + 20 - 195;
-        double y = mouseEvent.getSceneY() + 15 - 55;
-        int xIndex = (int) (x / 48);
-        int yIndex = (int) (y / 30);
-        int XBound = gameDocument.getCurrentLevel().floorGrid.getX();
-        int YBound = gameDocument.getCurrentLevel().floorGrid.getY();
-
-        if (xIndex < 0 || xIndex >= XBound || yIndex < 0 || yIndex >= YBound) {
-            addDraggableItem();
-            rePositionDraggings();
-            chosenView.setVisible(false);
-            return;
-        }
-        AbstractGameObject clickedObject = gameDocument.getCurrentLevel().floorGrid.getGameObjectAt(xIndex, yIndex);
-        if (clickedObject instanceof Wall) {    // put the Floor at this position
-            gameDocument.getCurrentLevel().floorGrid.putGameObjectAt(new Floor(gameDocument.getCurrentLevel(), xIndex, yIndex), new Point(xIndex, yIndex));
-            render.renderMap(gameDocument.getCurrentLevel());
-            chosenView.setVisible(false);
-            previewGrid.getChildren().clear();
-            rePositionDraggings();
-        } else {
-            addDraggableItem();
-            rePositionDraggings();
-            chosenView.setVisible(false);
-            return;
-        }
-    }
-
-    private void rePositionDraggings() {
-        for (ImageView view : DragList) {
-            view.setLayoutX(1234);
-            view.setLayoutY(70 + DragList.indexOf(view) * 70);
-        }
-    }
-
-    private static final ImageView preview = new ImageView((Image)ResourceFactory.getResource("STAGE_IMAGE", ResourceType.Image));
-
-    static {
-        preview.setFitWidth(48);
-        preview.setFitHeight(48);
-        preview.setOpacity(0.6);
-    }
-
-    ImageView chosenView;
-
-
-    private void selectDragging(MouseEvent mouseEvent) {
-        chosenView = DragList.remove(DragList.size() - 1);
-        rePositionDraggings();
-    }
-
-    private void previewDragging(MouseEvent mouseEvent) {
-
-        double x = mouseEvent.getSceneX() + 20 - 195;
-        double y = mouseEvent.getSceneY() + 15 - 55;
-        int xIndex = (int) (x / 48);
-        int yIndex = (int) (y / 30);
-        int XBound = gameDocument.getCurrentLevel().floorGrid.getX();
-        int YBound = gameDocument.getCurrentLevel().floorGrid.getY();
-
-        previewGrid.getChildren().clear();
-
-        if (xIndex < 0 || xIndex >= XBound || yIndex < 0 || yIndex >= YBound) {
-            chosenView.setLayoutX(mouseEvent.getSceneX());
-            chosenView.setLayoutY(mouseEvent.getSceneY() - 15);
-            return;
-        }
-        AbstractGameObject clickedObject = gameDocument.getCurrentLevel().floorGrid.getGameObjectAt(xIndex, yIndex);
-        if (clickedObject instanceof Wall){
-            chosenView.setOpacity(0.3);
-            chosenView.setLayoutX(mouseEvent.getSceneX());
-            chosenView.setLayoutY(mouseEvent.getSceneY());
-            previewGrid.add(preview, xIndex, yIndex);
-        } else {
-            chosenView.setLayoutX(mouseEvent.getSceneX());
-            chosenView.setLayoutY(mouseEvent.getSceneY());
-            return;
-        }
     }
 }
 

@@ -3,7 +3,7 @@ package com.ae2dms.Business;
 import com.ae2dms.Business.Data.Level;
 import com.ae2dms.GameObject.Objects.IllegalMovementException;
 import com.ae2dms.GameObject.Objects.Player;
-import javafx.collections.ObservableList;
+import com.ae2dms.IO.MapFileLoader;
 import javafx.embed.swing.JFXPanel;
 import org.apache.maven.shared.utils.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -12,13 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.powermock.reflect.Whitebox;
 
 import java.awt.*;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GameDocumentTest {
 
@@ -38,7 +37,7 @@ class GameDocumentTest {
     }
 
     @Test
-    public void testInitialization1() {
+    public void testInitialization1() throws MapFileLoader.ErrorMapFileLoadException {
         InputStream in = getClass().getClassLoader().getResourceAsStream("level/debugLevel.skb");
         document = new GameDocument(in);
         assertEquals(document.bestRecord.getValue(), 0);
@@ -54,7 +53,7 @@ class GameDocumentTest {
     }
 
     @Test
-    public void testInitialization2() {
+    public void testInitialization2() throws MapFileLoader.ErrorMapFileLoadException {
         InputStream in = getClass().getClassLoader().getResourceAsStream("level/SampleGame.skb");
         document = new GameDocument(in);
         assertEquals(document.mapSetName, "Example Game!");
@@ -71,7 +70,7 @@ class GameDocumentTest {
     }
 
     @Test
-    public void testSerializeInitialState() throws IllegalMovementException {
+    public void testSerializeInitialState() throws IllegalMovementException, MapFileLoader.ErrorMapFileLoadException {
         InputStream in = getClass().getClassLoader().getResourceAsStream("level/debugLevel.skb");
         document = new GameDocument(in);
         Level initialLevel = document.getCurrentLevel();
@@ -85,7 +84,7 @@ class GameDocumentTest {
     }
 
     @Test
-    public void testUndo() throws IllegalMovementException {
+    public void testUndo() throws IllegalMovementException, MapFileLoader.ErrorMapFileLoadException {
         InputStream in = getClass().getClassLoader().getResourceAsStream("level/debugLevel.skb");
         document = new GameDocument(in);
         Level initialLevel = document.getCurrentLevel();

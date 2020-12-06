@@ -58,9 +58,7 @@
          <Image url="@../Assets/Menu/Sokoban.png" />
       </ImageView>
       <ImageView layoutX="217.0" layoutY="318.0" onMouseClicked="#clickLoadMapFile" styleClass="Button">
-         <image>
-            <Image url="@../Assets/Menu/Open_Map_Button.png" />
-         </image>
+         <Image url="@../Assets/Menu/Open_Map_Button.png"/>
       </ImageView>
       <ImageView layoutX="217.0" layoutY="408.0" onMouseClicked="#clickLoadGame" styleClass="Button">
          <Image url="@../Assets/Menu/Open_SaveFile_Button.png" />
@@ -93,27 +91,27 @@
       </ImageView>
 
       <!--     Undo button    -->
-      <ImageView fx:id="undoSwitch" accessibleRole="BUTTON" layoutX="410.0" layoutY="667.0" onMouseClicked="#clickUndo" styleClass="Button">
+      <ImageView fx:id="undoSwitch" accessibleRole="BUTTON" layoutX="410.0" layoutY="667.0" styleClass="Button">
          <Image url="@../Assets/BottomBar/Undo.png" />
       </ImageView>
 
       <!--     Music button    -->
-      <ImageView accessibleRole="BUTTON" layoutX="533.0" layoutY="667.0" onMouseClicked="#clickToggleMusic" styleClass="Button">
+      <ImageView accessibleRole="BUTTON" layoutX="533.0" layoutY="667.0" onMouseClicked="#menuBarClickMusic" styleClass="Button">
          <Image url="@../Assets/BottomBar/Music_off.png" />
       </ImageView>
 
       <!--     Debug button    -->
-      <ImageView fx:id="debugSwitch" accessibleRole="BUTTON" layoutX="662.0" layoutY="667.0" onMouseClicked="#clickToggleDebug" styleClass="Button">
+      <ImageView fx:id="debugSwitch" accessibleRole="BUTTON" layoutX="662.0" layoutY="667.0" styleClass="Button">
          <Image url="@../Assets/BottomBar/Debug_off.png" />
       </ImageView>
 
       <!--     Save Game button    -->
-      <ImageView fx:id="saveGameSwitch" accessibleRole="BUTTON" layoutX="863.0" layoutY="667.0" onMouseClicked="#clickSaveGame" styleClass="Button">
+      <ImageView fx:id="saveGameSwitch" accessibleRole="BUTTON" layoutX="863.0" layoutY="667.0" styleClass="Button">
          <Image url="@../Assets/BottomBar/Save_Game.png" />
       </ImageView>
 
       <!--     High Score List button    -->
-      <ImageView fx:id="highScoreSwitch" accessibleRole="BUTTON" layoutX="1046.0" layoutY="667.0" onMouseClicked="#clickHighScoreList" styleClass="Button">
+      <ImageView fx:id="highScoreSwitch" accessibleRole="BUTTON" layoutX="1046.0" layoutY="667.0" onMouseClicked="#menuBarClickHighScoreList" styleClass="Button">
          <Image url="@../Assets/BottomBar/High_Score_List_off.png" />
       </ImageView>
 

@@ -14,7 +14,7 @@
             <ImageView fx:id="Background_Image" fitHeight="720.0" fitWidth="1673.0">
                   <Image url="@../Assets/Game/GameBackground1.jpg" />
             </ImageView>
-            <Pane fx:id="content">
+            <Pane>
                <children>
 
                    <GridPane fx:id="stageGrid" layoutX="195.0" layoutY="55.0">
@@ -120,60 +120,6 @@
 
                        </children>
                    </GridPane>
-
-
-                   <!--     previewGrid  -->
-                   <GridPane fx:id="previewGrid" layoutX="195.0" layoutY="55.0">
-                       <columnConstraints>
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
-                       </columnConstraints>
-                       <rowConstraints>
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                       </rowConstraints>
-                       <children>
-
-
-                       </children>
-                   </GridPane>
-
 
                    <!--     candyGrid  -->
                    <GridPane fx:id="candyGrid" layoutX="195.0" layoutY="55.0" mouseTransparent="true">
@@ -338,6 +284,10 @@
                            </Group>
                        </children>
                    </Group>
+
+                   <!--     DraggableFloor   -->
+                   <fx:include source="DraggableFloorPane.fxml" fx:id="DraggableFloor"/>
+
                </children>
             </Pane>
 
@@ -361,12 +311,12 @@
             </ImageView>
       
                               <!--     Music button    -->
-            <ImageView accessibleRole="BUTTON" layoutX="533.0" layoutY="2.0" onMouseClicked="#clickToggleMusic" styleClass="Button">
+            <ImageView accessibleRole="BUTTON" layoutX="533.0" layoutY="2.0" onMouseClicked="#menuBarClickMusic" styleClass="Button">
                <Image url="@../Assets/BottomBar/Music_off.png" />
             </ImageView>
       
                               <!--     Debug button    -->
-            <ImageView fx:id="debugSwitch" accessibleRole="BUTTON" layoutX="662.0" layoutY="2.0" onMouseClicked="#clickToggleDebug" styleClass="Button">
+            <ImageView fx:id="debugSwitch" accessibleRole="BUTTON" layoutX="662.0" layoutY="2.0" onMouseClicked="#menuBarClickDebug" styleClass="Button">
                <Image url="@../Assets/BottomBar/Debug_off.png" />
             </ImageView>
       
@@ -376,7 +326,7 @@
             </ImageView>
 
                          <!--     High Score List button    -->
-             <ImageView fx:id="highScoreSwitch" accessibleRole="BUTTON" layoutX="1046.0" layoutY="2.0" onMouseClicked="#clickHighScoreList" styleClass="Button">
+             <ImageView fx:id="highScoreSwitch" accessibleRole="BUTTON" layoutX="1046.0" layoutY="2.0" onMouseClicked="#menuBarClickHighScoreList" styleClass="Button">
                  <Image url="@../Assets/BottomBar/High_Score_List_off.png" />
              </ImageView>
       
@@ -409,9 +359,5 @@
 
        <!--     ExitPopUp   -->
        <fx:include source="ExitPopUp.fxml" fx:id="ExitPopUp" visible="false"/>
-
-
-
-
    </children>
 </Pane>

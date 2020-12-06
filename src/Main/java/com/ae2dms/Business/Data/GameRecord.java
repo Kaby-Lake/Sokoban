@@ -7,6 +7,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import java.io.*;
 import java.util.*;
 
+import static com.ae2dms.Business.GameDocument.logger;
+
 public class GameRecord implements Serializable {
 
     /**
@@ -70,7 +72,7 @@ public class GameRecord implements Serializable {
             out.print(GameStageSaver.encode(this));
             out.close();
         } catch (IOException e){
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         }
     }
 
@@ -140,7 +142,7 @@ public class GameRecord implements Serializable {
             }
         } catch (EOFException e) {
         } catch (IOException | ClassNotFoundException e){
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         }
     }
 

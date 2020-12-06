@@ -1,7 +1,6 @@
 package com.ae2dms.IO;
 
 import com.ae2dms.Business.Data.Level;
-import com.ae2dms.Business.GameDebugger;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,6 +8,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.ae2dms.Business.GameDocument.logger;
+
+/**
+ * helper class to load map file into game Document
+ * can detect which line is incorrect in the sysout
+ */
 public class MapFileLoader {
     private final ArrayList<Level> levels;
     private String mapSetName;
@@ -18,7 +23,9 @@ public class MapFileLoader {
         levels = new ArrayList<>(5);
     }
 
-    // return an unmodifiable list
+    /**
+     * @return an unmodifiable list of levels
+     */
     public List<Level> getLevels() {
         return Collections.unmodifiableList(this.levels);
     }
@@ -27,6 +34,13 @@ public class MapFileLoader {
         return this.mapSetName;
     }
 
+    /**
+     * load the map file from input stream
+     * @param input map file input stream
+     * @return if this is a valid map file
+     * @throws IOException
+     * @throws NullPointerException
+     */
     public boolean loadMapFile(InputStream input) throws IOException, NullPointerException {
 
 
@@ -81,12 +95,18 @@ public class MapFileLoader {
         return true;
     }
 
+    /**
+     * detect whether this is a valid map or not
+     * if not, will show in detail which line is incorrect in sysout
+     * @param rawMap the map in war string
+     * @return boolean whether is valid
+     */
     private boolean validMap(String rawMap) {
         ModifiedBufferReader reader = new ModifiedBufferReader(new StringReader(rawMap));
         try {
             String firstLine = reader.readLineAndAddPointer();
             if (!firstLine.matches("MapSetName: .+")) {
-                GameDebugger.logLoadMapFailureWithReason(reader.getPointer(), "FirstLine does not match \"MapSetName: $Name\"");
+                logLoadMapFailureWithReason(reader.getPointer(), "FirstLine does not match \"MapSetName: $Name\"");
                 return false;
             }
             boolean atLeastOneLevel = false;
@@ -97,7 +117,7 @@ public class MapFileLoader {
                 if (line.contains("LevelName: ")) {
                     int mapLineCount = 0;
                     if (!line.matches("LevelName: .+")) {
-                        GameDebugger.logLoadMapFailureWithReason(reader.getPointer(), "The Start of Every Level does not match \"LevelName: $Name\"");
+                        logLoadMapFailureWithReason(reader.getPointer(), "The Start of Every Level does not match \"LevelName: $Name\"");
                         return false;
                     }
                     while (true) {
@@ -105,38 +125,38 @@ public class MapFileLoader {
                         if (mapLine == null) {
                             atLeastOneLevel = true;
                             if (mapLineCount == 0) {
-                                GameDebugger.logLoadMapFailureWithReason(reader.getPointer(), "Every Level should have at least one line");
+                                logLoadMapFailureWithReason(reader.getPointer(), "Every Level should have at least one line");
                                 return false;
                             }
                             if (mapLineCount > 20) {
-                                GameDebugger.logLoadMapFailureWithReason(reader.getPointer(), "Every Level should at mose have 20 line");
+                                logLoadMapFailureWithReason(reader.getPointer(), "Every Level should at mose have 20 line");
                                 return false;
                             }
                             break outer;
                         };
                         if ("".equals(mapLine)) break;
                         if (!mapLine.matches("^[Ww][WwCcDdSsYy ]{18}([Ww] ?)$")) {
-                            GameDebugger.logLoadMapFailureWithReason(reader.getPointer(), "This line does not match the format of Map");
+                            logLoadMapFailureWithReason(reader.getPointer(), "This line does not match the format of Map");
                             return false;
                         }
                         mapLineCount++;
                     }
                     atLeastOneLevel = true;
                     if (mapLineCount == 0) {
-                        GameDebugger.logLoadMapFailureWithReason(reader.getPointer(), "Every Level should have at least one line");
+                        logLoadMapFailureWithReason(reader.getPointer(), "Every Level should have at least one line");
                         return false;
                     }
                     if (mapLineCount > 20) {
-                        GameDebugger.logLoadMapFailureWithReason(reader.getPointer(), "Every Level should at mose have 20 line");
+                        logLoadMapFailureWithReason(reader.getPointer(), "Every Level should at mose have 20 line");
                         return false;
                     }
                 } else {
-                    GameDebugger.logLoadMapFailureWithReason(reader.getPointer(), "The Start of Every Level does not match \"LevelName: $Name\"");
+                    logLoadMapFailureWithReason(reader.getPointer(), "The Start of Every Level does not match \"LevelName: $Name\"");
                     return false;
                 }
             }
             if (!atLeastOneLevel) {
-                GameDebugger.logLoadMapFailureWithReason(reader.getPointer(), "Every MapSet should have at least 1 Level");
+                logLoadMapFailureWithReason(reader.getPointer(), "Every MapSet should have at least 1 Level");
                 return false;
             }
 
@@ -149,6 +169,17 @@ public class MapFileLoader {
     public int getMapHashCode() {
         return rawMapFile.hashCode();
     }
+
+    private void logLoadMapFailureWithReason(int pointer, String message) {
+        logger.info("Error in Line 👉 " + pointer + " " + message);
+    }
+
+    public static class ErrorMapFileLoadException extends Throwable {
+    }
+
+    public static class ErrorSaveFileLoadException extends Throwable {
+    }
+
 }
 
 class ModifiedBufferReader extends BufferedReader {
@@ -167,3 +198,6 @@ class ModifiedBufferReader extends BufferedReader {
         return pointer;
     }
 }
+
+
+

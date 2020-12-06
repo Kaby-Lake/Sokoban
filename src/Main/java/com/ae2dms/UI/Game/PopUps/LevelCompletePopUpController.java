@@ -1,14 +1,14 @@
 package com.ae2dms.UI.Game.PopUps;
 
 import com.ae2dms.UI.ViewUtilities;
-import javafx.animation.Interpolator;
-import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.util.Duration;
 
+/**
+ * The controller for LevelCompletePopUp
+ */
 public class LevelCompletePopUpController {
 
     /**

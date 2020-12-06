@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import static com.ae2dms.Business.GameDocument.logger;
+
 public class ResourceFactory {
 
     //                              name     url
@@ -117,7 +119,7 @@ public class ResourceFactory {
         try {
             return ResourceFactory.class.getResource(url).toURI().toString();
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         }
         return null;
     }

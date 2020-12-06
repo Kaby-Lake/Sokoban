@@ -13,6 +13,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
+/**
+ * The controller for GameCompletePopUp
+ */
 public class GameCompletePopUpController {
 
     int timeDuration;

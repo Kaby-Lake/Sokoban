@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 
+import static com.ae2dms.Business.GameDocument.logger;
+
 public class GameStageSaver {
 
     /**
@@ -52,7 +54,7 @@ public class GameStageSaver {
             }
             GameDocumentJsonList.add(encode(object));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         }
     }
 
@@ -68,7 +70,7 @@ public class GameStageSaver {
             }
             return (GameDocument) decode(GameDocumentJsonList.remove(GameDocumentJsonList.size() - 1));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         }
         return null;
     }
@@ -80,7 +82,7 @@ public class GameStageSaver {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public static Object decode(String coding) throws IOException, ClassNotFoundException {
+    public static Object decode(String coding) throws IOException, ClassNotFoundException, IllegalArgumentException {
         byte[] data = Base64.getDecoder().decode(coding);
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
         Object object = ois.readObject();
@@ -111,7 +113,7 @@ public class GameStageSaver {
         try {
             initialGameDocumentState = encode(object);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         }
     }
 
@@ -126,7 +128,7 @@ public class GameStageSaver {
             }
             return (GameDocument) decode(initialGameDocumentState);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         }
         return null;
     }
@@ -157,7 +159,7 @@ public class GameStageSaver {
                 writer.write(encode(object));
                 writer.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.severe(e.getMessage());
             }
         }
     }

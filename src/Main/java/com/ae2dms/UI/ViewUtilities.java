@@ -6,6 +6,9 @@ import javafx.animation.ScaleTransition;
 import javafx.scene.Node;
 import javafx.util.Duration;
 
+/**
+ * The static helper class to add Transition effects to Nodes
+ */
 public class ViewUtilities {
 
     /**
@@ -29,6 +32,10 @@ public class ViewUtilities {
         scaleTransition.play();
     }
 
+    /**
+     * add pup up effects to the specified node
+     * @param view the node to add effect
+     */
     public static void popUp(Node view) {
         view.setVisible(true);
         ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(300), view);
@@ -40,6 +47,10 @@ public class ViewUtilities {
         scaleTransition.play();
     }
 
+    /**
+     * add fade out effects to the specified node, will disappear in the end
+     * @param view the node to add effect
+     */
     public static void fadeOut(Node view) {
         FadeTransition fadeTransition = new FadeTransition(Duration.millis(300), view);
         fadeTransition.setFromValue(1);

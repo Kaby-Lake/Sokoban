@@ -76,7 +76,7 @@ public class GameDocument implements Serializable {
      */
     public static transient GameRecord records = new GameRecord();
 
-    public GameDocument(InputStream input) {
+    public GameDocument(InputStream input) throws MapFileLoader.ErrorMapFileLoadException {
         init(input);
     }
 
@@ -84,7 +84,7 @@ public class GameDocument implements Serializable {
      * the init method to call when load a new GameDocument
      * @param input input stream of raw map
      */
-    private void init(InputStream input) {
+    private void init (InputStream input) throws MapFileLoader.ErrorMapFileLoadException {
         logger = new GameLogger();
         try {
             loadMapFile(input);
@@ -117,12 +117,12 @@ public class GameDocument implements Serializable {
      * will change the levels, mapSetName and initialMapHashCode accordingly
      * @param input input stream of raw map
      */
-    private void loadMapFile(InputStream input) {
+    private void loadMapFile(InputStream input) throws MapFileLoader.ErrorMapFileLoadException {
         MapFileLoader loader = new MapFileLoader();
         try {
             if (!loader.loadMapFile(input)) {
                 GameDebugger.logLoadMapFailure();
-                return;
+                throw new MapFileLoader.ErrorMapFileLoadException();
             }
             this.levels = loader.getLevels();
             this.mapSetName = loader.getMapSetName();
@@ -194,7 +194,7 @@ public class GameDocument implements Serializable {
      * will flush all data and state stored before
      * @param input the InputStream of the map file
      */
-    public void reloadMapFromFile(InputStream input) {
+    public void reloadMapFromFile(InputStream input) throws MapFileLoader.ErrorMapFileLoadException {
         this.currentLevel = null;
         this.init(input);
         this.movesCount.set(0);
@@ -205,13 +205,14 @@ public class GameDocument implements Serializable {
      * will flush all data and state stored before
      * @param input the InputStream of the save file
      */
-    public void reloadStateFromFile(InputStream input) {
+    public void reloadStateFromFile(InputStream input) throws MapFileLoader.ErrorSaveFileLoadException {
         Scanner s = new Scanner(input);
         String result = s.hasNext() ? s.next() : "";
         GameDocument restoreObject = null;
         try {
             restoreObject = (GameDocument)GameStageSaver.decode(result);
-        } catch (IOException | ClassNotFoundException ignored) {
+        } catch (IOException | ClassNotFoundException | IllegalArgumentException e) {
+            throw new MapFileLoader.ErrorSaveFileLoadException();
         }
         if (restoreObject == null) {
             GameDebugger.logErrorMessage("not a valid skbsave file");
@@ -231,7 +232,7 @@ public class GameDocument implements Serializable {
             this.bestRecordSerializable = this.bestRecord.getValue();
             GameStageSaver.pushInitialState(this);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         }
     }
 
@@ -246,7 +247,7 @@ public class GameDocument implements Serializable {
             this.bestRecordSerializable = this.bestRecord.getValue();
             GameStageSaver.push(this);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         }
     }
 
@@ -292,5 +293,4 @@ public class GameDocument implements Serializable {
         }
         return false;
     }
-
 }

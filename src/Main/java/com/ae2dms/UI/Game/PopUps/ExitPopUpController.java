@@ -6,9 +6,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
-public class ExitPopUpController {
 
-    //Group: Confirm Exit Pop Up
+/**
+ * Controller for ExitPopUp
+ */
+public class ExitPopUpController {
 
     @FXML
     private BorderPane Confirm_Exit_Pop_Up;
