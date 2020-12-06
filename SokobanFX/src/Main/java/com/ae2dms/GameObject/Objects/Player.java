@@ -122,7 +122,7 @@ public class Player extends AbstractGameObject implements Movable {
         }
     }
 
-    private boolean isOnCandy() {
+    public boolean isOnCandy() {
         return level.candyGrid.getGameObjectAt(at()) instanceof Candy;
     }
 
@@ -161,10 +161,11 @@ public class Player extends AbstractGameObject implements Movable {
         translateTransition.play();
     }
 
-    public boolean eatingCrate(GameGrid candyGrid) {
-        AbstractGameObject object = candyGrid.getGameObjectAt(this.xPosition, this.yPosition);
+    public boolean eatingCrate() {
+        AbstractGameObject object = level.candyGrid.getGameObjectAt(this.xPosition, this.yPosition);
         if (object instanceof Candy) {
             ((Candy)object).eat();
+            level.eatenCandyCount++;
             return true;
         }
         return false;

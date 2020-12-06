@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameDocumentTest {
 
@@ -74,13 +75,14 @@ class GameDocumentTest {
         InputStream in = getClass().getClassLoader().getResourceAsStream("level/debugLevel.skb");
         document = new GameDocument(in);
         Level initialLevel = document.getCurrentLevel();
+        String initialString = initialLevel.toString();
         Player player = document.getPlayer();
         for (int i = 0; i < 7; i++) {
             player.moveBy(new Point(1, 0));
             document.serializeCurrentState();
         }
         document.restoreObject(GameStageSaver.getInitialState());
-        assertEquals(document.getCurrentLevel().toString(), initialLevel.toString());
+        assertEquals(document.getCurrentLevel().toString(), initialString);
     }
 
     @Test
@@ -88,15 +90,18 @@ class GameDocumentTest {
         InputStream in = getClass().getClassLoader().getResourceAsStream("level/debugLevel.skb");
         document = new GameDocument(in);
         Level initialLevel = document.getCurrentLevel();
+        String initialString = initialLevel.toString();
         Player player = document.getPlayer();
+        document.serializeCurrentState();
         for (int i = 0; i < 7; i++) {
             player.moveBy(new Point(1, 0));
             document.serializeCurrentState();
         }
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 8; i++) {
             document.undo();
         }
-        assertEquals(document.getCurrentLevel().toString(), initialLevel.toString());
+        String current = document.getCurrentLevel().toString();
+        assertEquals(current, initialString);
     }
 
 }

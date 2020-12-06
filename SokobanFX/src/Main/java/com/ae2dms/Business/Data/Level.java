@@ -46,6 +46,12 @@ public final class Level implements Serializable {
      */
     private final int index;
 
+    /**
+     * The Candy that has already been eaten
+     */
+    public int eatenCandyCount = 0;
+
+
     Player player;
 
     /**

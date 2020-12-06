@@ -287,7 +287,7 @@ public class GameDocument implements Serializable {
     public boolean undo() {
         GameDocument restoreObject = GameStageSaver.pop();
         if (restoreObject != null) {
-            Main.gameDocument.restoreObject(restoreObject);
+            this.restoreObject(restoreObject);
             GameDebugger.logUndo(this);
             return true;
         }

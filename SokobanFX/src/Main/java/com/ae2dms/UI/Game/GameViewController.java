@@ -332,6 +332,11 @@ public class GameViewController extends AbstractBarController {
             case LEFT, A, H -> {
                 direction = new Point(-1, 0);
             }
+            case SPACE -> {
+            }
+            default -> {
+                return;
+            }
         }
         isAnimating.set(true);
 
@@ -361,7 +366,8 @@ public class GameViewController extends AbstractBarController {
             try {
                 this.gameDocument.getPlayer().moveBy(direction);
                 this.gameDocument.movesCount.set(this.gameDocument.movesCount.getValue() + 1);
-                if (player.eatingCrate(gameDocument.getCurrentLevel().candyGrid)) {
+                if (player.isOnCandy() ){
+                    player.eatingCrate();
                     DraggableFloorController.addDraggableItem();
                 }
             } catch (IllegalMovementException e) {
@@ -469,6 +475,7 @@ public class GameViewController extends AbstractBarController {
     private void clickUndo() {
         if (gameDocument.undo()) {
             render.renderMap(gameDocument.getCurrentLevel());
+            DraggableFloorController.refreshDragList();
         }
     }
 

@@ -17,6 +17,9 @@
             <Pane>
                <children>
 
+                   <!--     DraggableFloor   -->
+                   <fx:include source="DraggableFloorPane.fxml" fx:id="DraggableFloor"/>
+
                    <GridPane fx:id="stageGrid" layoutX="195.0" layoutY="55.0">
                        <columnConstraints>
                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="48.0" />
@@ -285,9 +288,6 @@
                        </children>
                    </Group>
 
-                   <!--     DraggableFloor   -->
-                   <fx:include source="DraggableFloorPane.fxml" fx:id="DraggableFloor"/>
-
                </children>
             </Pane>
 
@@ -295,7 +295,7 @@
       </Group>
 
        <!--     BottomHighScoreBar   -->
-       <fx:include source="HighScoreBar.fxml" fx:id="HighScoreBar" layoutY="668" visible="false"/>
+       <fx:include source="HighScoreBar.fxml" fx:id="HighScoreBar" layoutY="668"/>
 
       <Group layoutY="665.0">
          <children>

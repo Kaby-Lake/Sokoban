@@ -115,6 +115,29 @@ public class DraggableFloorController {
     }
 
     /**
+     * refresh all the dragging to sync with the count in Level
+     */
+    void refreshDragList() {
+        DragList.clear();
+        DraggableFloor.getChildren().clear();
+
+        for (int i = 0; i < gameDocument.getCurrentLevel().eatenCandyCount; i++) {
+
+            ImageView stageDrag = new ImageView((Image) ResourceFactory.getResource("STAGE_DRAG_IMAGE", ResourceType.Image));
+
+            stageDrag.setLayoutX(1234);
+            stageDrag.setLayoutY(70 + DragList.size() * 70);
+
+            stageDrag.setOnMouseReleased(this::draggingOnMouseReleased);
+            stageDrag.setOnMouseDragged(this::previewDragging);
+            stageDrag.setOnMousePressed(this::selectDragging);
+
+            DragList.add(stageDrag);
+            DraggableFloor.getChildren().add(stageDrag);
+        }
+    }
+
+    /**
      * Preview image of Floor, will be semi-transparent
      */
     private static final ImageView preview = new ImageView((Image)ResourceFactory.getResource("STAGE_IMAGE", ResourceType.Image));

@@ -130,6 +130,9 @@ class LevelTest extends ApplicationTest {
         Level testLevel1 = new Level("testLevelName", 1, level1Raw);
         Player player = testLevel1.getPlayerObject();
         player.moveBy(new Point(0, -1));
+        if (player.isOnCandy() ){
+            player.eatingCrate();
+        }
         assertNull(testLevel1.candyGrid.getGameObjectAt(13, 1));
         for (int i = 0; i < 3; i++) {
             player.moveBy(new Point(-1, 0));

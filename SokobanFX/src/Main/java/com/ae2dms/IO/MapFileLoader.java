@@ -171,7 +171,7 @@ public class MapFileLoader {
     }
 
     private void logLoadMapFailureWithReason(int pointer, String message) {
-        logger.info("Error in Line 👉 " + pointer + " " + message);
+        System.out.println("Error in Line 👉 " + pointer + " " + message);
     }
 
     public static class ErrorMapFileLoadException extends Throwable {
