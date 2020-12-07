@@ -1,10 +1,8 @@
 package com.ae2dms.Business.Data;
 
 import com.ae2dms.Business.GameDebugger;
-import com.ae2dms.GameObject.AbstractGameObject;
-import com.ae2dms.GameObject.GameObjectFactory;
-import com.ae2dms.GameObject.Objects.Crate;
-import com.ae2dms.GameObject.Objects.Player;
+import com.ae2dms.GameObject.*;
+import com.ae2dms.GameObject.Objects.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,34 +15,34 @@ public final class Level implements Serializable {
     /**
      * the GameGrid which only contains Floor Object, null at other positions
      *
-     * @see com.ae2dms.GameObject.Objects.Floor
+     * @see Floor
      */
-    public volatile GameGrid floorGrid;
+    public GameGrid floorGrid;
 
     /**
      * the GameGrid which only contains Player and Crate Object, null at other positions
      *
-     * @see com.ae2dms.GameObject.Objects.Crate
-     * @see com.ae2dms.GameObject.Objects.Player
+     * @see Crate
+     * @see Player
      */
-    public volatile GameGrid objectsGrid;
+    public GameGrid objectsGrid;
 
     /**
      * the GameGrid which only contains Diamond Object, null at other positions
      *
-     * @see com.ae2dms.GameObject.Objects.Diamond
+     * @see Diamond
      */
-    public volatile GameGrid diamondsGrid;
+    public GameGrid diamondsGrid;
 
     /**
      * the GameGrid which only contains Candy Object, null at other positions
      *
-     * @see com.ae2dms.GameObject.Objects.Candy
+     * @see Candy
      */
-    public volatile GameGrid candyGrid;
+    public GameGrid candyGrid;
 
     /**
-     * Name of this Level, assigned by reading skb from file
+     * Name of this Level, initialized by reading skb from file
      */
     private final String name;
 
@@ -60,7 +58,7 @@ public final class Level implements Serializable {
 
 
     /**
-     * The Player.
+     * The Player object in this level.
      */
     Player player;
 
@@ -158,19 +156,16 @@ public final class Level implements Serializable {
      */
     public boolean isComplete() {
         boolean isComplete = true;
-        for (int y = 0; y < objectsGrid.Y; y++) {
-            for (int x = 0; x < objectsGrid.X; x++) {
-                AbstractGameObject thisObject = objectsGrid.getGameObjectAt(x, y);
-                if (thisObject instanceof Crate && !((Crate) thisObject).isOnDiamond()) {
-                    isComplete = false;
-                }
+        for (AbstractGameObject thisObject : objectsGrid) {
+            if (thisObject instanceof Crate && !((Crate) thisObject).isOnDiamond()) {
+                isComplete = false;
             }
         }
         return isComplete;
     }
 
     /**
-     * Gets name.
+     * Gets the map name.
      *
      * @return getter of name
      */
@@ -179,7 +174,7 @@ public final class Level implements Serializable {
     }
 
     /**
-     * Gets index.
+     * Gets the map index.
      *
      * @return getter of index
      */
@@ -198,7 +193,7 @@ public final class Level implements Serializable {
     }
 
     /**
-     * @return print the four grids to string
+     * @return print the string which contains the four grids
      */
     @Override
     public String toString() {

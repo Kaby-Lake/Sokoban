@@ -7,6 +7,7 @@ import com.ae2dms.GameObject.Movable;
 import com.ae2dms.IO.ResourceFactory;
 import com.ae2dms.IO.ResourceType;
 import com.ae2dms.UI.Game.GameViewController;
+import static com.ae2dms.UI.Game.GameViewController.isAnimating;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;

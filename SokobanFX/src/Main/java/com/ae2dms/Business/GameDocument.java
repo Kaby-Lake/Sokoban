@@ -217,7 +217,7 @@ public class GameDocument implements Serializable {
      * will flush all data and state stored before
      *
      * @param input the InputStream of the map file
-     * @throws ErrorMapFileLoadException the error map file load exception
+     * @throws MapFileLoader.ErrorMapFileLoadException the error map file load exception
      */
     public void reloadMapFromFile(InputStream input) throws MapFileLoader.ErrorMapFileLoadException {
         this.currentLevel = null;
@@ -230,7 +230,7 @@ public class GameDocument implements Serializable {
      * will flush all data and state stored before
      *
      * @param input the InputStream of the save file
-     * @throws ErrorSaveFileLoadException the error save file load exception
+     * @throws MapFileLoader.ErrorSaveFileLoadException the error save file load exception
      */
     public void reloadStateFromFile(InputStream input) throws MapFileLoader.ErrorSaveFileLoadException {
         Scanner s = new Scanner(input);
@@ -296,6 +296,7 @@ public class GameDocument implements Serializable {
         this.levels = object.levels;
         this.playerObject = object.playerObject;
         this.initialMapHashCode = object.initialMapHashCode;
+        serializeInitialState();
     }
 
     /**

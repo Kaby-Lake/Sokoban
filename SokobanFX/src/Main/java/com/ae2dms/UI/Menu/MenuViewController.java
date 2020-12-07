@@ -48,6 +48,7 @@ public class MenuViewController extends AbstractBarController {
     public void initialize() {
         super.disableButton("Save Game");
         super.disableButton("Undo");
+        super.disableButton("Debug");
 
         StringConverter<Number> converter = new NumberStringConverter();
         this.bestRecord.textProperty().bindBidirectional(Main.gameDocument.bestRecord, converter);
@@ -67,7 +68,6 @@ public class MenuViewController extends AbstractBarController {
         gameView.bindKey(gameViewScene);
 
         Main.primaryStage.setScene(gameViewScene);
-
     }
 
     /**

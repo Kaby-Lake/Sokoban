@@ -37,18 +37,4 @@ public interface Movable {
         return delta.distance(0, 0) > 1;
     }
 
-    /**
-     * The constant isAnimating.
-     */
-    BooleanProperty isAnimating = new SimpleBooleanProperty(false);
-
-    /**
-     * Sync is animating.
-     *
-     * @param isAnimating the is animating
-     */
-    default void syncIsAnimating(BooleanProperty isAnimating) {
-        Movable.isAnimating.bindBidirectional(isAnimating);
-    }
-
 }

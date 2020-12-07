@@ -36,7 +36,7 @@ import java.util.HashMap;
 import static com.ae2dms.Business.GameDocument.logger;
 
 /**
- * The type Game view controller.
+ * The Controller of GameView in MVC pattern.
  */
 public class GameViewController extends AbstractBarController {
 
@@ -141,25 +141,25 @@ public class GameViewController extends AbstractBarController {
      * The JavaFX GridPane as stageGrid to add Wall and Floor, assigned in constructor
      */
     @FXML
-    private volatile GridPane stageGrid;
+    private GridPane stageGrid;
 
     /**
      * The JavaFX GridPane as objectsGrid to add Crate and Player, assigned in constructor
      */
     @FXML
-    private volatile GridPane objectsGrid;
+    private GridPane objectsGrid;
 
     /**
      * The JavaFX GridPane as diamondsGrid to add Diamond, assigned in constructor
      */
     @FXML
-    private volatile GridPane diamondsGrid;
+    private GridPane diamondsGrid;
 
     /**
      * The JavaFX GridPane as candyGrid to add Candy, assigned in constructor
      */
     @FXML
-    private volatile GridPane candyGrid;
+    private GridPane candyGrid;
 
 
     /**
@@ -170,12 +170,12 @@ public class GameViewController extends AbstractBarController {
     /**
      * GameDocument Instance
      */
-    private volatile GameDocument gameDocument = Main.gameDocument;
+    private GameDocument gameDocument = Main.gameDocument;
 
     /**
      * GraphicRender to render maps
      */
-    public volatile static GraphicRender render;
+    public static GraphicRender render;
 
     /**
      * The current game status
@@ -256,7 +256,6 @@ public class GameViewController extends AbstractBarController {
 
         render = new GraphicRender(stageGrid, objectsGrid, diamondsGrid, candyGrid);
         render.renderMap(gameDocument.getCurrentLevel());
-        gameDocument.getPlayer().syncIsAnimating(isAnimating);
         StringConverter<Number> converter = new NumberStringConverter();
         bestRecord.textProperty().bindBidirectional(this.gameDocument.bestRecord, converter);
         Score.textProperty().bindBidirectional(this.gameDocument.movesCount, converter);
@@ -266,7 +265,7 @@ public class GameViewController extends AbstractBarController {
      * whether at this time the animation is happening or not
      * will ignore all key events if still animating
      */
-    private final BooleanProperty isAnimating = new SimpleBooleanProperty(false);
+    public final static transient BooleanProperty isAnimating = new SimpleBooleanProperty(false);
 
     /**
      * whether at this time the gameView is blurred or not
@@ -471,7 +470,6 @@ public class GameViewController extends AbstractBarController {
         This_Level_Index.setText(Integer.toString(gameDocument.getCurrentLevel().getIndex()));
 
         render.renderMap(gameDocument.getCurrentLevel());
-        gameDocument.getPlayer().syncIsAnimating(isAnimating);
     }
 
     /**

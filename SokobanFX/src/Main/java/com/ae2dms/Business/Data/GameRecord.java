@@ -10,7 +10,9 @@ import java.util.*;
 import static com.ae2dms.Business.GameDocument.logger;
 
 /**
- * The type Game record.
+ * The Game record class to store all records
+ * has inner class named Record to store single record
+ * @see Record
  */
 public class GameRecord implements Serializable {
 
@@ -50,6 +52,7 @@ public class GameRecord implements Serializable {
     /**
      * create a record and push to records list, will sort and update @bestRecord accordingly
      * will set the record adding time to the given one
+     *
      * @param steps the total moved steps of this turn
      * @param playerName the inputted name by user when game complete
      * @param durationSeconds the duration seconds that timer recorded
@@ -104,7 +107,7 @@ public class GameRecord implements Serializable {
 
 
     /**
-     * Gets records.
+     * Get a unmodifiableList of all records, sorted by steps in ascending order
      *
      * @return getter of records
      */

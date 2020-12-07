@@ -19,7 +19,7 @@ public class MenuView {
     /**
      * The singleton private instance of MenuView
      */
-    private static volatile MenuView instance;
+    private static MenuView instance;
 
     /**
      * The MenuView view

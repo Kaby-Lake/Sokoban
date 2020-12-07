@@ -15,32 +15,35 @@ import javafx.stage.Stage;
 import java.io.InputStream;
 
 /**
- * The type Main.
+ * The Entry of this game, init document and switch to MenuView.
  */
 public class Main extends Application {
     /**
-     * The constant primaryStage.
+     * The static primaryStage shared across.
      */
     public static Stage primaryStage;
     /**
-     * The constant gameDocument.
+     * The static gameDocument.
      */
     public static GameDocument gameDocument;
     /**
-     * The constant menuScene.
+     * The singleton menuScene.
      */
     public static Scene menuScene;
     /**
-     * The constant smartisanMaquetteBold.
+     * The font SmartisanMaquetteBold.
      */
     public static Font smartisanMaquetteBold;
 
     /**
-     * The constant prefMusicVolume.
+     * The preferred volume of music, from 0 - 100
+     * later bind with musicPlayer in MenuView and GameView
      */
     public static DoubleProperty prefMusicVolume = new SimpleDoubleProperty(80);
+
     /**
-     * The constant prefSFXVolume.
+     * The preferred volume of sound effects, from 0 - 100
+     * later bind with AudioClip in MenuView and GameView
      */
     public static DoubleProperty prefSFXVolume = new SimpleDoubleProperty(80);
 
@@ -53,8 +56,12 @@ public class Main extends Application {
         launch(args);
     }
 
+    /**
+     * the first methods JavaFX calls
+     * @param primaryStage primaryStage
+     */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
         smartisanMaquetteBold = Font.loadFont(Main.class.getResourceAsStream("/font/SmartisanMaquetteBold.ttf"), 20);
 
@@ -74,7 +81,7 @@ public class Main extends Application {
     }
 
     /**
-     * Load default game map and init document.
+     * Load default game map (SampleGame.skb).
      */
     void loadDefaultGameMapAndInitDocument() {
         InputStream in = getClass().getClassLoader().getResourceAsStream("level/SampleGame.skb");

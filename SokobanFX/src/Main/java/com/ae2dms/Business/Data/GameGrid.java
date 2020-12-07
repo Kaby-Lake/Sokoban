@@ -34,20 +34,10 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
      */
     final int X;
 
-
     /**
      * the Y bounds of the GameGrid map
      */
     final int Y;
-
-    /**
-     * Get game objects abstract game object [ ] [ ].
-     *
-     * @return the abstract game object [ ] [ ]
-     */
-    public AbstractGameObject[][] getGameObjects() {
-        return gameObjects;
-    }
 
     /**
      * the 2d list to store all AbstractGameObject
@@ -70,7 +60,8 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
 
 
     /**
-     * Translate point point.
+     * static method
+     * Translate point.
      *
      * @param sourceLocation Java.awt.Point, target source location
      * @param delta          Java.awt.Point, distance respective
@@ -137,10 +128,11 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
      *
      * @param gameObject the object to be put in
      * @param p          Point
-     * @return false if PointOutOfBounds, true otherwise
      */
-    public boolean putGameObjectAt(AbstractGameObject gameObject, Point p) {
-        return p != null && putGameObjectAt(gameObject, (int) p.getX(), (int) p.getY());
+    public void putGameObjectAt(AbstractGameObject gameObject, Point p) {
+        if (p != null) {
+            putGameObjectAt(gameObject, (int) p.getX(), (int) p.getY());
+        }
     }
 
     /**
@@ -165,6 +157,10 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
     }
 
 
+    /**
+     * format this grid into a 2d String, with line breaks indicated next line of Grud
+     * @return a string
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(gameObjects.length);
@@ -189,7 +185,8 @@ public class GameGrid implements Iterable<AbstractGameObject>, Serializable {
     }
 
     /**
-     * The type Grid iterator.
+     * The iterator to iterate through all elements.
+     * if no element on the specified point, return null
      */
     public class GridIterator implements Iterator<AbstractGameObject> {
         /**

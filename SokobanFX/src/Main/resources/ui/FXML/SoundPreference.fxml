@@ -16,7 +16,7 @@
             <ImageView fx:id="MuteImage" layoutX="37.0" layoutY="475.0" onMouseClicked="#clickMuteAll" styleClass="Button">
                <Image url="@../Assets/MusicControl/Sound_on.png" />
             </ImageView>
-            <Label fx:id="MuteLabel" layoutX="223.0" layoutY="491.0" text="Muted" textFill="#808080">
+            <Label fx:id="MuteLabel" layoutX="223.0" layoutY="491.0" text="Not Mute" textFill="#808080">
                <font>
                   <Font name="Smartisan Maquette Bold" size="17.0" />
                </font>

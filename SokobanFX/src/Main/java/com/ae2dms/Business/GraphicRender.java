@@ -7,6 +7,7 @@ import com.ae2dms.UI.Game.GameViewController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
+import static com.ae2dms.UI.Game.GameViewController.isAnimating;
 
 /**
  * used for render Maps on the JavaFX gridPane
@@ -17,25 +18,25 @@ public class GraphicRender {
      * The JavaFX GridPane as stageGrid to add Wall and Floor, assigned in constructor
      */
     @FXML
-    private volatile GridPane stageGrid;
+    private GridPane stageGrid;
 
     /**
      * The JavaFX GridPane as objectsGrid to add Crate and Player, assigned in constructor
      */
     @FXML
-    private volatile GridPane objectsGrid;
+    private GridPane objectsGrid;
 
     /**
      * The JavaFX GridPane as diamondsGrid to add Diamond, assigned in constructor
      */
     @FXML
-    private volatile GridPane diamondsGrid;
+    private GridPane diamondsGrid;
 
     /**
      * The JavaFX GridPane as candyGrid to add Candy, assigned in constructor
      */
     @FXML
-    private volatile GridPane candyGrid;
+    private GridPane candyGrid;
 
     /**
      * the GraphicRender Object to render all GameObjects into the assigned GridPane
@@ -116,6 +117,7 @@ public class GraphicRender {
             }
             AbstractGameObject clickedObject = level.objectsGrid.getGameObjectAt(x, y);
             if (clickedObject instanceof Crate) {
+                isAnimating.setValue(true);
                 Crate thisObject = (Crate)clickedObject;
                 GameViewController.isCheating.setValue(true);
                 thisObject.isCheating = true;

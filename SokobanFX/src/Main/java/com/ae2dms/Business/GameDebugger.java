@@ -13,6 +13,7 @@ import java.awt.*;
 import java.io.File;
 
 /**
+ * the Debug helper
  * add debug information when debug is active
  */
 public class GameDebugger {

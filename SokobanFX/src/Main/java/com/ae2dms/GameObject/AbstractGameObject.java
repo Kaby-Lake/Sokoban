@@ -15,12 +15,12 @@ public abstract class AbstractGameObject implements Serializable {
     /**
      * The Level that it connects to (within)
      */
-    protected volatile Level level;
+    protected Level level;
 
     /**
      * The grid within this Level, not yet defined which one, can be defined by Child
      */
-    protected volatile GameGrid grid;
+    protected GameGrid grid;
 
     /**
      * The x position of this GameObject

@@ -17,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import static com.ae2dms.UI.Game.GameViewController.isAnimating;
 
 import java.awt.*;
 import java.util.UUID;
@@ -158,6 +159,9 @@ public class Crate extends AbstractGameObject implements Movable {
                 scaleTransition,
                 translateTransition
         );
+        parallelTransition.setOnFinished((event) -> {
+            isAnimating.set(false);
+        });
         parallelTransition.play();
 
         this.cheatingView = stack;
@@ -205,29 +209,9 @@ public class Crate extends AbstractGameObject implements Movable {
      * settle down this Crate and exit Cheating Mode
      */
     public void settleDown() {
-        ImageView choiceGridHalo = (ImageView)this.cheatingView.getChildren().get(0);
-        ImageView crateImage = (ImageView)this.cheatingView.getChildren().get(0);
-
-        ParallelTransition parallelTransition = new ParallelTransition();
-
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), crateImage);
-        translateTransition.setByY(5);
-
-        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), choiceGridHalo);
-        scaleTransition.setToX(5);
-        scaleTransition.setToY(5);
-
-        FadeTransition fadeTransition = new FadeTransition(Duration.millis(200), choiceGridHalo);
-        fadeTransition.setToValue(0);
-
-        parallelTransition.getChildren().addAll(translateTransition, scaleTransition, fadeTransition);
-
-        parallelTransition.play();
-        parallelTransition.setOnFinished((event) -> {
-            GameViewController.isCheating.setValue(false);
-            this.isCheating = false;
-            isAnimating.set(false);
-        });
+        GameViewController.isCheating.setValue(false);
+        this.isCheating = false;
+        isAnimating.set(false);
     }
 
     /**
@@ -254,11 +238,12 @@ public class Crate extends AbstractGameObject implements Movable {
      * whether this Crate can move by this direction
      * Crate can only move if the destination is Floor
      * @param destination point of destination
-     * @return
+     * @return boolean can move or not
      */
     private Boolean canMoveTo(Point destination) {
-        AbstractGameObject objectOnDestination = floorGrid.getGameObjectAt(destination);
-        return objectOnDestination instanceof Floor;
+        AbstractGameObject objectOnDestinationOfFloor = floorGrid.getGameObjectAt(destination);
+        AbstractGameObject objectOnDestinationOfGameObject = grid.getGameObjectAt(destination);
+        return (objectOnDestinationOfFloor instanceof Floor) && !((objectOnDestinationOfGameObject instanceof Player) || (objectOnDestinationOfGameObject instanceof Crate));
     }
 
     private void updatePosition(Point position) {

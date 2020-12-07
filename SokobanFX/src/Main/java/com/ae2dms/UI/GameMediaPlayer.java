@@ -25,7 +25,7 @@ public class GameMediaPlayer {
     /**
      * The GameMediaPlayer instance
      */
-    private static volatile GameMediaPlayer instance;
+    private static GameMediaPlayer instance;
 
     /**
      * The JavaFX MediaPlayer
