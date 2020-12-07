@@ -1,7 +1,11 @@
 # 2020 COMP2059 Developing Maintainable Software Coursework
 
+Zichen XU 20126507 hnyzx3@nottingham.edu.cn
+
+
+>
 > Word count: 496
-> 
+>
 > Table count: 5
 
 
@@ -14,7 +18,7 @@
 
 - Split the GameObjects into several Classes (Wall, Crate, ..) with the inheritance from [AbstractGameObject](SokobanFX/src/Main/java/com/ae2dms/GameObject/AbstractGameObject.java), and a [Movable](SokobanFX/src/Main/java/com/ae2dms/GameObject/Movable.java) interface which Player and Crate can implement to gain moving ability. Enhance maintainability that future GameObjects can be easily added.
 - Change the GameEngine to [GameDocument](SokobanFX/src/Main/java/com/ae2dms/Business/GameDocument.java) which behaves as Document job with methods like reloadStateFromFile() or serializeCurrentState() to adherent to Model in MVC pattern.
-- The logic behind moving objects is down to the Player, who has [canMoveBy()](SokobanFX/src/Main/java/com/ae2dms/GameObject/Objects/Player.java#L112) to determine if can move by which direction and moveBy() to move. If a Crate is on the way, Player will 'ask' that Crate if the Crate canMoveBy(). This leaves the behaviour to specific GameObject, and controller just acts as the forwarder.
+- The logic behind moving objects is down to the Player, who has [canMoveBy()](SokobanFX/src/Main/java/com/ae2dms/GameObject/Objects/Player.java#L113) to determine if can move by which direction and moveBy() to move. If a Crate is on the way, Player will 'ask' that Crate if the Crate canMoveBy(). This leaves the behaviour to specific GameObject, and controller just acts as the forwarder.
 - Split the pop-ups into different FXMLs with its dedicated controller, and use FXML [\<include\>](SokobanFX/src/Main/resources/ui/FXML/GameViewScene.fxml#L73) to add nested controllers to MenuView / GameView
 
 
@@ -23,19 +27,19 @@
 
 - ##### Template Method
 
-  AbstractGameObject has abstract render() method which different inheritance can have different implementations, but GraphicRender will only call [render()](SokobanFX/src/Main/resources/ui/FXML/GameViewScene.fxml#L93) on different GameObjects despite different views they return.
+  AbstractGameObject has abstract render() method which different inheritance can have different implementations, but GraphicRender will only call [render()](SokobanFX/src/Main/java/com/ae2dms/Business/GraphicRender.java#L62) on different GameObjects despite different views they return.
 
   
 
 - ##### Flyweight
 
-  [ResourceFactory](SokobanFX/src/Main/java/com/ae2dms/IO/ResourceFactory.java#L127) will only load data once and can share this data for the next usage. for example, different Floors will have an identical Image to load when constructing.
+  [ResourceFactory](SokobanFX/src/Main/java/com/ae2dms/IO/ResourceFactory.java#L137) will only load data once and can share this data for the next usage. for example, different Floors will have an identical Image to load when constructing.
 
   
 
 - ##### Singleton
 
-  The [MenuView](SokobanFX/src/Main/java/com/ae2dms/UI/Menu/MenuView.java#L48) will only be constructed once and reserved to be ready for every time returning to Menu.
+  The [MenuView](SokobanFX/src/Main/java/com/ae2dms/UI/Menu/MenuView.java#L49) will only be constructed once and reserved to be ready for every time returning to Menu.
 
   The [GameMediaPlayer](SokobanFX/src/Main/java/com/ae2dms/UI/GameMediaPlayer.java) as well.
 
@@ -43,7 +47,7 @@
 
 - ##### SimpleFactory
 
-  AbstractGameObject gives an identical constructor for all its inheritance, and all GameObjects can be constructed by GameObjectFactory with one single [API](SokobanFX/src/Main/java/com/ae2dms/GameObject/GameObjectFactory.java#L10).
+  AbstractGameObject gives an identical constructor for all its inheritance, and all GameObjects can be constructed by GameObjectFactory with one single [API](SokobanFX/src/Main/java/com/ae2dms/GameObject/GameObjectFactory.java#L22).
 
   
 
@@ -55,7 +59,7 @@
 
 ### GUI Design Pattern
 
-This project use MVC design pattern, in specific, [GameDocument](SokobanFX/src/Main/java/com/ae2dms/Business/GameDocument.java) as Model, who knows nothing about the view, FXML as View, and [GameViewController](SokobanFX/src/Main/java/com/ae2dms/UI/Game/GameViewController.java) as the controller, which mostly forward the changes to call methods in Model. However, in some fields, it may be more adherent to MVP (Presenter). The GraphicRender just put the render() in GridPane, but GameObject can change its behaviour (like [Animation](SokobanFX/src/Main/java/com/ae2dms/GameObject/Objects/Crate.java#L298)), and the view will change automatically without using Controller.
+This project use MVC design pattern, in specific, [GameDocument](SokobanFX/src/Main/java/com/ae2dms/Business/GameDocument.java) as Model, who knows nothing about the view, FXML as View, and [GameViewController](SokobanFX/src/Main/java/com/ae2dms/UI/Game/GameViewController.java) as the controller, which mostly forward the changes to call methods in Model. However, in some fields, it may be more adherent to MVP (Presenter). The GraphicRender just put the render() in GridPane, but GameObject can change its behaviour (like [Animation](SokobanFX/src/Main/java/com/ae2dms/GameObject/Objects/Crate.java#L258)), and the view will change automatically without using Controller.
 
 
 

@@ -10,7 +10,7 @@
 
 AbstractGameObject is an abstract method which contains fields like xPosition, yPosition and abstract methods like render(), the subclasses which extends AbstractGameObject will realize these methods in their own way (render different Images), and implements other methods like eat() in Candy.
 
-Movable is an interface provided to gain movable ablity to GameObjects, namely Crate and Player can move, and will realize methods like canMoveby() and MoveBy().
+Movable is an interface provided to gain movable ability to GameObjects, namely Crate and Player can move, and will realize methods like canMoveby() and MoveBy().
 
 The GameObjectFactory here is a Factory that follows SimpleFactory Design Pattern which can construct different GameObjects in a uniform API.
 
@@ -32,7 +32,7 @@ The GameView and MenuView class are the wrapper, which will read in FXML when co
 
 ### Package **Business**
 
-![Screen Shot 2020-12-06 at 8.43.18 PM](/Users/kabylake/Desktop/Screen Shot 2020-12-06 at 8.43.18 PM.png)
+![Screen Shot 2020-12-06 at 8.43.18 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glfbwhz0e8j30rs0m0764.jpg)
 
 [Business Diagram PDF](diagram/Business.pdf)
 
