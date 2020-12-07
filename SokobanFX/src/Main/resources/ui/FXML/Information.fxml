@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:id="InformationPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ae2dms.UI.Menu.InformationController">
+   <children>
+      <ImageView>
+         <Image url="@../Assets/Menu/Information_Background.png" />
+      </ImageView>
+      <ImageView fitHeight="594.0" fitWidth="780.0" layoutX="250.0" layoutY="33.0">
+         <Image url="@../Assets/Menu/Information_Guide.png" />
+      </ImageView>
+      <ImageView fitHeight="36.0" fitWidth="51.0" layoutX="39.0" layoutY="27.0" onMouseClicked="#hide" styleClass="Button">
+         <Image url="@../Assets/Menu/Close.png" />
+      </ImageView>
+   </children>
+</Pane>

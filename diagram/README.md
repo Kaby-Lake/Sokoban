@@ -1,31 +1,39 @@
-Package **GameObject**
+## Overall Diagram
+
+[Diagram PDF](diagram/20126507-ClassDiagram.pdf)
+
+### Package **GameObject**
 
 ![Screen Shot 2020-12-05 at 5.59.24 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glddcazdflj30kb08pq36.jpg)
 
-AbstractGameObject is a abstract method which contains fields like xPosition, yPosition and abstract methods like render(), the subclasses which extends AbstractGameObject will realize these methods in their own way (render different Images), and implements other methods like the eat() in Candy.
+[GameObject Diagram PDF](diagram/GameObject.pdf)
 
-Moveable is an interface provided to gain movable ablity to GameObjects, namely Crate and Player can move, and will realize methods like canMoveby() and MoveBy().
+AbstractGameObject is an abstract method which contains fields like xPosition, yPosition and abstract methods like render(), the subclasses which extends AbstractGameObject will realize these methods in their own way (render different Images), and implements other methods like eat() in Candy.
+
+Movable is an interface provided to gain movable ability to GameObjects, namely Crate and Player can move, and will realize methods like canMoveby() and MoveBy().
 
 The GameObjectFactory here is a Factory that follows SimpleFactory Design Pattern which can construct different GameObjects in a uniform API.
 
 
 
-Package **UI**
+### Package **UI**
 
- ![Screen Shot 2020-12-05 at 6.31.32 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glddcghrxaj31d60g4abw.jpg)
+![Screen Shot 2020-12-06 at 8.48.14 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glefc9tf1bj31f60jsac6.jpg) 
+
+[UI Diagram PDF](diagram/UI.pdf)
 
 UI package consists of the controllers for different views and sub-component of views, for example, the SoundPreferenceController is a sub-component that exists both in MenuView and GameView.
 
-AbstractBarController is a abstract method which consist of the controllers for HighScoreBar and CoulourPreference which has entry on the BottomBar, and the two view controllers, namely MenuViewController and GameViewController, will extend the AbstractBarController.
+AbstractBarController is an abstract method which consist of the controllers for HighScoreBar and ColourPreference which has entry on the BottomBar, and the two view controllers, namely MenuViewController and GameViewController, will extend the AbstractBarController.
 
 The GameView and MenuView class are the wrapper, which will read in FXML when constructing and contains getView() to return the JavaFX Pane loaded by FXML.
 
 
 
-Package **Business**
+### Package **Business**
 
+![Screen Shot 2020-12-06 at 8.43.18 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glfbwhz0e8j30rs0m0764.jpg)
 
-
-![Screen Shot 2020-12-05 at 7.10.11 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glddcktj8yj30pm0i1ab3.jpg)
+[Business Diagram PDF](diagram/Business.pdf)
 
 GameDocument has compositions like Level, which can be passed to GraphicRender to render the Map, the GameRecord has composition relation also with GameDocument to represents the records of the player, and the GameStageSaver's job is to save the current state of the Game. The GameGrid contains a grid of AbstractGameObjects, and can be iterated through.

@@ -1,10 +1,10 @@
 # Default ignored files
-/target/
+/SokobanFX/target/
+/SokobanFX/logs/
 /shelf/
 /.idea/
-/logs/
 /records/
-DMS.iml
+SokobanFX/DMS.iml
 /workspace.xml
 # Datasource local storage ignored files
 /dataSources/

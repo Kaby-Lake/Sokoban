@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane fx:id="Colour_Preference_Pop_Up" prefHeight="720.0" prefWidth="1280.0" stylesheets="@GlobalCSS.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ae2dms.UI.Menu.ColourPreferenceController">
+    <center>
+        <Group>
+            <children>
+                <ImageView>
+                    <Image url="@../Assets/Colour_Select/Colour_Preference.png" />
+                </ImageView>
+                <ImageView layoutX="383.0" layoutY="431.0" onMouseClicked="#hide" styleClass="Button">
+                    <Image url="@../Assets/Colour_Select/Hide.png" />
+                </ImageView>
+            <GridPane alignment="CENTER" layoutX="31.0" layoutY="209.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="842.0">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <BorderPane onMouseClicked="#clickCrateBlue" fx:id="CrateBlue" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0"/>
+                  <BorderPane onMouseClicked="#clickCrateGreen" fx:id="CrateGreen" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                  <BorderPane onMouseClicked="#clickCrateSilver" fx:id="CrateSilver" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+                     <center>
+                         <ImageView BorderPane.alignment="CENTER">
+                             <Image url="@../Assets/Colour_Select/Colour_Selected.png" />
+                         </ImageView>
+                     </center>
+                  </BorderPane>
+                  <BorderPane onMouseClicked="#clickCrateBrown" fx:id="CrateBrown" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" />
+                  <BorderPane onMouseClicked="#clickCrateRed" fx:id="CrateRed" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" />
+               </children>
+            </GridPane>
+            <GridPane alignment="CENTER" layoutX="31.0" layoutY="383.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="842.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <BorderPane onMouseClicked="#clickDiamondBlue" fx:id="DiamondBlue" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0"/>
+                  <BorderPane onMouseClicked="#clickDiamondGreen" fx:id="DiamondGreen" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                  <BorderPane onMouseClicked="#clickDiamondSilver" fx:id="DiamondSilver" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2"/>
+                  <BorderPane onMouseClicked="#clickDiamondBrown" fx:id="DiamondBrown" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" />
+                  <BorderPane onMouseClicked="#clickDiamondRed" fx:id="DiamondRed" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" >
+                      <center>
+                          <ImageView BorderPane.alignment="CENTER">
+                              <Image url="@../Assets/Colour_Select/Colour_Selected.png"/>
+                          </ImageView>
+                      </center>
+                  </BorderPane>
+               </children>
+            </GridPane>
+            </children></Group>
+    </center>
+</BorderPane>
