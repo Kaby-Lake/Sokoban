@@ -1,6 +1,8 @@
 # 2020 COMP2059 Developing Maintainable Software Coursework
 
-> words count: 496
+> Word count: 496
+> 
+> Table count: 5
 
 
 
@@ -12,8 +14,8 @@
 
 - Split the GameObjects into several Classes (Wall, Crate, ..) with the inheritance from [AbstractGameObject](SokobanFX/src/Main/java/com/ae2dms/GameObject/AbstractGameObject.java), and a [Movable](SokobanFX/src/Main/java/com/ae2dms/GameObject/Movable.java) interface which Player and Crate can implement to gain moving ability. Enhance maintainability that future GameObjects can be easily added.
 - Change the GameEngine to [GameDocument](SokobanFX/src/Main/java/com/ae2dms/Business/GameDocument.java) which behaves as Document job with methods like reloadStateFromFile() or serializeCurrentState() to adherent to Model in MVC pattern.
-- The logic behind moving objects is down to the Player, who has [canMoveBy()](SokobanFX/src/Main/java/com/ae2dms/GameObject/Objects/Player.java#L83) to determine if can move by which direction and moveBy() to move. If a Crate is on the way, Player will 'ask' that Crate if the Crate canMoveBy(). This leaves the behaviour to specific GameObject, and controller just acts as the forwarder.
-- Split the pop-ups into different FXMLs with its dedicated controller, and use FXML \<include\> to add nested controllers to MenuView / GameView
+- The logic behind moving objects is down to the Player, who has [canMoveBy()](SokobanFX/src/Main/java/com/ae2dms/GameObject/Objects/Player.java#L112) to determine if can move by which direction and moveBy() to move. If a Crate is on the way, Player will 'ask' that Crate if the Crate canMoveBy(). This leaves the behaviour to specific GameObject, and controller just acts as the forwarder.
+- Split the pop-ups into different FXMLs with its dedicated controller, and use FXML [\<include\>](SokobanFX/src/Main/resources/ui/FXML/GameViewScene.fxml#L73) to add nested controllers to MenuView / GameView
 
 
 
@@ -21,7 +23,7 @@
 
 - ##### Template Method
 
-  AbstractGameObject has abstract render() method which different inheritance can have different implementations, but GraphicRender will only call [render()](SokobanFX/src/Main/java/com/ae2dms/Business/GraphicRender.java#L81) on different GameObjects despite different views they return.
+  AbstractGameObject has abstract render() method which different inheritance can have different implementations, but GraphicRender will only call [render()](SokobanFX/src/Main/resources/ui/FXML/GameViewScene.fxml#L93) on different GameObjects despite different views they return.
 
   
 
@@ -35,7 +37,7 @@
 
   The [MenuView](SokobanFX/src/Main/java/com/ae2dms/UI/Menu/MenuView.java#L48) will only be constructed once and reserved to be ready for every time returning to Menu.
 
-  The GameMediaPlayer as well.
+  The [GameMediaPlayer](SokobanFX/src/Main/java/com/ae2dms/UI/GameMediaPlayer.java) as well.
 
   
 
@@ -53,29 +55,36 @@
 
 ### GUI Design Pattern
 
-This project use MVC design pattern, in specific, GameDocument as Model, who knows nothing about the view, FXML as View, and GameController as the controller, which mostly forward the changes to call methods in Model. However, in some fields, it may be more adherent to MVP (Presenter). The GraphicRender just put the render() in GridPane, but GameObject can change its behaviour (like Animation), and the view will change automatically without using Controller.
+This project use MVC design pattern, in specific, [GameDocument](SokobanFX/src/Main/java/com/ae2dms/Business/GameDocument.java) as Model, who knows nothing about the view, FXML as View, and [GameViewController](SokobanFX/src/Main/java/com/ae2dms/UI/Game/GameViewController.java) as the controller, which mostly forward the changes to call methods in Model. However, in some fields, it may be more adherent to MVP (Presenter). The GraphicRender just put the render() in GridPane, but GameObject can change its behaviour (like [Animation](SokobanFX/src/Main/java/com/ae2dms/GameObject/Objects/Crate.java#L298)), and the view will change automatically without using Controller.
 
 
 
-#### Features
-- permanent High Score List, JUnit tests and Maven build files.
-- Self re-designed UI from the ground up, with my Adobe XD sketch file available for reference.
-- Re-position the button from MenuBar to MenuView and a separate Bottom-Bar.
-- 2.5D view of the GameGrid with proper shelter effects.
-- Music controller which can change the volume, select songs to play and a useful progress slider, and will shuffle play by default.
-- Theme Preference pop-up to change the theme of the Crate and Diamond.
-- Eat Candy on the map and get a free Floor which can be drag and drop wherever you want on the Grid.
-- (Cheating) Click the Crate to select and move if the level is too difficult.
-- Time and steps counter to count the duration and steps of each round, with sorted high score list either by time or by score. has proper animation when opening High Score List from the bottomBar.
-- MapLoader can detect a invalid map file and points out which line is incorrect.
+### Features
+
+| Features                                                     | Screenshots                                                  | Comments|
+| ------------------------------------------------------------ | ------------------------------------------------------------ |------ |
+| Permanent High Score Listh with proper animation when opening from the bottomBar. | ![Screen Shot 2020-12-07 at 12.21.21 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glf6d2pl5oj312o0nwjwc.jpg) | |
+| JUnit tests and Maven build files                            |                                                              | |
+| Self re-designed UI from the ground up, with my Adobe XD sketch file available for reference | ![Screen Shot 2020-12-07 at 12.25.31 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glf6fivixdj315h0rfqdq.jpg) | [XD file link](Sokoban_Sketch.xd) |
+| Re-position the button from MenuBar to MenuView and a separate Bottom-Bar. | ![Screen Shot 2020-12-07 at 12.29.35 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glf6jr9zy2j313g05twfw.jpg) |  |
+| 2.5D view of the GameGrid with proper shelter effects | ![Screen Shot 2020-12-07 at 12.30.59 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glf6l7n958j305203pglq.jpg)![Screen Shot 2020-12-07 at 12.30.34 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glf6krs711j305003p74f.jpg) |  |
+| Music controller which can change the volume, select songs to play and a useful progress slider, and will shuffle play by default | ![Screen Shot 2020-12-07 at 12.31.56 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glf6m7tx8vj30bh0h1acf.jpg) |  |
+| Theme Preference pop-up to change the theme of the Crate and Diamond | ![Group 44](https://tva1.sinaimg.cn/large/0081Kckwly1glf6o5shcxj30p90e176c.jpg) |  |
+| Eat Candy on the map and get a free Floor which can be drag and drop wherever you want on the Grid | ![Screen Shot 2020-12-07 at 12.34.56 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glf6pdjzapj305403c0su.jpg)![Screen Shot 2020-12-07 at 12.34.56 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glf6qq62pgj304603bjrw.jpg)![Screen Shot 2020-12-07 at 12.34.56 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glf6rwthwdj306g045t8x.jpg) |  |
+| (Cheating) Click the Crate to select and move if the level is too difficult | ![Screen Shot 2020-12-07 at 12.38.31 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glf6t4d187j30qa08owfb.jpg) |  |
+| Time and steps counter to count the duration and steps of each round, with sorted high score list either by time or by score | ![Screen Shot 2020-12-07 at 12.39.49 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glf6uigsepj307c01uaad.jpg)![Screen Shot 2020-12-07 at 12.40.25 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glf6v1bit6j30h009lmyu.jpg) |  |
+| MapLoader can detect a invalid map file and points out which line is incorrect | ![Screen Shot 2020-12-07 at 12.42.05 PM](https://tva1.sinaimg.cn/large/0081Kckwly1glf6ws25kaj30fe01q749.jpg) |  |
 
 
-#### Class Diagram and Explanations
+### Class Diagram and Explanations
 
 refer to this folder [link](diagram)
 
+### Git Usage
 
-#### Test Cases
+I strickly follow AngularJS Git Commit Message Conventions, the workflow can be concluded as: a branch for a large feature or bug fix, with sub-branches to handle the components and merge back.
+
+### Test Cases
 
 ##### Business.Data.GameRecordTest
 

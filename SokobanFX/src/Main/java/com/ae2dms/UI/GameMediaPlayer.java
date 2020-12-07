@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 /**
- * singleton GameMediaPlayer as a MediaPlayer wrapper to player music and bind with SoundPreference Controller
+ * singleton GameMediaPlayer as a MediaPlayer wrapper to play music and bind with SoundPreference Controller
  */
 public class GameMediaPlayer {
 

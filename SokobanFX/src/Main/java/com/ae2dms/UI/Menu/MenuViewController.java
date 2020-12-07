@@ -18,7 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 /**
- * JavaFX controller for MenuView
+ * JavaFX controlle in MVC for MenuView
  */
 public class MenuViewController extends AbstractBarController {
 
@@ -29,11 +29,14 @@ public class MenuViewController extends AbstractBarController {
     @FXML
     private Pane Information;
 
+    /**
+     * THe controller for Information Pane
+     */
     @FXML
     private InformationController InformationController;
 
     /**
-     * static GameDocument
+     * static GameDocument gain from Main
      */
     private GameDocument gameDocument = Main.gameDocument;
 
@@ -73,8 +76,6 @@ public class MenuViewController extends AbstractBarController {
     public void clickInformation() {
         InformationController.show();
     }
-
-    // TODO: add information
 
     /**
      * click restore game from file button

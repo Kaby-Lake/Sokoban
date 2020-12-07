@@ -6,7 +6,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 /**
- * The Information Pane controller.
+ * The Controller in MVC pattern for Information Pane.
  */
 public class InformationController {
 

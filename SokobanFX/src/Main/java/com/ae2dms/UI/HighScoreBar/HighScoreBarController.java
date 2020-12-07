@@ -22,7 +22,7 @@ import static com.ae2dms.Business.GameDocument.logger;
 import static com.ae2dms.Business.GameDocument.records;
 
 /**
- * The type High score bar controller.
+ * The controller for High score list.
  */
 public class HighScoreBarController {
 

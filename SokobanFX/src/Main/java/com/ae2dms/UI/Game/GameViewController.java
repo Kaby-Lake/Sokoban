@@ -257,8 +257,8 @@ public class GameViewController extends AbstractBarController {
         render = new GraphicRender(stageGrid, objectsGrid, diamondsGrid, candyGrid);
         render.renderMap(gameDocument.getCurrentLevel());
         gameDocument.getPlayer().syncIsAnimating(isAnimating);
-        bestRecord.textProperty().bind(this.gameDocument.bestRecord.asString());
         StringConverter<Number> converter = new NumberStringConverter();
+        bestRecord.textProperty().bindBidirectional(this.gameDocument.bestRecord, converter);
         Score.textProperty().bindBidirectional(this.gameDocument.movesCount, converter);
     }
 

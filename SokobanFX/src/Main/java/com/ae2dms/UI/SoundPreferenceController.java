@@ -20,7 +20,7 @@ import javafx.util.converter.NumberStringConverter;
 import java.text.NumberFormat;
 
 /**
- * The controller class for SoundPreference
+ * The controller in MVC for SoundPreference
  */
 public class SoundPreferenceController {
 

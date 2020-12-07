@@ -14,7 +14,7 @@ import java.net.URISyntaxException;
 import static com.ae2dms.Business.GameDocument.logger;
 
 /**
- * Controller for ColourPreference selector
+ * The Controller in MVC pattern for ColourPreference selector
  */
 public class ColourPreferenceController {
 
@@ -55,12 +55,12 @@ public class ColourPreferenceController {
     private BorderPane DiamondRed;
 
     /**
-     * The constant selectedCrateColour.
+     * The StringProperty selectedCrateColour, will be bind with the colour when Crate render().
      */
     public static final StringProperty selectedCrateColour = new SimpleStringProperty("Silver");
 
     /**
-     * The constant selectedDiamondColour.
+     * The StringProperty selectedDiamondColour, will be bind with the colour when Diamond render().
      */
     public static final StringProperty selectedDiamondColour = new SimpleStringProperty("Red");
 
@@ -78,7 +78,7 @@ public class ColourPreferenceController {
     }
 
     /**
-     * Initialize.
+     * Initialize the ui logic in selecting between colours
      */
     public void initialize() {
         selectedCrateColour.addListener((observable, oldValue, newValue) -> {

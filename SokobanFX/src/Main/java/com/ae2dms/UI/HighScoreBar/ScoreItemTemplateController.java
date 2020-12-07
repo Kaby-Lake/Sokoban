@@ -10,7 +10,8 @@ import javafx.scene.image.ImageView;
 import java.util.Random;
 
 /**
- * The type Score item template controller.
+ * The score item to be added into High Score List
+ * This is the controller for that
  */
 public class ScoreItemTemplateController {
 

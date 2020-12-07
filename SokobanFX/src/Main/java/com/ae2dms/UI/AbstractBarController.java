@@ -17,10 +17,10 @@ import javafx.scene.layout.Pane;
 
 /**
  * MenuView and GameView all have tbe same Bar, and the same FXMLs to that,
- * so the control login inside the bar items will be manages here,
+ * so the control logic inside the bar items will be manages here,
  * GameView and MenuView shall all extend this Controller and get the identical controller for Bar
  * <p>
- * Nested FXML are used here to improve maintainability and structure controller code
+ * Nested FXMLs as well as nested controllers are used here to improve maintainability and structure controller code
  */
 public class AbstractBarController {
 
